@@ -1,0 +1,27 @@
+NGUỒN THAM KHẢO – TIỆN ÍCH EXCEL 2.30.4
+
+Lưu ý về quyền và cách sử dụng
+Mã VBA của add-in được viết/tích hợp trong dự án này. Các mục bên dưới là dịch vụ, API, dữ liệu hoặc tiêu chuẩn được tham khảo để xây dựng tính năng; việc nêu tên không có nghĩa là mã nguồn của các bên được sao chép nguyên văn hay họ bảo trợ add-in. Hãy kiểm tra điều khoản hiện hành của từng dịch vụ trước khi sử dụng.
+
+Dịch vụ và dữ liệu bên ngoài
+- VietQR.io – danh sách ngân hàng và tạo ảnh VietQR: https://www.vietqr.io/ ; https://api.vietqr.io/ ; https://img.vietqr.io/
+- BWIP-JS / bwip-js-api.metafloor.com – tạo ảnh mã vạch: https://github.com/metafloor/bwip-js ; https://bwipjs-api.metafloor.com/
+- QRServer – API tạo ảnh QR: https://goqr.me/api/
+- MyMemory – dịch máy/dịch bộ nhớ: https://mymemory.translated.net/doc/spec.php
+- Google Translate web endpoint – dịch dự phòng không chính thức, có thể thay đổi hoặc giới hạn: https://translate.googleapis.com/translate_a/single
+- Vietcombank – dữ liệu tỷ giá công khai: https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx
+- Tổng cục Thống kê (NSO) – danh mục và đối chiếu đơn vị hành chính: https://danhmuchanhchinh.nso.gov.vn/
+- Mã Số Thuế – dữ liệu tra cứu doanh nghiệp: https://masothue.com/
+- Thông Tin Công Ty – dữ liệu tra cứu doanh nghiệp/địa chỉ: https://thongtincongty.vn/
+
+Thư viện và nền tảng
+- Microsoft Excel VBA, Office Ribbon XML, Microsoft Forms (MSForms), WinHTTP và MSXML: tài liệu chính thức Microsoft Learn, https://learn.microsoft.com/office/vba/api/overview/ ; https://learn.microsoft.com/openspecs/office_standards/ms-customui/
+- Mã vạch sử dụng các symbology phổ biến như Code 128, Code 39 và EAN-13; QR tuân theo tiêu chuẩn QR Code. Nội dung sinh ảnh được yêu cầu từ các dịch vụ nêu trên.
+
+Tài liệu trong dự án
+- address/history/README.md mô tả nguồn và cách đối chiếu dữ liệu lịch sử địa giới hành chính, gồm NSO và các văn bản pháp lý liên quan.
+- src/mod_MSTWeb.txt ghi nguồn tra cứu MST hiện được gọi và thứ tự dự phòng.
+- src/mod_TranslateProviders.txt ghi các nhà cung cấp dịch dịch được tích hợp.
+- src/mod_VietQR.txt và src/mod_Barcode.txt ghi cách tạo liên kết ảnh QR/mã vạch.
+
+Đây là danh sách nguồn tham khảo ở cấp tính năng, không phải danh sách giấy phép của mọi dữ liệu bên thứ ba. Dịch vụ web có thể thay đổi, giới hạn truy cập hoặc ngừng hoạt động.

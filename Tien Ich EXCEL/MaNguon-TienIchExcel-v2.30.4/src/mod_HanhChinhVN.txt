@@ -1,0 +1,321 @@
+Option Explicit
+
+Private Function ChuanHoaCCCD(ByVal cccd As Variant) As String
+    If IsError(cccd) Or IsNull(cccd) Or IsEmpty(cccd) Then Exit Function
+    ChuanHoaCCCD = Trim$(CStr(cccd))
+End Function
+
+Private Function GetTenTinhCCCD(ByVal maTinh As String, Optional ByVal LayTenCu As Boolean = False) As String
+    Select Case maTinh
+        Case "001": GetTenTinhCCCD = u("H\u00e0 N\u1ed9i")
+        Case "002": GetTenTinhCCCD = u("H\u00e0 Giang")
+        Case "004": GetTenTinhCCCD = u("Cao B\u1eb1ng")
+        Case "006": GetTenTinhCCCD = u("B\u1eafc K\u1ea1n")
+        Case "008": GetTenTinhCCCD = u("Tuy\u00ean Quang")
+        Case "010": GetTenTinhCCCD = u("L\u00e0o Cai")
+        Case "011": GetTenTinhCCCD = u("\u0110i\u1ec7n Bi\u00ean")
+        Case "012": GetTenTinhCCCD = u("Lai Ch\u00e2u")
+        Case "014": GetTenTinhCCCD = u("S\u01a1n La")
+        Case "015": GetTenTinhCCCD = u("Y\u00ean B\u00e1i")
+        Case "017": GetTenTinhCCCD = u("H\u00f2a B\u00ecnh")
+        Case "019": GetTenTinhCCCD = u("Th\u00e1i Nguy\u00ean")
+        Case "020": GetTenTinhCCCD = u("L\u1ea1ng S\u01a1n")
+        Case "022": GetTenTinhCCCD = u("Qu\u1ea3ng Ninh")
+        Case "024": GetTenTinhCCCD = u("B\u1eafc Giang")
+        Case "025": GetTenTinhCCCD = u("Ph\u00fa Th\u1ecd")
+        Case "026": GetTenTinhCCCD = u("V\u0129nh Ph\u00fac")
+        Case "027": GetTenTinhCCCD = u("B\u1eafc Ninh")
+        Case "030": GetTenTinhCCCD = u("H\u1ea3i D\u01b0\u01a1ng")
+        Case "031": GetTenTinhCCCD = u("H\u1ea3i Ph\u00f2ng")
+        Case "033": If LayTenCu Then GetTenTinhCCCD = u("H\u00e0 T\u00e2y (c\u0169)") Else GetTenTinhCCCD = u("H\u00e0 N\u1ed9i")
+        Case "034": GetTenTinhCCCD = u("Th\u00e1i B\u00ecnh")
+        Case "035": GetTenTinhCCCD = u("H\u00e0 Nam")
+        Case "036": GetTenTinhCCCD = u("Nam \u0110\u1ecbnh")
+        Case "037": GetTenTinhCCCD = u("Ninh B\u00ecnh")
+        Case "038": GetTenTinhCCCD = u("Thanh H\u00f3a")
+        Case "040": GetTenTinhCCCD = u("Ngh\u1ec7 An")
+        Case "042": GetTenTinhCCCD = u("H\u00e0 T\u0129nh")
+        Case "044": GetTenTinhCCCD = u("Qu\u1ea3ng B\u00ecnh")
+        Case "045": GetTenTinhCCCD = u("Qu\u1ea3ng Tr\u1ecb")
+        Case "046": If LayTenCu Then GetTenTinhCCCD = u("Th\u1eeba Thi\u00ean Hu\u1ebf") Else GetTenTinhCCCD = u("Hu\u1ebf")
+        Case "048": GetTenTinhCCCD = u("\u0110\u00e0 N\u1eb5ng")
+        Case "049": GetTenTinhCCCD = u("Qu\u1ea3ng Nam")
+        Case "051": GetTenTinhCCCD = u("Qu\u1ea3ng Ng\u00e3i")
+        Case "052": GetTenTinhCCCD = u("B\u00ecnh \u0110\u1ecbnh")
+        Case "054": GetTenTinhCCCD = u("Ph\u00fa Y\u00ean")
+        Case "056": GetTenTinhCCCD = u("Kh\u00e1nh H\u00f2a")
+        Case "058": GetTenTinhCCCD = u("Ninh Thu\u1eadn")
+        Case "060": GetTenTinhCCCD = u("B\u00ecnh Thu\u1eadn")
+        Case "062": GetTenTinhCCCD = u("Kon Tum")
+        Case "064": GetTenTinhCCCD = u("Gia Lai")
+        Case "066": GetTenTinhCCCD = u("\u0110\u1eafk L\u1eafk")
+        Case "067": GetTenTinhCCCD = u("\u0110\u1eafk N\u00f4ng")
+        Case "068": GetTenTinhCCCD = u("L\u00e2m \u0110\u1ed3ng")
+        Case "070": GetTenTinhCCCD = u("B\u00ecnh Ph\u01b0\u1edbc")
+        Case "072": GetTenTinhCCCD = u("T\u00e2y Ninh")
+        Case "074": GetTenTinhCCCD = u("B\u00ecnh D\u01b0\u01a1ng")
+        Case "075": GetTenTinhCCCD = u("\u0110\u1ed3ng Nai")
+        Case "077": If LayTenCu Then GetTenTinhCCCD = u("B\u00e0 R\u1ecba - V\u0169ng T\u00e0u") Else GetTenTinhCCCD = u("B\u00e0 R\u1ecba \u2013 V\u0169ng T\u00e0u")
+        Case "079": If LayTenCu Then GetTenTinhCCCD = u("Gia \u0110\u1ecbnh / S\u00e0i G\u00f2n") Else GetTenTinhCCCD = u("TP. H\u1ed3 Ch\u00ed Minh")
+        Case "080": GetTenTinhCCCD = u("Long An")
+        Case "082": GetTenTinhCCCD = u("Ti\u1ec1n Giang")
+        Case "083": GetTenTinhCCCD = u("B\u1ebfn Tre")
+        Case "084": GetTenTinhCCCD = u("Tr\u00e0 Vinh")
+        Case "086": GetTenTinhCCCD = u("V\u0129nh Long")
+        Case "087": GetTenTinhCCCD = u("\u0110\u1ed3ng Th\u00e1p")
+        Case "089": GetTenTinhCCCD = u("An Giang")
+        Case "091": GetTenTinhCCCD = u("Ki\u00ean Giang")
+        Case "092": If LayTenCu Then GetTenTinhCCCD = u("C\u1ea7n Th\u01a1 (t\u1ec9nh c\u0169)") Else GetTenTinhCCCD = u("C\u1ea7n Th\u01a1")
+        Case "093": GetTenTinhCCCD = u("H\u1eadu Giang")
+        Case "094": GetTenTinhCCCD = u("S\u00f3c Tr\u0103ng")
+        Case "095": GetTenTinhCCCD = u("B\u1ea1c Li\u00eau")
+        Case "096": GetTenTinhCCCD = u("C\u00e0 Mau")
+        Case Else: GetTenTinhCCCD = ""
+    End Select
+End Function
+
+Public Function KiemTraCCCD(ByVal cccd As Variant) As Boolean
+    Dim s As String, maTinh As String, maGT As Integer
+    s = ChuanHoaCCCD(cccd)
+    If Len(s) <> 12 Or Not DigitsOnly(s) Then KiemTraCCCD = False: Exit Function
+    maTinh = Left(s, 3)
+    If GetTenTinhCCCD(maTinh) = "" Then KiemTraCCCD = False: Exit Function
+    maGT = CInt(Mid(s, 4, 1))
+    If maGT < 0 Or maGT > 9 Then KiemTraCCCD = False: Exit Function
+    KiemTraCCCD = True
+End Function
+
+Public Function CCCD_GioiTinh(ByVal cccd As Variant) As String
+    Dim s As String, maGT As Integer
+    s = ChuanHoaCCCD(cccd)
+    If Not KiemTraCCCD(s) Then CCCD_GioiTinh = "": Exit Function
+    maGT = CInt(Mid(s, 4, 1))
+    Select Case maGT
+        Case 0, 2, 4, 6, 8: CCCD_GioiTinh = "Nam"
+        Case 1, 3, 5, 7, 9: CCCD_GioiTinh = u("N\u1eef")
+    End Select
+End Function
+
+Public Function CCCD_NamSinh(ByVal cccd As Variant) As Variant
+    Dim s As String, maGT As Integer, theKy As Integer
+    s = ChuanHoaCCCD(cccd)
+    If Not KiemTraCCCD(s) Then CCCD_NamSinh = "": Exit Function
+    maGT = CInt(Mid(s, 4, 1))
+    Select Case maGT
+        Case 0, 1: theKy = 1900
+        Case 2, 3: theKy = 2000
+        Case 4, 5: theKy = 2100
+        Case 6, 7: theKy = 2200
+        Case 8, 9: theKy = 2300
+    End Select
+    CCCD_NamSinh = theKy + CInt(Mid(s, 5, 2))
+End Function
+
+Public Function CCCD_TinhThanh(ByVal cccd As Variant, Optional ByVal LayTenCu As Boolean = False) As String
+    Dim s As String, maTinh As String
+    s = ChuanHoaCCCD(cccd)
+    If Not KiemTraCCCD(s) Then CCCD_TinhThanh = "": Exit Function
+    maTinh = Left(s, 3)
+    CCCD_TinhThanh = GetTenTinhCCCD(maTinh, LayTenCu)
+End Function
+
+
+Public Function ExtractJSONValue(ByVal json As String, ByVal key As String) As String
+    Dim i As Long, token As String, j As Long
+    i = 1
+    Do While i <= Len(json)
+        If Mid$(json, i, 1) = """" Then
+            token = ReadJSONString(json, i)
+            j = i
+            Do While j <= Len(json) And InStr(" " & vbCr & vbLf & vbTab, Mid$(json, j, 1)) > 0
+                j = j + 1
+            Loop
+            If token = key And Mid$(json, j, 1) = ":" Then
+                i = j + 1
+                Do While i <= Len(json) And InStr(" " & vbCr & vbLf & vbTab, Mid$(json, i, 1)) > 0
+                    i = i + 1
+                Loop
+                If Mid$(json, i, 1) = """" Then
+                    ExtractJSONValue = ReadJSONString(json, i)
+                Else
+                    j = i
+                    Do While j <= Len(json)
+                        If InStr(",}] " & vbCr & vbLf & vbTab, Mid$(json, j, 1)) > 0 Then Exit Do
+                        j = j + 1
+                    Loop
+                    token = Mid$(json, i, j - i)
+                    If token <> "null" Then ExtractJSONValue = token
+                End If
+                Exit Function
+            End If
+        Else
+            i = i + 1
+        End If
+    Loop
+End Function
+
+Private Function ReadJSONString(ByVal json As String, ByRef i As Long) As String
+    Dim ch As String, code As Long
+    i = i + 1
+    Do While i <= Len(json)
+        ch = Mid$(json, i, 1): i = i + 1
+        If ch = """" Then Exit Function
+        If ch = "\" Then
+            ch = Mid$(json, i, 1): i = i + 1
+            Select Case ch
+                Case "u"
+                    code = CLng("&H" & Mid$(json, i, 4))
+                    If code > 32767 Then code = code - 65536
+                    ch = ChrW(code): i = i + 4
+                Case "n": ch = vbLf
+                Case "r": ch = vbCr
+                Case "t": ch = vbTab
+                Case "b": ch = Chr$(8)
+                Case "f": ch = Chr$(12)
+                Case """", "\", "/"
+                Case Else: Err.Raise 5, , "JSON escape khong hop le."
+            End Select
+        End If
+        ReadJSONString = ReadJSONString & ch
+    Loop
+    Err.Raise 5, , "JSON khong ket thuc chuoi."
+End Function
+
+Public Sub Ribbon_CheckCCCD(control As IRibbonControl)
+    Dim selected As Range, cell As Range, s As String, oldScreen As Boolean, oldEvents As Boolean, reason As String
+    If Not SelectedInput(selected, 3) Then Exit Sub
+    UndoBegin selected, 3, "Phan tich CCCD"
+    oldScreen = Application.ScreenUpdating: oldEvents = Application.EnableEvents
+    On Error GoTo Failed
+    Application.ScreenUpdating = False: Application.EnableEvents = False
+    For Each cell In selected.Cells
+        s = ChuanHoaCCCD(cell.Value2)
+        If s <> "" Then
+            If KiemTraCCCD(s) Then
+                WriteText cell.Offset(0, 1), CCCD_GioiTinh(s)
+                cell.Offset(0, 2).Value2 = CCCD_NamSinh(s)
+                WriteText cell.Offset(0, 3), CCCD_TinhThanh(s)
+            Else
+                WriteText cell.Offset(0, 1), "CCCD khong dung cau truc 12 chu so/ma tinh."
+            End If
+        End If
+    Next cell
+Done:
+    Application.ScreenUpdating = oldScreen: Application.EnableEvents = oldEvents
+    If reason <> "" Then ShowMsg reason, "Loi CCCD", 48
+    UndoCommit
+    Exit Sub
+Failed:
+    reason = Err.Description: Resume Done
+End Sub
+
+Public Sub Ribbon_LookupMST(control As IRibbonControl)
+    Dim selected As Range, cell As Range, mst As String
+    Dim company As String, address As String, oldScreen As Boolean, oldEvents As Boolean, reason As String, itemReason As String
+    Dim usedSources As String
+    Dim good As Long, bad As Long
+    If Not SelectedInput(selected, 2) Then Exit Sub
+    If selected.CountLarge > 100 Then
+        ShowMsg u("M\u1ed7i l\u1ea7n tra t\u1ed1i \u0111a 100 MST. Ngu\u1ed3n: Thongtincongty.vn, d\u1ef1 ph\u00f2ng MaSoThue; ch\u1ecbu gi\u1edbi h\u1ea1n truy c\u1eadp c\u1ee7a ngu\u1ed3n."), "Tra MST", 48
+        Exit Sub
+    End If
+    UndoBegin selected, 2, "Tra MST"
+    oldScreen = Application.ScreenUpdating: oldEvents = Application.EnableEvents
+    On Error GoTo Failed
+    Application.ScreenUpdating = False: Application.EnableEvents = False
+    For Each cell In selected.Cells
+        company = "": address = "": itemReason = "": mst = ""
+        If IsError(cell.Value2) Then
+            itemReason = "O nguon dang co loi."
+        Else
+            mst = Trim$(CStr(cell.Value2))
+            If mst <> "" Then
+                mst = NormalizeMST(mst)
+                If mst = "" Then
+                    itemReason = "MST can 10 chu so hoac 10 chu so-3 chu so chi nhanh (luu dang Text)."
+                Else
+                    If LookupMSTData(mst, company, address, itemReason) Then
+                        WriteText cell.Offset(0, 1), company
+                        WriteText cell.Offset(0, 2), address
+                        If InStr(1, usedSources, MSTLastSource, vbBinaryCompare) = 0 Then
+                            If Len(usedSources) > 0 Then usedSources = usedSources & vbCrLf
+                            usedSources = usedSources & MSTLastSource
+                        End If
+                        good = good + 1
+                    End If
+                End If
+            End If
+        End If
+        If itemReason <> "" Then
+            bad = bad + 1
+            If bad <= 5 Then reason = reason & vbCrLf & cell.Address(False, False) & " " & mst & ": " & itemReason
+        End If
+    Next cell
+Done:
+    Application.ScreenUpdating = oldScreen: Application.EnableEvents = oldEvents
+    If reason <> "" Then ShowMsg "Da tra: " & good & ". Chua tra duoc: " & bad & ". Cot ket qua cua cac dong loi duoc de trong de thu lai." & reason, "Ket qua tra MST", 48
+    UndoCommit
+    If good > 0 Then ShowMsg u("\u0110\u00e3 tra ") & good & u(" MST. Ngu\u1ed3n \u0111\u1ecba ch\u1ec9:") & vbCrLf & usedSources & vbCrLf & u("L\u1ea5y nguy\u00ean v\u0103n \u0111\u1ecba ch\u1ec9 theo CQT/\u0111\u1ecba ch\u1ec9 thu\u1ebf do trang c\u00f4ng b\u1ed1, kh\u00f4ng d\u00f9ng g\u1ee3i \u00fd s\u00e1p nh\u1eadp. Ngu\u1ed3n tham kh\u1ea3o c\u00f3 th\u1ec3 ch\u1eadm c\u1eadp nh\u1eadt."), "Ket qua tra MST", 64
+    Exit Sub
+Failed:
+    reason = Err.Description: Resume Done
+End Sub
+
+
+Public Function HtmlDecodeText(ByVal text As String) As String
+    text = Replace(text, "&quot;", Chr$(34))
+    text = Replace(text, "&#039;", "'")
+    text = Replace(text, "&#39;", "'")
+    text = Replace(text, "&apos;", "'")
+    text = Replace(text, "&lt;", "<")
+    text = Replace(text, "&gt;", ">")
+    text = Replace(text, "&nbsp;", " ")
+    text = Replace(text, "&amp;", "&")
+    HtmlDecodeText = LamSachText(text)
+End Function
+
+Public Function LookupMSTNameHint(ByVal mst As String, ByRef company As String, ByRef address As String, ByRef reason As String) As Boolean
+    Dim http As Object, json As String, invoyReason As String
+    company = "": address = "": reason = ""
+    mst = NormalizeMST(mst)
+    If mst = "" Then reason = "MST khong dung dinh dang.": Exit Function
+    On Error GoTo InvoyFailed
+    Set http = HttpGet("https://invoy.io.vn/api/v1/public/lookup-mst?mst=" & EncodeURL(mst))
+    json = DecodeUTF8(http.ResponseBody)
+    If NormalizeMST(ExtractJSONValue(json, "taxCode")) <> mst Then Err.Raise 5, , "Khong co du lieu dung MST yeu cau."
+    company = HtmlDecodeText(ExtractJSONValue(json, "name"))
+    address = HtmlDecodeText(ExtractJSONValue(json, "address"))
+    If company = "" Then Err.Raise 5, , "Dich vu khong tra ve ten doanh nghiep."
+    LookupMSTNameHint = True
+    Exit Function
+InvoyFailed:
+    invoyReason = Err.Description
+    Resume TryEsgoo
+TryEsgoo:
+    On Error GoTo Failed
+    company = "": address = ""
+    Set http = HttpGet("https://esgoo.net/api-mst/" & mst & ".htm")
+    json = DecodeUTF8(http.ResponseBody)
+    If ExtractJSONValue(json, "error") <> "0" Then Err.Raise 5, , ExtractJSONValue(json, "error_text")
+    If NormalizeMST(ExtractJSONValue(json, "mst")) <> mst Then Err.Raise 5, , "Dich vu tra ve MST khac."
+    company = HtmlDecodeText(ExtractJSONValue(json, "ten"))
+    address = HtmlDecodeText(ExtractJSONValue(json, "dc"))
+    If company = "" Then Err.Raise 5, , "Dich vu khong tra ve ten doanh nghiep."
+    LookupMSTNameHint = True
+    Exit Function
+Failed:
+    reason = "Invoy: " & invoyReason & "; Esgoo: " & Err.Description
+    company = "": address = ""
+End Function
+
+Public Function NormalizeMST(ByVal value As String) As String
+    NormalizeMST = ""
+    value = Trim$(value)
+    If Len(value) = 10 And DigitsOnly(value) Then
+        NormalizeMST = value
+    ElseIf Len(value) = 13 And DigitsOnly(value) Then
+        NormalizeMST = Left$(value, 10) & "-" & Right$(value, 3)
+    ElseIf Len(value) = 14 And Mid$(value, 11, 1) = "-" Then
+        If DigitsOnly(Left$(value, 10) & Right$(value, 3)) Then NormalizeMST = value
+    End If
+End Function

@@ -1,0 +1,151 @@
+﻿Option Explicit
+Public Const MAX_BATCH As Long = 1000
+Public Const IMAGE_TAG As String = "TienIchExcel:2:"
+
+Public Function DigitsOnly(ByVal s As String) As Boolean
+    If Len(s) = 0 Then Exit Function
+    DigitsOnly = Not (s Like "*[!0-9]*")
+End Function
+
+Public Function SelectedInput(ByRef result As Range, Optional ByVal outputCols As Long = 0, Optional ByVal oneColumn As Boolean = True) As Boolean
+    Dim a As Range, c As Range, dest As Range
+    On Error GoTo Failed
+    If TypeName(Selection) <> "Range" Then Err.Raise 5, , "Hay chon vung o du lieu."
+    Set result = Selection
+    If result.CountLarge > MAX_BATCH Then Err.Raise 5, , "Moi lan xu ly toi da 1000 o. Hay chon vung du lieu cu the."
+    If result.Parent.ProtectContents Then Err.Raise 5, , "Trang tinh dang duoc bao ve."
+    For Each a In result.Areas
+        If oneColumn And a.Columns.Count <> 1 Then Err.Raise 5, , "Hay chon mot cot du lieu nguon."
+        If a.Column + a.Columns.Count - 1 + outputCols > result.Parent.Columns.Count Then Err.Raise 5, , "Khong du cot de ghi ket qua."
+    Next a
+    For Each c In result.Cells
+        If c.MergeCells Then Err.Raise 5, , "Khong xu ly o gop."
+        If outputCols > 0 Then
+            Set dest = c.Offset(0, 1).Resize(1, outputCols)
+            If Not Intersect(dest, result) Is Nothing Then Err.Raise 5, , "Vung ket qua trung voi vung nguon."
+            For Each a In dest.Cells
+                If a.MergeCells Then Err.Raise 5, , "Vung ket qua co o gop."
+                If a.HasFormula Then Err.Raise 5, , "Cac cot ket qua ben phai co cong thuc. Khong ghi de."
+                If IsError(a.Value2) Then Err.Raise 5, , "Cac cot ket qua ben phai co gia tri loi. Khong ghi de."
+                If Len(CStr(a.Value2)) > 0 Then Err.Raise 5, , "Cac cot ket qua ben phai phai trong de tranh ghi de du lieu."
+            Next a
+        End If
+    Next c
+    SelectedInput = True
+    Exit Function
+Failed:
+    ShowMsg Err.Description, "Kiem tra vung chon", 48
+End Function
+
+Public Sub WriteText(ByVal cell As Range, ByVal value As String)
+    If Len(value) = 0 Then
+        cell.ClearContents
+        Exit Sub
+    End If
+    cell.NumberFormat = "@"
+    cell.Value2 = value
+End Sub
+
+Public Function EncodeURL(ByVal value As String) As String
+    EncodeURL = Application.WorksheetFunction.EncodeURL(value)
+End Function
+
+Public Function HttpGet(ByVal url As String) As Object
+    Dim http As Object
+    Set http = CreateObject("WinHttp.WinHttpRequest.5.1")
+    http.SetTimeouts 5000, 5000, 10000, 15000
+    http.Open "GET", url, False
+    http.Send
+    If http.Status <> 200 Then Err.Raise vbObjectError + 101, , "Dich vu tra ve HTTP " & http.Status
+    Set HttpGet = http
+End Function
+
+Public Function DecodeUTF8(ByVal bytes As Variant) As String
+    Dim stream As Object, errorNumber As Long, description As String
+    On Error GoTo Failed
+    Set stream = CreateObject("ADODB.Stream")
+    stream.Type = 1
+    stream.Open
+    stream.Write bytes
+    stream.Position = 0
+    stream.Type = 2
+    stream.Charset = "utf-8"
+    DecodeUTF8 = stream.ReadText(-1)
+    stream.Close
+    If Len(DecodeUTF8) > 0 Then
+        If AscW(Left$(DecodeUTF8, 1)) = -257 Then DecodeUTF8 = Mid$(DecodeUTF8, 2)
+    End If
+    Exit Function
+Failed:
+    errorNumber = Err.Number: description = Err.Description
+    On Error Resume Next
+    If Not stream Is Nothing Then stream.Close
+    On Error GoTo 0
+    Err.Raise errorNumber, "DecodeUTF8", description
+End Function
+
+Private Function PNGDimension(ByVal bytes As Variant, ByVal offset As Long) As Double
+    Dim i As Long, first As Long
+    first = LBound(bytes) + offset
+    For i = first To first + 3
+        PNGDimension = PNGDimension * 256# + CDbl(bytes(i))
+    Next i
+End Function
+
+Public Function InsertCodeImage(ByVal target As Range, ByVal url As String, ByVal height As Double, ByVal kind As String) As Boolean
+    Dim http As Object, stream As Object, fso As Object, file As String
+    Dim picture As Shape, old As Shape, i As Long, description As String, shapes As Object, extension As String
+    On Error GoTo Failed
+    Set http = HttpGet(url)
+    If InStr(1, http.GetResponseHeader("Content-Type"), "image/", vbTextCompare) <> 1 Then Err.Raise 5, , "Dich vu khong tra ve anh."
+    extension = QRImageExtension(http.ResponseBody, kind)
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    file = fso.BuildPath(fso.GetSpecialFolder(2), fso.GetTempName & extension)
+    Set stream = CreateObject("ADODB.Stream")
+    stream.Type = 1: stream.Open
+    stream.Write http.ResponseBody
+    stream.SaveToFile file, 2
+    stream.Close
+    Set shapes = target.Parent.Shapes
+    If kind = "code128" Or kind = "code39" Or kind = "ean13" Then
+        ' Picture fills retain original pixels when Excel saves the workbook.
+        ' AddPicture2(Compress:=False) still gets recompressed during SaveAs.
+        Set picture = shapes.AddShape(msoShapeRectangle, target.Left + 2, target.Top + 2, PNGDimension(http.ResponseBody, 16) / 4#, PNGDimension(http.ResponseBody, 20) / 4#)
+        picture.Fill.UserPicture file
+        picture.Line.Visible = msoFalse
+    Else
+        On Error Resume Next
+        Set picture = shapes.AddPicture2(file, msoFalse, msoTrue, target.Left + 2, target.Top + 2, -1, -1, 0)
+        On Error GoTo Failed
+        If picture Is Nothing Then Set picture = shapes.AddPicture(file, msoFalse, msoTrue, target.Left + 2, target.Top + 2, -1, -1)
+    End If
+    picture.LockAspectRatio = msoTrue
+    If kind = "code128" Or kind = "code39" Or kind = "ean13" Then
+        ' 6 source pixels per narrow module; 4 pixels per point = 288 dpi.
+        ' Keep narrow modules at 1.5 points, never squeeze a long barcode.
+        picture.Width = PNGDimension(http.ResponseBody, 16) / 4#
+    Else
+        picture.Height = height
+        If picture.Width > 500 Then picture.Width = 500
+    End If
+    picture.Placement = xlMove
+    picture.AlternativeText = IMAGE_TAG & kind
+    For i = target.Parent.Shapes.Count To 1 Step -1
+        Set old = target.Parent.Shapes(i)
+        If old.Name <> picture.Name And Left$(old.AlternativeText, Len(IMAGE_TAG)) = IMAGE_TAG Then
+            If Not Intersect(old.TopLeftCell, target) Is Nothing Then old.Delete
+        End If
+    Next i
+    If target.RowHeight < picture.Height + 4 Then target.RowHeight = picture.Height + 4
+    If target.Width < picture.Width + 4 Then target.EntireColumn.ColumnWidth = Application.Min(255, target.EntireColumn.ColumnWidth * (picture.Width + 4) / target.Width)
+    fso.DeleteFile file
+    InsertCodeImage = True
+    Exit Function
+Failed:
+    description = Err.Description
+    On Error Resume Next
+    If Not stream Is Nothing Then stream.Close
+    If Len(file) > 0 Then fso.DeleteFile file
+    On Error GoTo 0
+    Err.Raise vbObjectError + 102, , description
+End Function

@@ -1,0 +1,56 @@
+﻿Option Explicit
+
+'===========================================================
+' TAO MA VIETQR CO GHI NHO SO TAI KHOAN VA NGAN HANG
+'===========================================================
+
+Public Sub Ribbon_VietQR(control As IRibbonControl)
+    Dim lastBank As String, lastAcc As String
+    Dim bankId As String, accNo As String
+    Dim cell As Range, url As String
+    Dim pic As Picture
+    
+    If TypeName(Selection) <> "Range" Then Exit Sub
+    
+    ' Doc thong tin da luu tu Registry lan su dung truoc
+    lastBank = GetSetting("AddInTienIchExcel", "VietQR", "LastBank", "MB")
+    lastAcc = GetSetting("AddInTienIchExcel", "VietQR", "LastAccount", "")
+    
+    ' Hop thoai nhap Ma Ngan Hang
+    bankId = InputBox("Nhap ma ngan hang (Vi du: VCB, MB, TCB, ACB, VPB, TPB):", _
+                      "VietQR - Ngan Hang", lastBank)
+    bankId = Trim(UCase(bankId))
+    If bankId = "" Then Exit Sub
+    
+    ' Hop thoai nhap So Tai Khoan
+    accNo = InputBox("Nhap so tai khoan thu huong:", _
+                     "VietQR - So Tai Khoan", lastAcc)
+    accNo = Trim(accNo)
+    If accNo = "" Then Exit Sub
+    
+    ' Luu lai thong tin vua nhap vao Registry cho lan sau
+    SaveSetting "AddInTienIchExcel", "VietQR", "LastBank", bankId
+    SaveSetting "AddInTienIchExcel", "VietQR", "LastAccount", accNo
+    
+    ' Tao link anh VietQR chuan
+    url = "https://img.vietqr.io/image/" & bankId & "-" & accNo & "-compact.png"
+    
+    Set cell = ActiveCell
+    On Error Resume Next
+    Set pic = cell.Parent.Pictures.Insert(url)
+    If Not pic Is Nothing Then
+        pic.Top = cell.Top + 2
+        pic.Left = cell.Left + 2
+        pic.Height = 120
+    Else
+        MsgBox "Khong the tai anh ma VietQR. Vui long kiem tra lai ket noi Internet hoac thong tin ngan hang!", vbExclamation, "Loi"
+    End If
+    On Error GoTo 0
+End Sub
+
+' Nut mo trang tra cuu ma ngan hang
+Public Sub Ribbon_OpenBankList(control As IRibbonControl)
+    On Error Resume Next
+    CreateObject("WScript.Shell").Run "https://vietqr.net/danh-sach-ngan-hang"
+    On Error GoTo 0
+End Sub

@@ -1,0 +1,13 @@
+1.1.3b: Contributed work by Gero Herrmann
+ - Added charsets ISC and VNI-MAC for MAC OS
+ - Changed Makefile to use ranlib
+1.1.3:
+ - Cleaned up some code. Use libbyteio library.
+ - Added option -q for quiet mode.
+ - Both UTF-8 & UTF8 for charset name are now ok.
+ - Smarter in writing URL in VIQR mode: no escapes for dots in URLs:
+    e.g. http://unikey.sf.net instead of http://unikey\.sf.net
+ 
+1.1.2:
+- Supported one more "charset": UVIQR
+  UVIQR is used for input of UTF-8 and VIQR mixed together.

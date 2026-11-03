@@ -1,0 +1,38 @@
+﻿Option Explicit
+Public Sub Ribbon_VietQR(control As IRibbonControl)
+    ' Open the form first; validate its target only when creating the image.
+    On Error GoTo Failed
+    If TypeName(ActiveSheet) <> "Worksheet" Then Err.Raise 5, , "Hay mo mot trang tinh de tao VietQR."
+    frmVietQR.Show
+    Exit Sub
+Failed:
+    ShowMsg Err.Description, "VietQR", 48
+End Sub
+Public Function VietQRURL(ByVal bank As String, ByVal account As String, ByVal amount As String, ByVal memo As String) As String
+    Dim i As Long, ch As String
+    If Len(bank) = 0 Or bank Like "*[!A-Za-z0-9]*" Then Err.Raise 5, , "Ma ngan hang khong hop le."
+    If Len(account) < 1 Or Len(account) > 19 Or account Like "*[!A-Za-z0-9]*" Then Err.Raise 5, , "Tai khoan can 1-19 ky tu chu/so."
+    If amount <> "" Then
+        If Not DigitsOnly(amount) Then Err.Raise 5, , "So tien phai la so nguyen VND, khong co dau phan cach."
+        If Len(amount) > 13 Then Err.Raise 5, , "So tien qua lon."
+        If CDbl(amount) <= 0 Then Err.Raise 5, , "So tien phai la so duong."
+    End If
+    If Len(memo) > 50 Then Err.Raise 5, , "Noi dung toi da 50 ky tu."
+    memo = BoDau(memo)
+    If memo Like "*[!A-Za-z0-9 ]*" Then Err.Raise 5, , "Noi dung chi gom chu, so va khoang trang."
+    Dim template As String
+    If amount = "" Then template = "compact" Else template = "compact2"
+    VietQRURL = "https://img.vietqr.io/image/" & bank & "-" & account & "-" & template & ".png"
+    If amount <> "" Then VietQRURL = VietQRURL & "?amount=" & amount
+    If memo <> "" Then
+        If amount <> "" Then VietQRURL = VietQRURL & "&" Else VietQRURL = VietQRURL & "?"
+        VietQRURL = VietQRURL & "addInfo=" & EncodeURL(memo)
+    End If
+End Function
+Public Sub Ribbon_OpenBankList(control As IRibbonControl)
+    On Error GoTo Failed
+    ThisWorkbook.FollowHyperlink "https://www.vietqr.io/api-bank"
+    Exit Sub
+Failed:
+    ShowMsg Err.Description, "Tra ngan hang", 48
+End Sub

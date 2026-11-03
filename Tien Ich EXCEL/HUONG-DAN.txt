@@ -1,0 +1,9 @@
+﻿Cài Tiện ích Excel 2.30.4
+
+1. Chạy CaiDat-TienIchExcel-75.exe. Không cần giải nén add-in rời.
+2. Lưu sổ tính, đóng tất cả cửa sổ Excel.
+3. Bấm Cài đặt / cập nhật rồi mở Excel, tìm tab Tiện ích Excel.
+
+EXE tự chứa add-in XLAM và mã nguồn. Khi cài, chép add-in và một bản sao mã nguồn vào LocalAppData\TienIchExcel; không cần đặt tệp nào khác cạnh EXE. Gói mã nguồn cũng được đính kèm trong ZIP để lưu trữ riêng.
+Cài cho tài khoản Windows hiện tại, không cần quyền quản trị, không thay đổi thiết lập bảo mật Office.
+Muốn gỡ, đóng Excel, chạy lại EXE và bấm Gỡ khỏi Excel. Tệp lưu trữ mã nguồn vẫn được giữ lại.

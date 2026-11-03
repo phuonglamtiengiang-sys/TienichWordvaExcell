@@ -1,0 +1,4 @@
+﻿PASS classic Excel and Word forms unchanged; no external designer
+PASS live blank and amount VietQR requests
+PASS SVG embedded in saved XLSX/DOCX
+PASS source data and Word Undo retained

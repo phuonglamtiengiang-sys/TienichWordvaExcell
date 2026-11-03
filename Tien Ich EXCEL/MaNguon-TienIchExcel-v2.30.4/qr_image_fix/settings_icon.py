@@ -1,0 +1,2 @@
+from pathlib import Path
+p=Path('word/draw_ribbon_icons.py');s=p.read_text(encoding='utf-8-sig').replace("'text_accent':'Bỏ dấu',",'').replace("'btnAbout':'Giới thiệu'","'btnGeneralSettings':'Cài đặt add-in','btnAbout':'Giới thiệu'");s=s.replace(" elif key=='btnAbout':", " elif key=='btnGeneralSettings':\n  for y,x in [(7,11),(16,22),(25,15)]:\n   c.line([(3,y),(29,y)],BLUE,2.5);c.circle((x-3,y-3,x+3,y+3),'white',BLUE,1.6)\n elif key=='btnAbout':");p.write_text(s,encoding='utf-8-sig')

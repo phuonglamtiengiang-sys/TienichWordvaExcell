@@ -1,0 +1,124 @@
+﻿Option Explicit
+Private WithEvents saveButton As MSForms.CommandButton
+Private WithEvents formulaButton As MSForms.CommandButton
+Private WithEvents closeButton As MSForms.CommandButton
+Private sourceBox As MSForms.ComboBox, targetBox As MSForms.ComboBox
+Private WithEvents providerBox As MSForms.ComboBox
+Private loading As Boolean
+Private emailBox As MSForms.TextBox
+Private status As MSForms.Label
+
+Private Sub Label(ByVal name As String, ByVal caption As String, ByVal x As Single, ByVal y As Single, ByVal width As Single, ByVal height As Single)
+    Dim item As MSForms.Label
+    Set item = Me.Controls.Add("Forms.Label.1", name, True)
+    item.Caption = u(caption): item.Left = x: item.Top = y: item.Width = width: item.Height = height
+    item.WordWrap = True
+End Sub
+
+Private Function Button(ByVal name As String, ByVal caption As String, ByVal x As Single, ByVal y As Single, ByVal width As Single) As MSForms.CommandButton
+    Dim item As MSForms.CommandButton
+    Set item = Me.Controls.Add("Forms.CommandButton.1", name, True)
+    item.Caption = u(caption): item.Left = x: item.Top = y: item.Width = width: item.Height = 28
+    Set Button = item
+End Function
+
+Private Function LanguageCombo(ByVal name As String, ByVal x As Single) As MSForms.ComboBox
+    Dim item As MSForms.ComboBox, names As Variant, codes As Variant, i As Long
+    Set item = Me.Controls.Add("Forms.ComboBox.1", name, True)
+    item.Left = x: item.Top = 65: item.Width = 220: item.Height = 24
+    item.Style = fmStyleDropDownList: item.ColumnCount = 2: item.BoundColumn = 2
+    item.ColumnWidths = "160 pt;50 pt": item.ListRows = 12
+    names = Array("Ti\u1ebfng Vi\u1ec7t", "Ti\u1ebfng Anh", "Ti\u1ebfng Nh\u1eadt", "Ti\u1ebfng H\u00e0n", "Trung gi\u1ea3n th\u1ec3", "Trung ph\u1ed3n th\u1ec3", "Ti\u1ebfng Ph\u00e1p", "Ti\u1ebfng \u0110\u1ee9c", "Ti\u1ebfng Th\u00e1i", "Ti\u1ebfng T\u00e2y Ban Nha", "Ti\u1ebfng Nga", "Ti\u1ebfng Indonesia")
+    codes = Array("vi", "en", "ja", "ko", "zh-CN", "zh-TW", "fr", "de", "th", "es", "ru", "id")
+    For i = 0 To UBound(codes)
+        item.AddItem u(names(i)): item.List(i, 1) = codes(i)
+    Next i
+    Set LanguageCombo = item
+End Function
+
+Private Sub UserForm_Initialize()
+    loading = True
+    Me.Caption = "Cai dat dich - Tien ich Excel"
+    Me.Width = 520: Me.Height = 586: Me.StartUpPosition = 1
+    Me.Font.Name = "Segoe UI": Me.Font.Size = 10
+    Label "lblTitle", "C\u00c0I \u0110\u1eb6T D\u1ecaCH NG\u00d4N NG\u1eee", 16, 12, 472, 22
+    Me.Controls("lblTitle").Font.Bold = True
+    Label "lblSource", "1. V\u0103n b\u1ea3n \u0111ang l\u00e0 ti\u1ebfng", 16, 43, 220, 20
+    Label "lblTarget", "B\u1ea1n mu\u1ed1n d\u1ecbch sang", 268, 43, 220, 20
+    Set sourceBox = LanguageCombo("cboSource", 16)
+    Set targetBox = LanguageCombo("cboTarget", 268)
+    sourceBox.Value = TranslationSourceLanguage()
+    targetBox.Value = TranslationTargetLanguage()
+    If sourceBox.ListIndex < 0 Then sourceBox.ListIndex = 0
+    If targetBox.ListIndex < 0 Then targetBox.ListIndex = 1
+    Label "lblProvider", "2. Ch\u1ecdn c\u00e1ch d\u1ecbch", 16, 104, 472, 20
+    Set providerBox = Me.Controls.Add("Forms.ComboBox.1", "cboProvider", True)
+    providerBox.Left = 16: providerBox.Top = 128: providerBox.Width = 472: providerBox.Height = 24
+    providerBox.Style = fmStyleDropDownList: providerBox.ColumnCount = 2: providerBox.BoundColumn = 2
+    providerBox.ColumnWidths = "440 pt;0 pt"
+    providerBox.AddItem u("T\u1ef1 \u0111\u1ed9ng: MyMemory h\u1ebft l\u01b0\u1ee3t th\u00ec d\u00f9ng Google web"): providerBox.List(0, 1) = "auto"
+    providerBox.AddItem u("Ch\u1ec9 d\u00f9ng MyMemory"): providerBox.List(1, 1) = "mymemory"
+    providerBox.AddItem u("Ch\u1ec9 d\u00f9ng Google web (kh\u00f4ng c\u1ea7n email)"): providerBox.List(2, 1) = "googleweb"
+    providerBox.Value = TranslationProviderMode()
+    Label "lblProviderHelp", "", 16, 164, 472, 44
+    Label "lblEmail", "3. Email c\u1ee7a b\u1ea1n \u2014 c\u00f3 th\u1ec3 \u0111\u1ec3 tr\u1ed1ng", 16, 216, 472, 20
+    Set emailBox = Me.Controls.Add("Forms.TextBox.1", "txtEmail", True)
+    emailBox.Left = 16: emailBox.Top = 240: emailBox.Width = 472: emailBox.Height = 24
+    emailBox.MaxLength = 254: emailBox.Text = TranslationEmail()
+    Label "lblEmailHelp", "", 16, 276, 472, 48
+    Label "lblPrivacy", "C\u1ea7n Internet. V\u0103n b\u1ea3n s\u1ebd g\u1eedi t\u1edbi d\u1ecbch v\u1ee5 \u0111ang d\u00f9ng; email ch\u1ec9 g\u1eedi MyMemory. Google web c\u00f3 th\u1ec3 b\u1ecb gi\u1edbi h\u1ea1n ho\u1eb7c t\u1ea1m ng\u1eebng.", 16, 332, 472, 36
+    Label "lblHelp", "B\u1ea5m L\u01b0u c\u00e0i \u0111\u1eb7t \u2192 \u0110\u00f3ng. Sau \u0111\u00f3 ch\u1ecdn c\u00e1c \u00f4 trong m\u1ed9t c\u1ed9t v\u00e0 b\u1ea5m D\u1ecbch ng\u00f4n ng\u1eef. \u0110\u1ec3 tr\u1ed1ng c\u1ed9t ngay b\u00ean ph\u1ea3i \u0111\u1ec3 nh\u1eadn b\u1ea3n d\u1ecbch.", 16, 376, 472, 32
+    Label "lblFormula", "Ho\u1eb7c nh\u1eadp c\u00f4ng th\u1ee9c v\u00e0o \u00f4 Excel (A2 l\u00e0 \u00f4 ch\u1ee9a v\u0103n b\u1ea3n):" & vbCrLf & "=Dich(A2) \u2014 d\u00f9ng ng\u00f4n ng\u1eef \u0111\u00e3 l\u01b0u" & vbCrLf & "=Dich(A2,""vi"",""en"") \u2014 Vi\u1ec7t sang Anh" & vbCrLf & "=Dich(A2,""en"",""vi"") \u2014 Anh sang Vi\u1ec7t", 16, 414, 472, 60
+    Me.Controls("lblFormula").Font.Size = 9
+    Label "lblStatus", "L\u1ef1a ch\u1ecdn \u0111\u01b0\u1ee3c nh\u1edb cho l\u1ea7n sau. L\u01b0u c\u00e0i \u0111\u1eb7t ch\u01b0a b\u1eaft \u0111\u1ea7u d\u1ecbch.", 16, 480, 472, 30
+    Set status = Me.Controls("lblStatus")
+    Set formulaButton = Button("btnFormula", "C\u00e1ch d\u00f9ng c\u00f4ng th\u1ee9c", 16, 518, 160)
+    Set saveButton = Button("btnSaveSettings", "L\u01b0u c\u00e0i \u0111\u1eb7t", 242, 518, 130)
+    saveButton.Default = True
+    Set closeButton = Button("btnClose", "\u0110\u00f3ng", 384, 518, 104)
+    closeButton.Cancel = True
+    loading = False
+    UpdateHelp
+
+End Sub
+
+Private Sub saveButton_Click()
+    On Error GoTo Failed
+    ValidateProviderSettings providerBox.Value
+    SaveTranslationSettings sourceBox.Value, targetBox.Value, emailBox.Text
+    SaveProviderSettings providerBox.Value
+    emailBox.Text = TranslationEmail()
+    status.Caption = u("\u0110\u00e3 l\u01b0u. B\u1ea5m \u0110\u00f3ng, ch\u1ecdn \u00f4 v\u0103n b\u1ea3n r\u1ed3i b\u1ea5m D\u1ecbch ng\u00f4n ng\u1eef \u0111\u1ec3 d\u1ecbch ngay.")
+    Exit Sub
+Failed:
+    status.Caption = Err.Description
+End Sub
+
+Private Sub formulaButton_Click()
+    Ribbon_TranslateHelp Nothing
+End Sub
+
+Private Sub closeButton_Click()
+    Unload Me
+End Sub
+
+Private Sub providerBox_Change()
+    If Not loading Then UpdateHelp
+End Sub
+
+Private Sub UpdateHelp()
+    Select Case providerBox.Value
+        Case "auto"
+            Me.Controls("lblProviderHelp").Caption = u("D\u00f9ng MyMemory tr\u01b0\u1edbc. Khi MyMemory b\u00e1o h\u1ebft h\u1ea1n m\u1ee9c, t\u1ef1 chuy\u1ec3n Google web. B\u1ea1n kh\u00f4ng c\u1ea7n \u0111\u0103ng k\u00fd hay nh\u1eadp m\u00e3 truy c\u1eadp.")
+        Case "mymemory"
+            Me.Controls("lblProviderHelp").Caption = u("Ch\u1ec9 d\u1ecbch b\u1eb1ng MyMemory. N\u1ebfu h\u1ebft h\u1ea1n m\u1ee9c, add-in s\u1ebd b\u00e1o v\u00e0 d\u1eebng; b\u1ea1n c\u00f3 th\u1ec3 \u0111\u1ed5i sang Google web.")
+        Case "googleweb"
+            Me.Controls("lblProviderHelp").Caption = u("D\u1ecbch b\u1eb1ng Google web, mi\u1ec5n ph\u00ed v\u00e0 kh\u00f4ng c\u1ea7n email. \u0110\u00e2y l\u00e0 k\u1ebft n\u1ed1i web kh\u00f4ng ch\u00ednh th\u1ee9c, c\u00f3 th\u1ec3 b\u1ecb gi\u1edbi h\u1ea1n.")
+    End Select
+    emailBox.Enabled = (providerBox.Value <> "googleweb")
+    If emailBox.Enabled Then
+        Me.Controls("lblEmailHelp").Caption = u("MyMemory: \u0111\u1ec3 tr\u1ed1ng \u0111\u01b0\u1ee3c 5.000 k\u00fd t\u1ef1/ng\u00e0y; email h\u1ee3p l\u1ec7 \u0111\u01b0\u1ee3c 50.000 k\u00fd t\u1ef1/ng\u00e0y theo d\u1ecbch v\u1ee5. Nh\u1eadp email \u0111ang d\u00f9ng c\u1ee7a b\u1ea1n. Mu\u1ed1n b\u1ecf email: x\u00f3a r\u1ed3i L\u01b0u c\u00e0i \u0111\u1eb7t.")
+    Else
+        Me.Controls("lblEmailHelp").Caption = u("Google web kh\u00f4ng d\u00f9ng email. Email MyMemory \u0111\u00e3 l\u01b0u v\u1eabn \u0111\u01b0\u1ee3c gi\u1eef \u0111\u1ec3 d\u00f9ng khi b\u1ea1n ch\u1ecdn MyMemory ho\u1eb7c T\u1ef1 \u0111\u1ed9ng; kh\u00f4ng g\u1eedi email n\u00e0y cho Google.")
+    End If
+End Sub

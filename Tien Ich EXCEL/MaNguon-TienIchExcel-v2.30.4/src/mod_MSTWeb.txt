@@ -1,0 +1,158 @@
+Option Explicit
+Public MSTLastSource As String
+
+Private Function MSTMatches(ByVal text As String, ByVal pattern As String) As Object
+    Dim re As Object
+    Set re = CreateObject("VBScript.RegExp")
+    re.Pattern = pattern: re.Global = True: re.IgnoreCase = True
+    Set MSTMatches = re.Execute(text)
+End Function
+
+Private Function MSTPlain(ByVal html As String) As String
+    Dim re As Object, doc As Object, node As Object
+    Set re = CreateObject("VBScript.RegExp")
+    re.Global = True: re.IgnoreCase = True
+    re.Pattern = "<(script|style)\b[^>]*>[\s\S]*?</\1\s*>"
+    html = re.Replace(html, "")
+    re.Pattern = "<[^>]*>"
+    html = re.Replace(html, " ")
+    Set doc = CreateObject("htmlfile")
+    Set node = doc.createElement("div")
+    node.innerHTML = html
+    MSTPlain = LamSachText(CStr(node.innerText))
+End Function
+
+Public Function MSTCompanySlug(ByVal company As String) As String
+    Dim re As Object
+    company = LCase$(BoDau(company))
+    Set re = CreateObject("VBScript.RegExp")
+    re.Global = True: re.Pattern = "&"
+    company = re.Replace(company, " ")
+    re.Pattern = "[^a-z0-9]+"
+    company = re.Replace(company, "-")
+    Do While Left$(company, 1) = "-": company = Mid$(company, 2): Loop
+    Do While Right$(company, 1) = "-": company = Left$(company, Len(company) - 1): Loop
+    MSTCompanySlug = company
+End Function
+
+' Parse only the primary taxpayer table, never related companies or generic address rows.
+Public Function MSTParsePublished(ByVal html As String, ByVal mst As String, ByRef company As String, ByRef address As String, ByRef reason As String) As Boolean
+    Dim tables As Object, headers As Object, rows As Object, cells As Object, row As Object
+    Dim table As String, foundCode As String, label As String, expected As String
+    company = "": address = "": reason = ""
+    On Error GoTo Failed
+    expected = NormalizeMST(mst)
+    If expected = "" Then Err.Raise 5, , "MST khong dung dinh dang."
+    Set tables = MSTMatches(html, "<table\b[^>]*\bclass\s*=\s*[""'][^""']*\btable-taxinfo\b[^""']*[""'][^>]*>([\s\S]*?)</table\s*>")
+    If tables.Count <> 1 Then Err.Raise 5, , u("Kh\u00f4ng \u0111\u1ecdc \u0111\u01b0\u1ee3c b\u1ea3ng th\u00f4ng tin MST (trang c\u00f3 th\u1ec3 b\u1ecb ch\u1eb7n ho\u1eb7c \u0111\u00e3 thay \u0111\u1ed5i).")
+    table = tables(0).SubMatches(0)
+    Set headers = MSTMatches(table, "<th\b[^>]*\bitemprop\s*=\s*[""']name[""'][^>]*>([\s\S]*?)</th\s*>")
+    If headers.Count <> 1 Then Err.Raise 5, , u("Kh\u00f4ng x\u00e1c \u0111\u1ecbnh \u0111\u01b0\u1ee3c t\u00ean doanh nghi\u1ec7p.")
+    company = MSTPlain(headers(0).SubMatches(0))
+    Set rows = MSTMatches(table, "<tr\b[^>]*>([\s\S]*?)</tr\s*>")
+    For Each row In rows
+        Set cells = MSTMatches(row.SubMatches(0), "<td\b[^>]*>([\s\S]*?)</td\s*>")
+        If cells.Count = 2 Then
+            label = LCase$(BoDau(MSTPlain(cells(0).SubMatches(0))))
+            If label = "ma so thue" Then
+                If Len(foundCode) > 0 Then Err.Raise 5, , u("Tr\u00f9ng tr\u01b0\u1eddng MST.")
+                foundCode = NormalizeMST(MSTPlain(cells(1).SubMatches(0)))
+            ElseIf label = "dia chi thue" Then
+                If Len(address) > 0 Then Err.Raise 5, , u("Tr\u00f9ng tr\u01b0\u1eddng \u0111\u1ecba ch\u1ec9 thu\u1ebf.")
+                address = MSTPlain(cells(1).SubMatches(0))
+            End If
+        End If
+    Next
+    If foundCode <> expected Then Err.Raise 5, , u("Trang tra c\u1ee9u kh\u00f4ng \u0111\u00fang MST y\u00eau c\u1ea7u.")
+    If company = "" Or address = "" Then Err.Raise 5, , u("Ngu\u1ed3n ch\u01b0a c\u00f3 t\u00ean ho\u1eb7c tr\u01b0\u1eddng \u0110\u1ecba ch\u1ec9 Thu\u1ebf; kh\u00f4ng d\u00f9ng \u0111\u1ecba ch\u1ec9 c\u0169 thay th\u1ebf.")
+    MSTParsePublished = True
+    Exit Function
+Failed:
+    reason = Err.Description: company = "": address = ""
+End Function
+
+Private Function MSTLookupWebsite(ByVal mst As String, ByRef company As String, ByRef address As String, ByRef reason As String) As Boolean
+    Dim hint As String, ignoredAddress As String, slug As String, http As Object
+    company = "": address = "": reason = ""
+    On Error GoTo Failed
+    mst = NormalizeMST(mst)
+    If mst = "" Then Err.Raise 5, , "MST khong dung dinh dang."
+    ' Legacy APIs supply a company-name hint only; their address is never returned.
+    If Not LookupMSTNameHint(mst, hint, ignoredAddress, reason) Then Exit Function
+    slug = MSTCompanySlug(hint)
+    If slug = "" Then Err.Raise 5, , u("Kh\u00f4ng t\u1ea1o \u0111\u01b0\u1ee3c li\u00ean k\u1ebft doanh nghi\u1ec7p.")
+    Set http = HttpGet("https://masothue.com/" & mst & "-" & slug)
+    MSTLookupWebsite = MSTParsePublished(DecodeUTF8(http.ResponseBody), mst, company, address, reason)
+    Exit Function
+Failed:
+    reason = "MaSoThue: " & Err.Description & u(". Kh\u00f4ng t\u1ef1 chuy\u1ec3n \u0111\u1ecba ch\u1ec9; h\u00e3y \u0111\u1ed1i chi\u1ebfu tr\u00ean tracuunnt.gdt.gov.vn. HTTP 403/429 c\u00f3 ngh\u0129a l\u00e0 ngu\u1ed3n \u0111ang ch\u1eb7n ho\u1eb7c gi\u1edbi h\u1ea1n truy c\u1eadp.")
+    company = "": address = ""
+End Function
+
+Public Function MSTParseTTCT(ByVal html As String, ByVal mst As String, ByRef company As String, ByRef address As String, ByRef reason As String) As Boolean
+    Dim tables As Object, rows As Object, cells As Object, row As Object, codes As Object
+    Dim label As String, expected As String, found As String, table As String
+    Dim codeCount As Long, nameCount As Long, addressCount As Long
+    company = "": address = "": reason = ""
+    On Error GoTo Failed
+    expected = NormalizeMST(mst)
+    If expected = "" Then Err.Raise 5, , "MST khong dung dinh dang."
+    Set tables = MSTMatches(html, "<table\b[^>]*\bclass\s*=\s*[""'][^""']*\bmobile-flex\b[^""']*[""'][^>]*>([\s\S]*?)</table\s*>")
+    If tables.Count <> 1 Then Err.Raise 5, , "Khong doc duoc bang thong tin doanh nghiep (trang bi chan hoac da doi cau truc)."
+    table = tables(0).SubMatches(0)
+    Set rows = MSTMatches(table, "<tr\b[^>]*>([\s\S]*?)</tr\s*>")
+    For Each row In rows
+        Set cells = MSTMatches(row.SubMatches(0), "<td\b[^>]*>([\s\S]*?)</td\s*>")
+        If cells.Count = 2 Then
+            label = LCase$(BoDau(MSTPlain(cells(0).SubMatches(0))))
+            Select Case label
+                Case "ma so thue"
+                    codeCount = codeCount + 1
+                    Set codes = MSTMatches(MSTPlain(cells(1).SubMatches(0)), "^[0-9]{10}(-[0-9]{3})?(\s|$)")
+                    If codes.Count = 1 Then found = NormalizeMST(Trim$(codes(0).Value))
+                Case "ten don vi"
+                    nameCount = nameCount + 1
+                    company = MSTPlain(cells(1).SubMatches(0))
+                Case "dia chi theo cqt"
+                    addressCount = addressCount + 1
+                    address = MSTPlain(cells(1).SubMatches(0))
+            End Select
+        End If
+    Next
+    If codeCount <> 1 Or found <> expected Then Err.Raise 5, , "Trang tra cuu khong dung MST yeu cau."
+    If nameCount <> 1 Or addressCount <> 1 Or company = "" Or address = "" Then Err.Raise 5, , "Thieu hoac trung truong ten/dia chi theo CQT; khong dung goi y sap nhap thay the."
+    MSTParseTTCT = True
+    Exit Function
+Failed:
+    reason = Err.Description: company = "": address = ""
+End Function
+
+Private Function MSTLookupTTCT(ByVal mst As String, ByRef company As String, ByRef address As String, ByRef reason As String) As Boolean
+    Dim http As Object
+    company = "": address = "": reason = ""
+    On Error GoTo Failed
+    ' The public website form navigates to this GET route and redirects to its taxpayer page.
+    Set http = HttpGet("https://thongtincongty.vn/api/tax-code/request?taxCode=" & EncodeURL(mst) & "&returnTo=%2Fma-so-thue")
+    MSTLookupTTCT = MSTParseTTCT(DecodeUTF8(http.ResponseBody), mst, company, address, reason)
+    If MSTLookupTTCT Then MSTLastSource = "Thongtincongty.vn - Dia chi theo CQT"
+    Exit Function
+Failed:
+    reason = "Thongtincongty.vn: " & Err.Description: company = "": address = ""
+End Function
+
+Public Function LookupMSTData(ByVal mst As String, ByRef company As String, ByRef address As String, ByRef reason As String) As Boolean
+    Dim firstReason As String
+    company = "": address = "": reason = "": MSTLastSource = ""
+    mst = NormalizeMST(mst)
+    If mst = "" Then reason = "MST khong dung dinh dang.": Exit Function
+    If MSTLookupTTCT(mst, company, address, reason) Then
+        LookupMSTData = True: Exit Function
+    End If
+    firstReason = reason
+    If MSTLookupWebsite(mst, company, address, reason) Then
+        MSTLastSource = "MaSoThue - Dia chi Thue"
+        LookupMSTData = True
+    Else
+        reason = firstReason & vbCrLf & reason
+    End If
+End Function

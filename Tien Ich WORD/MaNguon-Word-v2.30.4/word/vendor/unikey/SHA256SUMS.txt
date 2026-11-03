@@ -1,0 +1,3 @@
+3469a7b93459faad1304e4105346bfdb1440e87c01e6bcccc5b40546d2d41d35  uvconv-src-1.1.3b.zip
+6e855fe21df92558447bad09b0d2466800625e4bd1a69e294dded066a446eb28  upstream/uvconv/vnconv/data.cpp
+7d4b197af9ba99b172e1d2ba74f7deb83c176f1efc83a18d00a8fa01d69175f3  upstream/uvconv/vnconv/charset.cpp

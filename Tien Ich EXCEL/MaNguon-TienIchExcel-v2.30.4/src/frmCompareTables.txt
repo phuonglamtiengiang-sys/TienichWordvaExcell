@@ -1,0 +1,321 @@
+﻿Option Explicit
+Private WithEvents pickA As MSForms.CommandButton
+Private WithEvents pickB As MSForms.CommandButton
+Private WithEvents addPair As MSForms.CommandButton
+Private WithEvents removePair As MSForms.CommandButton
+Private WithEvents runCompare As MSForms.CommandButton
+Private WithEvents closeForm As MSForms.CommandButton
+Private WithEvents keyBoxA As MSForms.ComboBox
+Private WithEvents keyBoxB As MSForms.ComboBox
+Private WithEvents modeBox As MSForms.ComboBox
+Private columnBoxA As MSForms.ComboBox, columnBoxB As MSForms.ComboBox
+Private addressA As MSForms.TextBox, addressB As MSForms.TextBox, toleranceBox As MSForms.TextBox
+Private pairsList As MSForms.ListBox, ignoreCaseBox As MSForms.CheckBox, trimBox As MSForms.CheckBox
+Private status As MSForms.Label
+Private sourceA As Range, sourceB As Range, loading As Boolean, manualMappings As Boolean
+
+Private Function MakeButton(ByVal name As String, ByVal caption As String, ByVal x As Single, ByVal y As Single, ByVal width As Single) As MSForms.CommandButton
+    Dim button As MSForms.CommandButton
+    Set button = Me.Controls.Add("Forms.CommandButton.1", name, True)
+    button.Caption = u(caption): button.Left = x: button.Top = y: button.Width = width: button.Height = 26
+    Set MakeButton = button
+End Function
+
+Private Sub MakeLabel(ByVal name As String, ByVal caption As String, ByVal x As Single, ByVal y As Single, ByVal width As Single, Optional ByVal height As Single = 20)
+    Dim label As MSForms.Label
+    Set label = Me.Controls.Add("Forms.Label.1", name, True)
+    label.Caption = u(caption): label.Left = x: label.Top = y: label.Width = width: label.Height = height
+    label.WordWrap = True
+End Sub
+
+Private Function MakeCombo(ByVal name As String, ByVal x As Single, ByVal y As Single, ByVal width As Single) As MSForms.ComboBox
+    Dim combo As MSForms.ComboBox
+    Set combo = Me.Controls.Add("Forms.ComboBox.1", name, True)
+    combo.Left = x: combo.Top = y: combo.Width = width: combo.Height = 22
+    combo.Style = fmStyleDropDownList: combo.ListRows = 12
+    Set MakeCombo = combo
+End Function
+
+Private Sub UserForm_Initialize()
+    loading = True
+    Me.Caption = "Compare Tables"
+    Me.Width = 610: Me.Height = 526: Me.StartUpPosition = 1
+    Me.Font.Name = "Segoe UI": Me.Font.Size = 9
+    MakeLabel "lblIntro", "\u0110\u1ed0I CHI\u1ebeU HAI B\u1ea2NG EXCEL", 16, 10, 570
+    Me.Controls("lblIntro").Font.Bold = True
+    MakeLabel "lblHelp", "Ch\u1ecdn v\u00f9ng g\u1ed3m m\u1ed9t d\u00f2ng ti\u00eau \u0111\u1ec1 v\u00e0 c\u00e1c d\u00f2ng d\u1eef li\u1ec7u. C\u00f3 th\u1ec3 ch\u1ecdn \u1edf hai file kh\u00e1c nhau.", 16, 30, 570
+    Set pickA = MakeButton("btnPickA", "Ch\u1ecdn b\u1ea3ng A", 16, 58, 108)
+    Set pickB = MakeButton("btnPickB", "Ch\u1ecdn b\u1ea3ng B", 16, 94, 108)
+    Set addressA = Me.Controls.Add("Forms.TextBox.1", "txtAddressA", True)
+    addressA.Left = 136: addressA.Top = 59: addressA.Width = 448: addressA.Height = 24: addressA.Locked = True: addressA.TabStop = False
+    Set addressB = Me.Controls.Add("Forms.TextBox.1", "txtAddressB", True)
+    addressB.Left = 136: addressB.Top = 95: addressB.Width = 448: addressB.Height = 24: addressB.Locked = True: addressB.TabStop = False
+    MakeLabel "lblKeyA", "C\u1ed9t m\u00e3 A", 16, 136, 76
+    MakeLabel "lblKeyB", "C\u1ed9t m\u00e3 B", 310, 136, 76
+    Set keyBoxA = MakeCombo("cboKeyA", 96, 132, 190)
+    Set keyBoxB = MakeCombo("cboKeyB", 390, 132, 194)
+    MakeLabel "lblPairs", "Gh\u00e9p c\u1ed9t th\u00f4ng tin c\u1ee7a b\u1ea3ng A v\u1edbi b\u1ea3ng B (t\u1ef1 gh\u00e9p c\u00e1c ti\u00eau \u0111\u1ec1 gi\u1ed1ng nhau)", 16, 169, 570
+    Set columnBoxA = MakeCombo("cboColumnA", 16, 192, 220)
+    Set columnBoxB = MakeCombo("cboColumnB", 248, 192, 220)
+    Set addPair = MakeButton("btnAddPair", "Th\u00eam c\u1eb7p", 480, 190, 104)
+    Set pairsList = Me.Controls.Add("Forms.ListBox.1", "lstPairs", True)
+    pairsList.Left = 16: pairsList.Top = 224: pairsList.Width = 568: pairsList.Height = 88
+    pairsList.ColumnCount = 4: pairsList.ColumnWidths = "0 pt;0 pt;272 pt;272 pt"
+    Set removePair = MakeButton("btnRemovePair", "B\u1ecf c\u1eb7p \u0111\u00e3 ch\u1ecdn", 456, 318, 128)
+    MakeLabel "lblPairsHint", "Danh s\u00e1ch tr\u1ed1ng: ch\u1ec9 ki\u1ec3m tra m\u00e3 c\u00f3/kh\u00f4ng c\u00f3, ch\u01b0a so s\u00e1nh th\u00f4ng tin.", 16, 319, 425, 29
+    Set ignoreCaseBox = Me.Controls.Add("Forms.CheckBox.1", "chkIgnoreCase", True)
+    ignoreCaseBox.Caption = u("B\u1ecf qua hoa/th\u01b0\u1eddng"): ignoreCaseBox.Value = True
+    ignoreCaseBox.Left = 16: ignoreCaseBox.Top = 355: ignoreCaseBox.Width = 250: ignoreCaseBox.Height = 22
+    Set trimBox = Me.Controls.Add("Forms.CheckBox.1", "chkTrim", True)
+    trimBox.Caption = u("B\u1ecf kho\u1ea3ng tr\u1eafng \u0111\u1ea7u/cu\u1ed1i"): trimBox.Value = True
+    trimBox.Left = 310: trimBox.Top = 355: trimBox.Width = 274: trimBox.Height = 22
+    MakeLabel "lblTolerance", "Sai s\u1ed1 tuy\u1ec7t \u0111\u1ed1i khi so s\u00e1nh s\u1ed1", 16, 389, 220
+    Set toleranceBox = Me.Controls.Add("Forms.TextBox.1", "txtTolerance", True)
+    toleranceBox.Left = 240: toleranceBox.Top = 383: toleranceBox.Width = 85: toleranceBox.Height = 24: toleranceBox.Text = "0"
+    Set runCompare = MakeButton("btnCompare", "Xu\u1ea5t b\u00e1o c\u00e1o", 350, 420, 126)
+    Set closeForm = MakeButton("btnClose", "\u0110\u00f3ng", 488, 420, 96): closeForm.Cancel = True
+    Set status = Me.Controls.Add("Forms.Label.1", "lblStatus", True)
+    status.Left = 16: status.Top = 419: status.Width = 318: status.Height = 30: status.WordWrap = True
+    status.Caption = u("B\u00e1o c\u00e1o m\u1edf trong file m\u1edbi; hai b\u1ea3ng ngu\u1ed3n \u0111\u01b0\u1ee3c gi\u1eef nguy\u00ean.")
+    Dim item As Object
+    For Each item In Me.Controls
+        If item.Name <> "lblIntro" Then item.Top = item.Top + 44
+    Next item
+    MakeLabel "lblMode", "C\u00e1ch \u0111\u1ed1i chi\u1ebfu", 16, 39, 116
+    Set modeBox = MakeCombo("cboMode", 136, 35, 448)
+    modeBox.AddItem u("So t\u1eebng \u00f4 theo v\u1ecb tr\u00ed \u2014 t\u00f4 m\u00e0u hai b\u1ea3ng")
+    modeBox.AddItem u("Gh\u00e9p theo c\u1ed9t m\u00e3 \u2014 xu\u1ea5t b\u00e1o c\u00e1o ri\u00eang")
+    modeBox.ListIndex = 0
+    loading = False
+    UpdateMode
+End Sub
+
+Private Sub UpdateMode()
+    Dim name As Variant, byKey As Boolean
+    byKey = (modeBox.ListIndex = 1)
+    For Each name In Array("cboKeyA", "cboKeyB", "cboColumnA", "cboColumnB", "btnAddPair", "btnRemovePair", "lstPairs", "lblKeyA", "lblKeyB", "lblPairs", "lblPairsHint")
+        Me.Controls(CStr(name)).Enabled = byKey
+        Me.Controls(CStr(name)).Visible = byKey
+    Next name
+    Me.Controls("lblHelp").Height = 24
+    If byKey Then
+        Me.Height = 526
+        ignoreCaseBox.Top = 399: trimBox.Top = 399
+        Me.Controls("lblTolerance").Top = 433: toleranceBox.Top = 427
+        status.Top = 463: status.Height = 30: runCompare.Top = 464: closeForm.Top = 464
+        runCompare.Caption = u("Xu\u1ea5t b\u00e1o c\u00e1o")
+        Me.Controls("lblHelp").Caption = u("Ch\u1ecdn v\u00f9ng c\u00f3 d\u00f2ng ti\u00eau \u0111\u1ec1. B\u1ea5m Ch\u1ecdn b\u1ea3ng A/B, ch\u1ecdn sheet r\u1ed3i qu\u00e9t kh\u1ed1i d\u1eef li\u1ec7u.")
+        status.Caption = u("B\u00e1o c\u00e1o m\u1edf trong file m\u1edbi; gi\u1eef nguy\u00ean hai b\u1ea3ng ngu\u1ed3n.")
+    Else
+        Me.Height = 314
+        ignoreCaseBox.Top = 182: trimBox.Top = 182
+        Me.Controls("lblTolerance").Top = 216: toleranceBox.Top = 210
+        status.Top = 244: status.Height = 40: runCompare.Top = 246: closeForm.Top = 246
+        runCompare.Caption = u("T\u00f4 m\u00e0u \u00f4 kh\u00e1c")
+        Me.Controls("lblHelp").Caption = u("B\u1ea5m Ch\u1ecdn b\u1ea3ng A/B, b\u1ea5m tab sheet r\u1ed3i qu\u00e9t kh\u1ed1i. So \u00f4 g\u00f3c tr\u00ean tr\u00e1i A v\u1edbi \u00f4 g\u00f3c tr\u00ean tr\u00e1i B; kh\u00f4ng c\u1ea7n c\u1ed9t m\u00e3.")
+        status.Caption = u("\u00d4 gi\u1ed1ng nhau: b\u1ecf m\u00e0u n\u1ec1n. V\u00e0ng: \u00f4 kh\u00e1c. Cam: ph\u1ea7n d\u01b0. Ho\u00e0n t\u00e1c \u0111\u1ec3 kh\u00f4i ph\u1ee5c m\u00e0u c\u0169.")
+    End If
+End Sub
+
+Private Sub modeBox_Change()
+    If loading Then Exit Sub
+    On Error GoTo NeedHeaders
+    UpdateMode
+    If modeBox.ListIndex = 1 Then
+        If Not sourceA Is Nothing Then LoadTable "A", sourceA
+        If Not sourceB Is Nothing Then LoadTable "B", sourceB
+        If modeBox.ListIndex = 1 Then AutoPairs
+    End If
+    Exit Sub
+NeedHeaders:
+    loading = False
+    status.Caption = u("Ch\u1ebf \u0111\u1ed9 theo m\u00e3 c\u1ea7n b\u1ea3ng c\u00f3 ti\u00eau \u0111\u1ec1 v\u00e0 d\u00f2ng d\u1eef li\u1ec7u. H\u00e3y ch\u1ecdn l\u1ea1i b\u1ea3ng A/B.")
+End Sub
+
+Private Sub ChooseTable(ByVal side As String)
+    Dim chosen As Range, reason As String
+    Me.Hide
+    On Error Resume Next
+    If modeBox.ListIndex = 0 Then
+        Set chosen = Application.InputBox(u("Ch\u1ecdn sheet r\u1ed3i qu\u00e9t kh\u1ed1i d\u1eef li\u1ec7u b\u1ea3ng ") & side & u(". C\u00f3 th\u1ec3 ch\u1ecdn sheet ho\u1eb7c file kh\u00e1c."), "Compare Tables", Type:=8)
+    Else
+        Set chosen = Application.InputBox(u("Ch\u1ecdn c\u1ea3 d\u00f2ng ti\u00eau \u0111\u1ec1 v\u00e0 c\u00e1c d\u00f2ng d\u1eef li\u1ec7u c\u1ee7a b\u1ea3ng ") & side, "Compare Tables", Type:=8)
+    End If
+    Err.Clear
+    On Error GoTo Failed
+    If Not chosen Is Nothing Then
+        LoadTable side, chosen
+        If modeBox.ListIndex = 1 Then AutoPairs
+    End If
+    Me.Show vbModeless
+    Exit Sub
+Failed:
+    reason = Err.Description: loading = False
+    On Error GoTo 0
+    Me.Show vbModeless
+    ShowMsg reason, u("Ch\u1ecdn b\u1ea3ng"), 48
+End Sub
+
+Private Sub LoadTable(ByVal side As String, ByVal chosen As Range)
+    Dim j As Long, name As String
+    If modeBox.ListIndex = 0 Then
+        ValidateHighlightRange chosen
+        If side = "A" Then
+            Set sourceA = chosen
+            addressA.Text = chosen.Address(External:=True): addressA.ControlTipText = addressA.Text
+        Else
+            Set sourceB = chosen
+            addressB.Text = chosen.Address(External:=True): addressB.ControlTipText = addressB.Text
+        End If
+        Exit Sub
+    End If
+    ValidateCompareRange chosen
+    For j = 1 To chosen.Columns.Count
+        If IsError(chosen.Cells(1, j).Value2) Then Err.Raise 5, , u("Ti\u00eau \u0111\u1ec1 c\u00f3 \u00f4 l\u1ed7i.")
+    Next j
+    loading = True
+    If side = "A" Then
+        Set sourceA = chosen
+        addressA.Text = chosen.Address(External:=True): addressA.ControlTipText = addressA.Text
+        keyBoxA.Clear: columnBoxA.Clear
+    Else
+        Set sourceB = chosen
+        addressB.Text = chosen.Address(External:=True): addressB.ControlTipText = addressB.Text
+        keyBoxB.Clear: columnBoxB.Clear
+    End If
+    For j = 1 To chosen.Columns.Count
+        name = Trim$(CStr(chosen.Cells(1, j).Value2))
+        If name = "" Then name = u("C\u1ed9t ") & j
+        name = j & ". " & name
+        If side = "A" Then
+            keyBoxA.AddItem name: columnBoxA.AddItem name
+        Else
+            keyBoxB.AddItem name: columnBoxB.AddItem name
+        End If
+    Next j
+    If side = "A" Then keyBoxA.ListIndex = 0 Else keyBoxB.ListIndex = 0
+    loading = False
+End Sub
+
+Public Sub ConfigureTables(ByVal a As Range, ByVal b As Range, Optional ByVal aKey As Long = 1, Optional ByVal bKey As Long = 1)
+    modeBox.ListIndex = 1
+    LoadTable "A", a
+    LoadTable "B", b
+    loading = True
+    keyBoxA.ListIndex = aKey - 1: keyBoxB.ListIndex = bKey - 1
+    loading = False
+    AutoPairs
+End Sub
+
+Public Sub ConfigureCellRanges(ByVal a As Range, ByVal b As Range)
+    modeBox.ListIndex = 0
+    LoadTable "A", a
+    LoadTable "B", b
+End Sub
+
+Private Sub AutoPairs()
+    Dim spec As String, entry As Variant, pair As Variant
+    If sourceA Is Nothing Or sourceB Is Nothing Then Exit Sub
+    If keyBoxA.ListIndex < 0 Or keyBoxB.ListIndex < 0 Then Exit Sub
+    spec = CompareAutoPairs(sourceA, sourceB, keyBoxA.ListIndex + 1, keyBoxB.ListIndex + 1)
+    pairsList.Clear
+    manualMappings = False
+    If spec <> "" Then
+        For Each entry In Split(spec, ",")
+            pair = Split(CStr(entry), ":")
+            StorePair CLng(pair(0)), CLng(pair(1))
+        Next entry
+    End If
+End Sub
+
+Private Sub StorePair(ByVal a As Long, ByVal b As Long)
+    Dim i As Long
+    If a = keyBoxA.ListIndex + 1 Or b = keyBoxB.ListIndex + 1 Then Err.Raise 5, , u("Ch\u1ecdn c\u1ed9t th\u00f4ng tin, kh\u00f4ng ch\u1ecdn c\u1ed9t m\u00e3.")
+    For i = 0 To pairsList.ListCount - 1
+        If CLng(pairsList.List(i, 0)) = a Or CLng(pairsList.List(i, 1)) = b Then Err.Raise 5, , u("C\u1ed9t n\u00e0y \u0111\u00e3 c\u00f3 trong m\u1ed9t c\u1eb7p. B\u1ecf c\u1eb7p c\u0169 tr\u01b0\u1edbc khi gh\u00e9p l\u1ea1i.")
+    Next i
+    pairsList.AddItem CStr(a)
+    i = pairsList.ListCount - 1
+    pairsList.List(i, 1) = CStr(b)
+    pairsList.List(i, 2) = columnBoxA.List(a - 1)
+    pairsList.List(i, 3) = columnBoxB.List(b - 1)
+End Sub
+
+Private Sub RemoveKeyPairs()
+    Dim i As Long
+    If loading Then Exit Sub
+    If pairsList Is Nothing Then Exit Sub
+    If Not manualMappings Then
+        AutoPairs
+        Exit Sub
+    End If
+    For i = pairsList.ListCount - 1 To 0 Step -1
+        If CLng(pairsList.List(i, 0)) = keyBoxA.ListIndex + 1 Or CLng(pairsList.List(i, 1)) = keyBoxB.ListIndex + 1 Then pairsList.RemoveItem i
+    Next i
+End Sub
+
+Private Sub pickA_Click()
+    ChooseTable "A"
+End Sub
+Private Sub pickB_Click()
+    ChooseTable "B"
+End Sub
+Private Sub keyBoxA_Change()
+    RemoveKeyPairs
+End Sub
+Private Sub keyBoxB_Change()
+    RemoveKeyPairs
+End Sub
+Private Sub addPair_Click()
+    On Error GoTo Failed
+    If columnBoxA.ListIndex < 0 Or columnBoxB.ListIndex < 0 Then Err.Raise 5, , u("Ch\u1ecdn m\u1ed9t c\u1ed9t c\u1ee7a m\u1ed7i b\u1ea3ng tr\u01b0\u1edbc khi th\u00eam c\u1eb7p.")
+    StorePair columnBoxA.ListIndex + 1, columnBoxB.ListIndex + 1
+    manualMappings = True
+    Exit Sub
+Failed:
+    ShowMsg Err.Description, u("Gh\u00e9p c\u1ed9t"), 48
+End Sub
+Private Sub removePair_Click()
+    If pairsList.ListIndex >= 0 Then
+        pairsList.RemoveItem pairsList.ListIndex
+        manualMappings = True
+    End If
+End Sub
+Private Sub closeForm_Click()
+    Unload Me
+End Sub
+
+Private Sub runCompare_Click()
+    Dim report As Workbook, spec As String, i As Long, tolerance As Double, reason As String, painted As Long
+    On Error GoTo Failed
+    If sourceA Is Nothing Or sourceB Is Nothing Then Err.Raise 5, , u("Ch\u1ecdn \u0111\u1ee7 b\u1ea3ng A v\u00e0 b\u1ea3ng B.")
+    If Not IsNumeric(toleranceBox.Text) Then Err.Raise 5, , u("Sai s\u1ed1 ph\u1ea3i l\u00e0 m\u1ed9t s\u1ed1 kh\u00f4ng \u00e2m.")
+    tolerance = CDbl(toleranceBox.Text)
+    If tolerance < 0 Then Err.Raise 5, , u("Sai s\u1ed1 kh\u00f4ng \u0111\u01b0\u1ee3c \u00e2m.")
+    If modeBox.ListIndex = 0 Then
+        runCompare.Enabled = False
+        painted = HighlightCompareRanges(sourceA, sourceB, CBool(ignoreCaseBox.Value), CBool(trimBox.Value), tolerance)
+        status.Caption = u("\u0110\u00e3 \u0111\u00e1nh d\u1ea5u ") & painted & u(" \u00f4 tr\u00ean hai b\u1ea3ng. V\u00e0ng: kh\u00e1c; cam: ph\u1ea7n d\u01b0. Ho\u00e0n t\u00e1c \u0111\u1ec3 g\u1ee1 m\u00e0u.")
+        If painted = 0 Then status.Caption = u("Hai v\u00f9ng gi\u1ed1ng nhau theo t\u00f9y ch\u1ecdn \u0111\u00e3 ch\u1ecdn. \u0110\u00e3 b\u1ecf m\u00e0u n\u1ec1n trong v\u00f9ng; c\u00f3 th\u1ec3 Ho\u00e0n t\u00e1c.")
+        runCompare.Enabled = True
+        Exit Sub
+    End If
+    If keyBoxA.ListIndex < 0 Or keyBoxB.ListIndex < 0 Then Err.Raise 5, , u("Ch\u1ecdn c\u1ed9t m\u00e3 cho c\u1ea3 hai b\u1ea3ng.")
+    For i = 0 To pairsList.ListCount - 1
+        If spec <> "" Then spec = spec & ","
+        spec = spec & pairsList.List(i, 0) & ":" & pairsList.List(i, 1)
+    Next i
+    If spec = "" Then spec = "-"
+    runCompare.Enabled = False
+    Me.Hide
+    Set report = CompareTables(sourceA, sourceB, keyBoxA.ListIndex + 1, keyBoxB.ListIndex + 1, spec, CBool(ignoreCaseBox.Value), CBool(trimBox.Value), tolerance)
+    report.Activate
+    Unload Me
+    Exit Sub
+Failed:
+    reason = Err.Description
+    On Error GoTo 0
+    runCompare.Enabled = True
+    Me.Show vbModeless
+    ShowMsg reason, u("\u0110\u1ed1i chi\u1ebfu hai b\u1ea3ng"), 48
+End Sub

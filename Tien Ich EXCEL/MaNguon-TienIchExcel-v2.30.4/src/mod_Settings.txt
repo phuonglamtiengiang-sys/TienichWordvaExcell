@@ -1,0 +1,25 @@
+﻿Option Explicit
+Private ribbonUI As IRibbonUI
+Public Sub Ribbon_Load(ByVal ribbon As IRibbonUI)
+    Set ribbonUI = ribbon
+End Sub
+Public Function NumberUnit(Optional ByVal english As Boolean = False) As String
+    NumberUnit = NumberUnitFor(GetSetting("TienIchExcel", "NumberWords", "Unit", "dong"), english)
+End Function
+Public Function NumberUnitFor(ByVal mode As String, Optional ByVal english As Boolean = False) As String
+    Select Case mode
+        Case "number": NumberUnitFor = ""
+        Case "usd"
+            If english Then NumberUnitFor = " US dollars." Else NumberUnitFor = u(" \u0111\u00f4 la M\u1ef9.")
+        Case Else
+            If english Then NumberUnitFor = " dong." Else NumberUnitFor = u(" \u0111\u1ed3ng.")
+    End Select
+End Function
+Public Sub Ribbon_UnitPressed(control As IRibbonControl, ByRef returnedVal)
+    returnedVal = (GetSetting("TienIchExcel", "NumberWords", "Unit", "dong") = control.Tag)
+End Sub
+Public Sub Ribbon_SetUnit(control As IRibbonControl, ByVal pressed As Boolean)
+    SaveSetting "TienIchExcel", "NumberWords", "Unit", control.Tag
+    If Not ribbonUI Is Nothing Then ribbonUI.Invalidate
+    Application.CalculateFull
+End Sub

@@ -1,0 +1,3726 @@
+[
+  {
+    "source": [
+      "03991",
+      "Xã Qui Hướng",
+      "123",
+      "Huyện Mộc Châu",
+      "14",
+      "Tỉnh Sơn La"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "03991",
+      "Xã Qui Hướng",
+      "123",
+      "Huyện Mộc Châu",
+      "14",
+      "Tỉnh Sơn La"
+    ]
+  },
+  {
+    "source": [
+      "04774",
+      "Xã Yên Bình",
+      "141",
+      "Huyện Yên Bình",
+      "15",
+      "Tỉnh Yên Bái"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "04774",
+      "Xã Yên Bình",
+      "141",
+      "Huyện Yên Bình",
+      "15",
+      "Tỉnh Yên Bái"
+    ]
+  },
+  {
+    "source": [
+      "05536",
+      "Thị trấn Chợ Chu",
+      "167",
+      "Huyện Định Hóa",
+      "19",
+      "Tỉnh Thái Nguyên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "05536",
+      "Thị trấn Chợ Chu",
+      "167",
+      "Huyện Định Hóa",
+      "19",
+      "Tỉnh Thái Nguyên"
+    ]
+  },
+  {
+    "source": [
+      "05608",
+      "Thị trấn Giang Tiên",
+      "168",
+      "Huyện Phú Lương",
+      "19",
+      "Tỉnh Thái Nguyên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "05608",
+      "Thị trấn Giang Tiên",
+      "168",
+      "Huyện Phú Lương",
+      "19",
+      "Tỉnh Thái Nguyên"
+    ]
+  },
+  {
+    "source": [
+      "05782",
+      "Xã Na Mao",
+      "171",
+      "Huyện Đại Từ",
+      "19",
+      "Tỉnh Thái Nguyên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "05782",
+      "Xã Na Mao",
+      "171",
+      "Huyện Đại Từ",
+      "19",
+      "Tỉnh Thái Nguyên"
+    ]
+  },
+  {
+    "source": [
+      "05839",
+      "Xã Vạn Thọ",
+      "171",
+      "Huyện Đại Từ",
+      "19",
+      "Tỉnh Thái Nguyên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "05839",
+      "Xã Vạn Thọ",
+      "171",
+      "Huyện Đại Từ",
+      "19",
+      "Tỉnh Thái Nguyên"
+    ]
+  },
+  {
+    "source": [
+      "06295",
+      "Xã Đồng Giáp",
+      "184",
+      "Huyện Văn Quan",
+      "20",
+      "Tỉnh Lạng Sơn"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "06295",
+      "Xã Đồng Giáp",
+      "184",
+      "Huyện Văn Quan",
+      "20",
+      "Tỉnh Lạng Sơn"
+    ]
+  },
+  {
+    "source": [
+      "06301",
+      "Xã Tràng Các",
+      "184",
+      "Huyện Văn Quan",
+      "20",
+      "Tỉnh Lạng Sơn"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "06301",
+      "Xã Tràng Các",
+      "184",
+      "Huyện Văn Quan",
+      "20",
+      "Tỉnh Lạng Sơn"
+    ]
+  },
+  {
+    "source": [
+      "07891",
+      "Phường Vân Cơ",
+      "227",
+      "Thành phố Việt Trì",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "07891",
+      "Phường Vân Cơ",
+      "227",
+      "Thành phố Việt Trì",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "07915",
+      "Phường Bến Gót",
+      "227",
+      "Thành phố Việt Trì",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "07915",
+      "Phường Bến Gót",
+      "227",
+      "Thành phố Việt Trì",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "07984",
+      "Xã Vân Du",
+      "230",
+      "Huyện Đoan Hùng",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "07984",
+      "Xã Vân Du",
+      "230",
+      "Huyện Đoan Hùng",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08017",
+      "Xã Sóc Đăng",
+      "230",
+      "Huyện Đoan Hùng",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08017",
+      "Xã Sóc Đăng",
+      "230",
+      "Huyện Đoan Hùng",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08029",
+      "Xã Hùng Long",
+      "230",
+      "Huyện Đoan Hùng",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08029",
+      "Xã Hùng Long",
+      "230",
+      "Huyện Đoan Hùng",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08032",
+      "Xã Vụ Quang",
+      "230",
+      "Huyện Đoan Hùng",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08032",
+      "Xã Vụ Quang",
+      "230",
+      "Huyện Đoan Hùng",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08047",
+      "Xã Chân Mộng",
+      "230",
+      "Huyện Đoan Hùng",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08047",
+      "Xã Chân Mộng",
+      "230",
+      "Huyện Đoan Hùng",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08347",
+      "Xã Tuy Lộc",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08347",
+      "Xã Tuy Lộc",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08362",
+      "Xã Thụy Liễu",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08362",
+      "Xã Thụy Liễu",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08383",
+      "Xã Cấp Dẫn",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08383",
+      "Xã Cấp Dẫn",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08392",
+      "Xã Phú Khê",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08392",
+      "Xã Phú Khê",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08395",
+      "Xã Sơn Tình",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08395",
+      "Xã Sơn Tình",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08404",
+      "Xã Tạ Xá",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08404",
+      "Xã Tạ Xá",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08407",
+      "Xã Phú Lạc",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08407",
+      "Xã Phú Lạc",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "08419",
+      "Xã Văn Khúc",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "08419",
+      "Xã Văn Khúc",
+      "235",
+      "Huyện Cẩm Khê",
+      "25",
+      "Tỉnh Phú Thọ"
+    ]
+  },
+  {
+    "source": [
+      "09175",
+      "Phường Vệ An",
+      "256",
+      "Thành phố Bắc Ninh",
+      "27",
+      "Tỉnh Bắc Ninh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "09175",
+      "Phường Vệ An",
+      "256",
+      "Thành phố Bắc Ninh",
+      "27",
+      "Tỉnh Bắc Ninh"
+    ]
+  },
+  {
+    "source": [
+      "09178",
+      "Phường Tiền An",
+      "256",
+      "Thành phố Bắc Ninh",
+      "27",
+      "Tỉnh Bắc Ninh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "09178",
+      "Phường Tiền An",
+      "256",
+      "Thành phố Bắc Ninh",
+      "27",
+      "Tỉnh Bắc Ninh"
+    ]
+  },
+  {
+    "source": [
+      "09520",
+      "Xã Lai Hạ",
+      "264",
+      "Huyện Lương Tài",
+      "27",
+      "Tỉnh Bắc Ninh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "09520",
+      "Xã Lai Hạ",
+      "264",
+      "Huyện Lương Tài",
+      "27",
+      "Tỉnh Bắc Ninh"
+    ]
+  },
+  {
+    "source": [
+      "09526",
+      "Xã Minh Tân",
+      "264",
+      "Huyện Lương Tài",
+      "27",
+      "Tỉnh Bắc Ninh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "09526",
+      "Xã Minh Tân",
+      "264",
+      "Huyện Lương Tài",
+      "27",
+      "Tỉnh Bắc Ninh"
+    ]
+  },
+  {
+    "source": [
+      "10852",
+      "Xã Thanh Xá",
+      "294",
+      "Huyện Thanh Hà",
+      "30",
+      "Tỉnh Hải Dương"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "10852",
+      "Xã Thanh Xá",
+      "294",
+      "Huyện Thanh Hà",
+      "30",
+      "Tỉnh Hải Dương"
+    ]
+  },
+  {
+    "source": [
+      "11308",
+      "Phường Hạ Lý",
+      "303",
+      "Quận Hồng Bàng",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11308",
+      "Phường Hạ Lý",
+      "303",
+      "Quận Hồng Bàng",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11314",
+      "Phường Trại Chuối",
+      "303",
+      "Quận Hồng Bàng",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11314",
+      "Phường Trại Chuối",
+      "303",
+      "Quận Hồng Bàng",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11332",
+      "Phường Máy Tơ",
+      "304",
+      "Quận Ngô Quyền",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11332",
+      "Phường Máy Tơ",
+      "304",
+      "Quận Ngô Quyền",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11347",
+      "Phường Gia Viên",
+      "304",
+      "Quận Ngô Quyền",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11347",
+      "Phường Gia Viên",
+      "304",
+      "Quận Ngô Quyền",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11356",
+      "Phường Lê Lợi",
+      "304",
+      "Quận Ngô Quyền",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11356",
+      "Phường Lê Lợi",
+      "304",
+      "Quận Ngô Quyền",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11362",
+      "Phường Lạch Tray",
+      "304",
+      "Quận Ngô Quyền",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11362",
+      "Phường Lạch Tray",
+      "304",
+      "Quận Ngô Quyền",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11368",
+      "Phường Cát Dài",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11368",
+      "Phường Cát Dài",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11374",
+      "Phường Lam Sơn",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11374",
+      "Phường Lam Sơn",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11386",
+      "Phường Trại Cau",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11386",
+      "Phường Trại Cau",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11395",
+      "Phường Đông Hải",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11395",
+      "Phường Đông Hải",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11398",
+      "Phường Niệm Nghĩa",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11398",
+      "Phường Niệm Nghĩa",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11401",
+      "Phường Nghĩa Xá",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11401",
+      "Phường Nghĩa Xá",
+      "305",
+      "Quận Lê Chân",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11428",
+      "Phường Quán Trữ",
+      "307",
+      "Quận Kiến An",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11428",
+      "Phường Quán Trữ",
+      "307",
+      "Quận Kiến An",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11429",
+      "Phường Lãm Hà",
+      "307",
+      "Quận Kiến An",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11429",
+      "Phường Lãm Hà",
+      "307",
+      "Quận Kiến An",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11452",
+      "Phường Tràng Minh",
+      "307",
+      "Quận Kiến An",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11452",
+      "Phường Tràng Minh",
+      "307",
+      "Quận Kiến An",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11476",
+      "Xã Lại Xuân",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11476",
+      "Xã Lại Xuân",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11479",
+      "Xã An Sơn",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11479",
+      "Xã An Sơn",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11482",
+      "Xã Kỳ Sơn",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11482",
+      "Xã Kỳ Sơn",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11491",
+      "Xã Lưu Kỳ",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11491",
+      "Xã Lưu Kỳ",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11494",
+      "Xã Gia Minh",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11494",
+      "Xã Gia Minh",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11497",
+      "Xã Gia Đức",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11497",
+      "Xã Gia Đức",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11509",
+      "Xã Chính Mỹ",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11509",
+      "Xã Chính Mỹ",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11515",
+      "Xã Hợp Thành",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11515",
+      "Xã Hợp Thành",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11524",
+      "Xã Đông Sơn",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11524",
+      "Xã Đông Sơn",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11536",
+      "Xã Thuỷ Triều",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11536",
+      "Xã Thuỷ Triều",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11548",
+      "Xã Phả Lễ",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11548",
+      "Xã Phả Lễ",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11554",
+      "Xã Kiền Bái",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11554",
+      "Xã Kiền Bái",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11566",
+      "Xã Hoàng Động",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11566",
+      "Xã Hoàng Động",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11575",
+      "Xã Tân Dương",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11575",
+      "Xã Tân Dương",
+      "311",
+      "Huyện Thuỷ Nguyên",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11605",
+      "Xã Bắc Sơn",
+      "312",
+      "Huyện An Dương",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11605",
+      "Xã Bắc Sơn",
+      "312",
+      "Huyện An Dương",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11620",
+      "Xã Quốc Tuấn",
+      "312",
+      "Huyện An Dương",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11620",
+      "Xã Quốc Tuấn",
+      "312",
+      "Huyện An Dương",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11845",
+      "Xã Vĩnh Long",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11845",
+      "Xã Vĩnh Long",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11854",
+      "Xã An Hoà",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11854",
+      "Xã An Hoà",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11863",
+      "Xã Nhân Hoà",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11863",
+      "Xã Nhân Hoà",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11869",
+      "Xã Hưng Nhân",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11869",
+      "Xã Hưng Nhân",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11872",
+      "Xã Vinh Quang",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11872",
+      "Xã Vinh Quang",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11878",
+      "Xã Thanh Lương",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11878",
+      "Xã Thanh Lương",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11893",
+      "Xã Tiền Phong",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11893",
+      "Xã Tiền Phong",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11899",
+      "Xã Cộng Hiền",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11899",
+      "Xã Cộng Hiền",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11905",
+      "Xã Cổ Am",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11905",
+      "Xã Cổ Am",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11908",
+      "Xã Vĩnh Tiến",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11908",
+      "Xã Vĩnh Tiến",
+      "316",
+      "Huyện Vĩnh Bảo",
+      "31",
+      "Thành phố Hải Phòng"
+    ]
+  },
+  {
+    "source": [
+      "11965",
+      "Phường Quang Trung",
+      "323",
+      "Thành phố Hưng Yên",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "11965",
+      "Phường Quang Trung",
+      "323",
+      "Thành phố Hưng Yên",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12382",
+      "Xã Phương Chiểu",
+      "323",
+      "Thành phố Hưng Yên",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12382",
+      "Xã Phương Chiểu",
+      "323",
+      "Thành phố Hưng Yên",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12058",
+      "Xã Nghĩa Hiệp",
+      "327",
+      "Huyện Yên Mỹ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12058",
+      "Xã Nghĩa Hiệp",
+      "327",
+      "Huyện Yên Mỹ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12094",
+      "Xã Trung Hưng",
+      "327",
+      "Huyện Yên Mỹ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12094",
+      "Xã Trung Hưng",
+      "327",
+      "Huyện Yên Mỹ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12097",
+      "Xã Lý Thường Kiệt",
+      "327",
+      "Huyện Yên Mỹ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12097",
+      "Xã Lý Thường Kiệt",
+      "327",
+      "Huyện Yên Mỹ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12163",
+      "Xã Quang Vinh",
+      "329",
+      "Huyện Ân Thi",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12163",
+      "Xã Quang Vinh",
+      "329",
+      "Huyện Ân Thi",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12187",
+      "Xã Đa Lộc",
+      "329",
+      "Huyện Ân Thi",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12187",
+      "Xã Đa Lộc",
+      "329",
+      "Huyện Ân Thi",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12217",
+      "Xã Hàm Tử",
+      "330",
+      "Huyện Khoái Châu",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12217",
+      "Xã Hàm Tử",
+      "330",
+      "Huyện Khoái Châu",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12235",
+      "Xã Bình Kiều",
+      "330",
+      "Huyện Khoái Châu",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12235",
+      "Xã Bình Kiều",
+      "330",
+      "Huyện Khoái Châu",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12241",
+      "Xã Đồng Tiến",
+      "330",
+      "Huyện Khoái Châu",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12241",
+      "Xã Đồng Tiến",
+      "330",
+      "Huyện Khoái Châu",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12268",
+      "Xã Đại Hưng",
+      "330",
+      "Huyện Khoái Châu",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12268",
+      "Xã Đại Hưng",
+      "330",
+      "Huyện Khoái Châu",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12277",
+      "Xã Nhuế Dương",
+      "330",
+      "Huyện Khoái Châu",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12277",
+      "Xã Nhuế Dương",
+      "330",
+      "Huyện Khoái Châu",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12307",
+      "Xã Nhân La",
+      "331",
+      "Huyện Kim Động",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12307",
+      "Xã Nhân La",
+      "331",
+      "Huyện Kim Động",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12310",
+      "Xã Phú Thịnh",
+      "331",
+      "Huyện Kim Động",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12310",
+      "Xã Phú Thịnh",
+      "331",
+      "Huyện Kim Động",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12343",
+      "Xã Ngô Quyền",
+      "332",
+      "Huyện Tiên Lữ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12343",
+      "Xã Ngô Quyền",
+      "332",
+      "Huyện Tiên Lữ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12349",
+      "Xã Dị Chế",
+      "332",
+      "Huyện Tiên Lữ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12349",
+      "Xã Dị Chế",
+      "332",
+      "Huyện Tiên Lữ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12379",
+      "Xã Minh Phượng",
+      "332",
+      "Huyện Tiên Lữ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12379",
+      "Xã Minh Phượng",
+      "332",
+      "Huyện Tiên Lữ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12418",
+      "Xã Tiền Tiến",
+      "333",
+      "Huyện Phù Cừ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12418",
+      "Xã Tiền Tiến",
+      "333",
+      "Huyện Phù Cừ",
+      "33",
+      "Tỉnh Hưng Yên"
+    ]
+  },
+  {
+    "source": [
+      "12982",
+      "Xã Đông Quí",
+      "342",
+      "Huyện Tiền Hải",
+      "34",
+      "Tỉnh Thái Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "12982",
+      "Xã Đông Quí",
+      "342",
+      "Huyện Tiền Hải",
+      "34",
+      "Tỉnh Thái Bình"
+    ]
+  },
+  {
+    "source": [
+      "13759",
+      "Xã Tân Thành",
+      "359",
+      "Huyện Vụ Bản",
+      "36",
+      "Tỉnh Nam Định"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "13759",
+      "Xã Tân Thành",
+      "359",
+      "Huyện Vụ Bản",
+      "36",
+      "Tỉnh Nam Định"
+    ]
+  },
+  {
+    "source": [
+      "14230",
+      "Xã Hải Vân",
+      "366",
+      "Huyện Hải Hậu",
+      "36",
+      "Tỉnh Nam Định"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14230",
+      "Xã Hải Vân",
+      "366",
+      "Huyện Hải Hậu",
+      "36",
+      "Tỉnh Nam Định"
+    ]
+  },
+  {
+    "source": [
+      "14242",
+      "Xã Hải Bắc",
+      "366",
+      "Huyện Hải Hậu",
+      "36",
+      "Tỉnh Nam Định"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14242",
+      "Xã Hải Bắc",
+      "366",
+      "Huyện Hải Hậu",
+      "36",
+      "Tỉnh Nam Định"
+    ]
+  },
+  {
+    "source": [
+      "14305",
+      "Xã Hải Chính",
+      "366",
+      "Huyện Hải Hậu",
+      "36",
+      "Tỉnh Nam Định"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14305",
+      "Xã Hải Chính",
+      "366",
+      "Huyện Hải Hậu",
+      "36",
+      "Tỉnh Nam Định"
+    ]
+  },
+  {
+    "source": [
+      "14314",
+      "Xã Hải Triều",
+      "366",
+      "Huyện Hải Hậu",
+      "36",
+      "Tỉnh Nam Định"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14314",
+      "Xã Hải Triều",
+      "366",
+      "Huyện Hải Hậu",
+      "36",
+      "Tỉnh Nam Định"
+    ]
+  },
+  {
+    "source": [
+      "14383",
+      "Thị trấn Nho Quan",
+      "372",
+      "Huyện Nho Quan",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14383",
+      "Thị trấn Nho Quan",
+      "372",
+      "Huyện Nho Quan",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14422",
+      "Xã Lạng Phong",
+      "372",
+      "Huyện Nho Quan",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14422",
+      "Xã Lạng Phong",
+      "372",
+      "Huyện Nho Quan",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14455",
+      "Xã Sơn Hà",
+      "372",
+      "Huyện Nho Quan",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14455",
+      "Xã Sơn Hà",
+      "372",
+      "Huyện Nho Quan",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14491",
+      "Xã Gia Vượng",
+      "373",
+      "Huyện Gia Viễn",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14491",
+      "Xã Gia Vượng",
+      "373",
+      "Huyện Gia Viễn",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14497",
+      "Xã Gia Thịnh",
+      "373",
+      "Huyện Gia Viễn",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14497",
+      "Xã Gia Thịnh",
+      "373",
+      "Huyện Gia Viễn",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14518",
+      "Xã Gia Tiến",
+      "373",
+      "Huyện Gia Viễn",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14518",
+      "Xã Gia Tiến",
+      "373",
+      "Huyện Gia Viễn",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14539",
+      "Xã Ninh Mỹ",
+      "374",
+      "Huyện Hoa Lư",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14539",
+      "Xã Ninh Mỹ",
+      "374",
+      "Huyện Hoa Lư",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14545",
+      "Xã Ninh Xuân",
+      "374",
+      "Huyện Hoa Lư",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14545",
+      "Xã Ninh Xuân",
+      "374",
+      "Huyện Hoa Lư",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14548",
+      "Xã Ninh Hải",
+      "374",
+      "Huyện Hoa Lư",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14548",
+      "Xã Ninh Hải",
+      "374",
+      "Huyện Hoa Lư",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14665",
+      "Xã Lưu Phương",
+      "376",
+      "Huyện Kim Sơn",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14665",
+      "Xã Lưu Phương",
+      "376",
+      "Huyện Kim Sơn",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14710",
+      "Xã Mai Sơn",
+      "377",
+      "Huyện Yên Mô",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14710",
+      "Xã Mai Sơn",
+      "377",
+      "Huyện Yên Mô",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14713",
+      "Xã Khánh Thịnh",
+      "377",
+      "Huyện Yên Mô",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14713",
+      "Xã Khánh Thịnh",
+      "377",
+      "Huyện Yên Mô",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "14731",
+      "Xã Yên Hưng",
+      "377",
+      "Huyện Yên Mô",
+      "37",
+      "Tỉnh Ninh Bình"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "14731",
+      "Xã Yên Hưng",
+      "377",
+      "Huyện Yên Mô",
+      "37",
+      "Tỉnh Ninh Bình"
+    ]
+  },
+  {
+    "source": [
+      "16411",
+      "Xã Đông Xuân",
+      "405",
+      "Huyện Đông Sơn",
+      "38",
+      "Tỉnh Thanh Hóa"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "16411",
+      "Xã Đông Xuân",
+      "405",
+      "Huyện Đông Sơn",
+      "38",
+      "Tỉnh Thanh Hóa"
+    ]
+  },
+  {
+    "source": [
+      "19630",
+      "Xã Triệu Vân",
+      "469",
+      "Huyện Triệu Phong",
+      "45",
+      "Tỉnh Quảng Trị"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "19630",
+      "Xã Triệu Vân",
+      "469",
+      "Huyện Triệu Phong",
+      "45",
+      "Tỉnh Quảng Trị"
+    ]
+  },
+  {
+    "source": [
+      "19651",
+      "Xã Triệu Lăng",
+      "469",
+      "Huyện Triệu Phong",
+      "45",
+      "Tỉnh Quảng Trị"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "19651",
+      "Xã Triệu Lăng",
+      "469",
+      "Huyện Triệu Phong",
+      "45",
+      "Tỉnh Quảng Trị"
+    ]
+  },
+  {
+    "source": [
+      "19696",
+      "Xã Hải Quế",
+      "470",
+      "Huyện Hải Lăng",
+      "45",
+      "Tỉnh Quảng Trị"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "19696",
+      "Xã Hải Quế",
+      "470",
+      "Huyện Hải Lăng",
+      "45",
+      "Tỉnh Quảng Trị"
+    ]
+  },
+  {
+    "source": [
+      "20032",
+      "Xã Hương Thọ",
+      "474",
+      "Thành phố Huế",
+      "46",
+      "Tỉnh Thừa Thiên Huế"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "20032",
+      "Xã Hương Thọ",
+      "474",
+      "Thành phố Huế",
+      "46",
+      "Tỉnh Thừa Thiên Huế"
+    ]
+  },
+  {
+    "source": [
+      "20203",
+      "Phường Tam Thuận",
+      "491",
+      "Quận Thanh Khê",
+      "48",
+      "Thành phố Đà Nẵng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "20203",
+      "Phường Tam Thuận",
+      "491",
+      "Quận Thanh Khê",
+      "48",
+      "Thành phố Đà Nẵng"
+    ]
+  },
+  {
+    "source": [
+      "20212",
+      "Phường Tân Chính",
+      "491",
+      "Quận Thanh Khê",
+      "48",
+      "Thành phố Đà Nẵng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "20212",
+      "Phường Tân Chính",
+      "491",
+      "Quận Thanh Khê",
+      "48",
+      "Thành phố Đà Nẵng"
+    ]
+  },
+  {
+    "source": [
+      "20218",
+      "Phường Vĩnh Trung",
+      "491",
+      "Quận Thanh Khê",
+      "48",
+      "Thành phố Đà Nẵng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "20218",
+      "Phường Vĩnh Trung",
+      "491",
+      "Quận Thanh Khê",
+      "48",
+      "Thành phố Đà Nẵng"
+    ]
+  },
+  {
+    "source": [
+      "20225",
+      "Phường Hòa Khê",
+      "491",
+      "Quận Thanh Khê",
+      "48",
+      "Thành phố Đà Nẵng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "20225",
+      "Phường Hòa Khê",
+      "491",
+      "Quận Thanh Khê",
+      "48",
+      "Thành phố Đà Nẵng"
+    ]
+  },
+  {
+    "source": [
+      "20239",
+      "Phường Hải Châu II",
+      "492",
+      "Quận Hải Châu",
+      "48",
+      "Thành phố Đà Nẵng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "20239",
+      "Phường Hải Châu II",
+      "492",
+      "Quận Hải Châu",
+      "48",
+      "Thành phố Đà Nẵng"
+    ]
+  },
+  {
+    "source": [
+      "20246",
+      "Phường Hòa Thuận Đông",
+      "492",
+      "Quận Hải Châu",
+      "48",
+      "Thành phố Đà Nẵng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "20246",
+      "Phường Hòa Thuận Đông",
+      "492",
+      "Quận Hải Châu",
+      "48",
+      "Thành phố Đà Nẵng"
+    ]
+  },
+  {
+    "source": [
+      "20281",
+      "Phường An Hải Đông",
+      "493",
+      "Quận Sơn Trà",
+      "48",
+      "Thành phố Đà Nẵng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "20281",
+      "Phường An Hải Đông",
+      "493",
+      "Quận Sơn Trà",
+      "48",
+      "Thành phố Đà Nẵng"
+    ]
+  },
+  {
+    "source": [
+      "21253",
+      "Xã Nghĩa Phú",
+      "522",
+      "Thành phố Quảng Ngãi",
+      "51",
+      "Tỉnh Quảng Ngãi"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "21253",
+      "Xã Nghĩa Phú",
+      "522",
+      "Thành phố Quảng Ngãi",
+      "51",
+      "Tỉnh Quảng Ngãi"
+    ]
+  },
+  {
+    "source": [
+      "21286",
+      "Xã Nghĩa Mỹ",
+      "528",
+      "Huyện Tư Nghĩa",
+      "51",
+      "Tỉnh Quảng Ngãi"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "21286",
+      "Xã Nghĩa Mỹ",
+      "528",
+      "Huyện Tư Nghĩa",
+      "51",
+      "Tỉnh Quảng Ngãi"
+    ]
+  },
+  {
+    "source": [
+      "21403",
+      "Xã Đức Lợi",
+      "533",
+      "Huyện Mộ Đức",
+      "51",
+      "Tỉnh Quảng Ngãi"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "21403",
+      "Xã Đức Lợi",
+      "533",
+      "Huyện Mộ Đức",
+      "51",
+      "Tỉnh Quảng Ngãi"
+    ]
+  },
+  {
+    "source": [
+      "22342",
+      "Phường Xương Huân",
+      "568",
+      "Thành phố Nha Trang",
+      "56",
+      "Tỉnh Khánh Hòa"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "22342",
+      "Phường Xương Huân",
+      "568",
+      "Thành phố Nha Trang",
+      "56",
+      "Tỉnh Khánh Hòa"
+    ]
+  },
+  {
+    "source": [
+      "22345",
+      "Phường Vạn Thắng",
+      "568",
+      "Thành phố Nha Trang",
+      "56",
+      "Tỉnh Khánh Hòa"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "22345",
+      "Phường Vạn Thắng",
+      "568",
+      "Thành phố Nha Trang",
+      "56",
+      "Tỉnh Khánh Hòa"
+    ]
+  },
+  {
+    "source": [
+      "22354",
+      "Phường Phương Sơn",
+      "568",
+      "Thành phố Nha Trang",
+      "56",
+      "Tỉnh Khánh Hòa"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "22354",
+      "Phường Phương Sơn",
+      "568",
+      "Thành phố Nha Trang",
+      "56",
+      "Tỉnh Khánh Hòa"
+    ]
+  },
+  {
+    "source": [
+      "22579",
+      "Xã Ninh Phước",
+      "572",
+      "Thị xã Ninh Hòa",
+      "56",
+      "Tỉnh Khánh Hòa"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "22579",
+      "Xã Ninh Phước",
+      "572",
+      "Thị xã Ninh Hòa",
+      "56",
+      "Tỉnh Khánh Hòa"
+    ]
+  },
+  {
+    "source": [
+      "23593",
+      "Xã Tân Sơn",
+      "622",
+      "Thành phố Pleiku",
+      "64",
+      "Tỉnh Gia Lai"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "23593",
+      "Xã Tân Sơn",
+      "622",
+      "Thành phố Pleiku",
+      "64",
+      "Tỉnh Gia Lai"
+    ]
+  },
+  {
+    "source": [
+      "23671",
+      "Xã Kông Pla",
+      "625",
+      "Huyện KBang",
+      "64",
+      "Tỉnh Gia Lai"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "23671",
+      "Xã Kông Pla",
+      "625",
+      "Huyện KBang",
+      "64",
+      "Tỉnh Gia Lai"
+    ]
+  },
+  {
+    "source": [
+      "24127",
+      "Phường Thống Nhất",
+      "643",
+      "Thành phố Buôn Ma Thuột",
+      "66",
+      "Tỉnh Đắk Lắk"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "24127",
+      "Phường Thống Nhất",
+      "643",
+      "Thành phố Buôn Ma Thuột",
+      "66",
+      "Tỉnh Đắk Lắk"
+    ]
+  },
+  {
+    "source": [
+      "24139",
+      "Phường Thành Công",
+      "643",
+      "Thành phố Buôn Ma Thuột",
+      "66",
+      "Tỉnh Đắk Lắk"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "24139",
+      "Phường Thành Công",
+      "643",
+      "Thành phố Buôn Ma Thuột",
+      "66",
+      "Tỉnh Đắk Lắk"
+    ]
+  },
+  {
+    "source": [
+      "24325",
+      "Xã Ea Blang",
+      "644",
+      "Thị Xã Buôn Hồ",
+      "66",
+      "Tỉnh Đắk Lắk"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "24325",
+      "Xã Ea Blang",
+      "644",
+      "Thị Xã Buôn Hồ",
+      "66",
+      "Tỉnh Đắk Lắk"
+    ]
+  },
+  {
+    "source": [
+      "24460",
+      "Xã Hòa Tân",
+      "653",
+      "Huyện Krông Bông",
+      "66",
+      "Tỉnh Đắk Lắk"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "24460",
+      "Xã Hòa Tân",
+      "653",
+      "Huyện Krông Bông",
+      "66",
+      "Tỉnh Đắk Lắk"
+    ]
+  },
+  {
+    "source": [
+      "25102",
+      "Xã Đạ M'ri",
+      "681",
+      "Huyện Đạ Huoai",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "25102",
+      "Xã Đạ M'ri",
+      "681",
+      "Huyện Đạ Huoai",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ]
+  },
+  {
+    "source": [
+      "25108",
+      "Xã Đạ Tồn",
+      "681",
+      "Huyện Đạ Huoai",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "25108",
+      "Xã Đạ Tồn",
+      "681",
+      "Huyện Đạ Huoai",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ]
+  },
+  {
+    "source": [
+      "25120",
+      "Xã Đoàn Kết",
+      "681",
+      "Huyện Đạ Huoai",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "25120",
+      "Xã Đoàn Kết",
+      "681",
+      "Huyện Đạ Huoai",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ]
+  },
+  {
+    "source": [
+      "25123",
+      "Xã Phước Lộc",
+      "681",
+      "Huyện Đạ Huoai",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "25123",
+      "Xã Phước Lộc",
+      "681",
+      "Huyện Đạ Huoai",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ]
+  },
+  {
+    "source": [
+      "25147",
+      "Xã Triệu Hải",
+      "682",
+      "Huyện Đạ Tẻh",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "25147",
+      "Xã Triệu Hải",
+      "682",
+      "Huyện Đạ Tẻh",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ]
+  },
+  {
+    "source": [
+      "25174",
+      "Xã Mỹ Lâm",
+      "683",
+      "Huyện Cát Tiên",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "25174",
+      "Xã Mỹ Lâm",
+      "683",
+      "Huyện Cát Tiên",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ]
+  },
+  {
+    "source": [
+      "25177",
+      "Xã Tư Nghĩa",
+      "683",
+      "Huyện Cát Tiên",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "25177",
+      "Xã Tư Nghĩa",
+      "683",
+      "Huyện Cát Tiên",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ]
+  },
+  {
+    "source": [
+      "25186",
+      "Xã Phù Mỹ",
+      "683",
+      "Huyện Cát Tiên",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "25186",
+      "Xã Phù Mỹ",
+      "683",
+      "Huyện Cát Tiên",
+      "68",
+      "Tỉnh Lâm Đồng"
+    ]
+  },
+  {
+    "source": [
+      "26026",
+      "Phường Tân Mai",
+      "731",
+      "Thành phố Biên Hòa",
+      "75",
+      "Tỉnh Đồng Nai"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26026",
+      "Phường Tân Mai",
+      "731",
+      "Thành phố Biên Hòa",
+      "75",
+      "Tỉnh Đồng Nai"
+    ]
+  },
+  {
+    "source": [
+      "26035",
+      "Phường Tam Hòa",
+      "731",
+      "Thành phố Biên Hòa",
+      "75",
+      "Tỉnh Đồng Nai"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26035",
+      "Phường Tam Hòa",
+      "731",
+      "Thành phố Biên Hòa",
+      "75",
+      "Tỉnh Đồng Nai"
+    ]
+  },
+  {
+    "source": [
+      "26038",
+      "Phường Hòa Bình",
+      "731",
+      "Thành phố Biên Hòa",
+      "75",
+      "Tỉnh Đồng Nai"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26038",
+      "Phường Hòa Bình",
+      "731",
+      "Thành phố Biên Hòa",
+      "75",
+      "Tỉnh Đồng Nai"
+    ]
+  },
+  {
+    "source": [
+      "26071",
+      "Phường Xuân Trung",
+      "732",
+      "Thành phố Long Khánh",
+      "75",
+      "Tỉnh Đồng Nai"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26071",
+      "Phường Xuân Trung",
+      "732",
+      "Thành phố Long Khánh",
+      "75",
+      "Tỉnh Đồng Nai"
+    ]
+  },
+  {
+    "source": [
+      "26074",
+      "Phường Xuân Thanh",
+      "732",
+      "Thành phố Long Khánh",
+      "75",
+      "Tỉnh Đồng Nai"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26074",
+      "Phường Xuân Thanh",
+      "732",
+      "Thành phố Long Khánh",
+      "75",
+      "Tỉnh Đồng Nai"
+    ]
+  },
+  {
+    "source": [
+      "26137",
+      "Xã Phú Sơn",
+      "734",
+      "Huyện Tân Phú",
+      "75",
+      "Tỉnh Đồng Nai"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26137",
+      "Xã Phú Sơn",
+      "734",
+      "Huyện Tân Phú",
+      "75",
+      "Tỉnh Đồng Nai"
+    ]
+  },
+  {
+    "source": [
+      "26197",
+      "Xã Bình Hòa",
+      "735",
+      "Huyện Vĩnh Cửu",
+      "75",
+      "Tỉnh Đồng Nai"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26197",
+      "Xã Bình Hòa",
+      "735",
+      "Huyện Vĩnh Cửu",
+      "75",
+      "Tỉnh Đồng Nai"
+    ]
+  },
+  {
+    "source": [
+      "26203",
+      "Xã Hiếu Liêm",
+      "735",
+      "Huyện Vĩnh Cửu",
+      "75",
+      "Tỉnh Đồng Nai"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26203",
+      "Xã Hiếu Liêm",
+      "735",
+      "Huyện Vĩnh Cửu",
+      "75",
+      "Tỉnh Đồng Nai"
+    ]
+  },
+  {
+    "source": [
+      "26869",
+      "Phường 15",
+      "764",
+      "Quận Gò Vấp",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26869",
+      "Phường 15",
+      "764",
+      "Quận Gò Vấp",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "26893",
+      "Phường 04",
+      "764",
+      "Quận Gò Vấp",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26893",
+      "Phường 04",
+      "764",
+      "Quận Gò Vấp",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "26896",
+      "Phường 01",
+      "764",
+      "Quận Gò Vấp",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26896",
+      "Phường 01",
+      "764",
+      "Quận Gò Vấp",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "26897",
+      "Phường 9",
+      "764",
+      "Quận Gò Vấp",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26897",
+      "Phường 9",
+      "764",
+      "Quận Gò Vấp",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "26932",
+      "Phường 06",
+      "765",
+      "Quận Bình Thạnh",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26932",
+      "Phường 06",
+      "765",
+      "Quận Bình Thạnh",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "26938",
+      "Phường 15",
+      "765",
+      "Quận Bình Thạnh",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26938",
+      "Phường 15",
+      "765",
+      "Quận Bình Thạnh",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "26947",
+      "Phường 03",
+      "765",
+      "Quận Bình Thạnh",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26947",
+      "Phường 03",
+      "765",
+      "Quận Bình Thạnh",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "26953",
+      "Phường 21",
+      "765",
+      "Quận Bình Thạnh",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "26953",
+      "Phường 21",
+      "765",
+      "Quận Bình Thạnh",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27055",
+      "Phường 03",
+      "768",
+      "Quận Phú Nhuận",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27055",
+      "Phường 03",
+      "768",
+      "Quận Phú Nhuận",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27076",
+      "Phường 17",
+      "768",
+      "Quận Phú Nhuận",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27076",
+      "Phường 17",
+      "768",
+      "Quận Phú Nhuận",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27136",
+      "Phường 13",
+      "770",
+      "Quận 3",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27136",
+      "Phường 13",
+      "770",
+      "Quận 3",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27145",
+      "Phường 10",
+      "770",
+      "Quận 3",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27145",
+      "Phường 10",
+      "770",
+      "Quận 3",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27175",
+      "Phường 11",
+      "771",
+      "Quận 10",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27175",
+      "Phường 11",
+      "771",
+      "Quận 10",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27196",
+      "Phường 07",
+      "771",
+      "Quận 10",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27196",
+      "Phường 07",
+      "771",
+      "Quận 10",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27199",
+      "Phường 05",
+      "771",
+      "Quận 10",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27199",
+      "Phường 05",
+      "771",
+      "Quận 10",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27226",
+      "Phường 13",
+      "772",
+      "Quận 11",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27226",
+      "Phường 13",
+      "772",
+      "Quận 11",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27235",
+      "Phường 12",
+      "772",
+      "Quận 11",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27235",
+      "Phường 12",
+      "772",
+      "Quận 11",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27241",
+      "Phường 06",
+      "772",
+      "Quận 11",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27241",
+      "Phường 06",
+      "772",
+      "Quận 11",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27244",
+      "Phường 04",
+      "772",
+      "Quận 11",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27244",
+      "Phường 04",
+      "772",
+      "Quận 11",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27250",
+      "Phường 02",
+      "772",
+      "Quận 11",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27250",
+      "Phường 02",
+      "772",
+      "Quận 11",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27262",
+      "Phường 09",
+      "773",
+      "Quận 4",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27262",
+      "Phường 09",
+      "773",
+      "Quận 4",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27268",
+      "Phường 08",
+      "773",
+      "Quận 4",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27268",
+      "Phường 08",
+      "773",
+      "Quận 4",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27280",
+      "Phường 14",
+      "773",
+      "Quận 4",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27280",
+      "Phường 14",
+      "773",
+      "Quận 4",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27313",
+      "Phường 02",
+      "774",
+      "Quận 5",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27313",
+      "Phường 02",
+      "774",
+      "Quận 5",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27322",
+      "Phường 07",
+      "774",
+      "Quận 5",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27322",
+      "Phường 07",
+      "774",
+      "Quận 5",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27337",
+      "Phường 06",
+      "774",
+      "Quận 5",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27337",
+      "Phường 06",
+      "774",
+      "Quận 5",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27340",
+      "Phường 10",
+      "774",
+      "Quận 5",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27340",
+      "Phường 10",
+      "774",
+      "Quận 5",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27355",
+      "Phường 06",
+      "775",
+      "Quận 6",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27355",
+      "Phường 06",
+      "775",
+      "Quận 6",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27367",
+      "Phường 02",
+      "775",
+      "Quận 6",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27367",
+      "Phường 02",
+      "775",
+      "Quận 6",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27370",
+      "Phường 01",
+      "775",
+      "Quận 6",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27370",
+      "Phường 01",
+      "775",
+      "Quận 6",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27373",
+      "Phường 04",
+      "775",
+      "Quận 6",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27373",
+      "Phường 04",
+      "775",
+      "Quận 6",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27388",
+      "Phường 08",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27388",
+      "Phường 08",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27391",
+      "Phường 02",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27391",
+      "Phường 02",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27394",
+      "Phường 01",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27394",
+      "Phường 01",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27400",
+      "Phường 11",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27400",
+      "Phường 11",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27406",
+      "Phường 10",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27406",
+      "Phường 10",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "27412",
+      "Phường 13",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "27412",
+      "Phường 13",
+      "776",
+      "Quận 8",
+      "79",
+      "Thành phố Hồ Chí Minh"
+    ]
+  },
+  {
+    "source": [
+      "29548",
+      "Phường 1",
+      "855",
+      "Thành phố Vĩnh Long",
+      "86",
+      "Tỉnh Vĩnh Long"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "29548",
+      "Phường 1",
+      "855",
+      "Thành phố Vĩnh Long",
+      "86",
+      "Tỉnh Vĩnh Long"
+    ]
+  },
+  {
+    "source": [
+      "29575",
+      "Thị trấn Long Hồ",
+      "857",
+      "Huyện Long Hồ",
+      "86",
+      "Tỉnh Vĩnh Long"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "29575",
+      "Thị trấn Long Hồ",
+      "857",
+      "Huyện Long Hồ",
+      "86",
+      "Tỉnh Vĩnh Long"
+    ]
+  },
+  {
+    "source": [
+      "29758",
+      "Xã Tường Lộc",
+      "860",
+      "Huyện Tam Bình",
+      "86",
+      "Tỉnh Vĩnh Long"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "29758",
+      "Xã Tường Lộc",
+      "860",
+      "Huyện Tam Bình",
+      "86",
+      "Tỉnh Vĩnh Long"
+    ]
+  },
+  {
+    "source": [
+      "29854",
+      "Xã Thiện Mỹ",
+      "862",
+      "Huyện Trà Ôn",
+      "86",
+      "Tỉnh Vĩnh Long"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "29854",
+      "Xã Thiện Mỹ",
+      "862",
+      "Huyện Trà Ôn",
+      "86",
+      "Tỉnh Vĩnh Long"
+    ]
+  },
+  {
+    "source": [
+      "29773",
+      "Xã Tân Hưng",
+      "863",
+      "Huyện Bình Tân",
+      "86",
+      "Tỉnh Vĩnh Long"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "29773",
+      "Xã Tân Hưng",
+      "863",
+      "Huyện Bình Tân",
+      "86",
+      "Tỉnh Vĩnh Long"
+    ]
+  },
+  {
+    "source": [
+      "29863",
+      "Phường 11",
+      "866",
+      "Thành phố Cao Lãnh",
+      "87",
+      "Tỉnh Đồng Tháp"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "29863",
+      "Phường 11",
+      "866",
+      "Thành phố Cao Lãnh",
+      "87",
+      "Tỉnh Đồng Tháp"
+    ]
+  },
+  {
+    "source": [
+      "29866",
+      "Phường 1",
+      "866",
+      "Thành phố Cao Lãnh",
+      "87",
+      "Tỉnh Đồng Tháp"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "29866",
+      "Phường 1",
+      "866",
+      "Thành phố Cao Lãnh",
+      "87",
+      "Tỉnh Đồng Tháp"
+    ]
+  },
+  {
+    "source": [
+      "30285",
+      "Phường Đông Xuyên",
+      "883",
+      "Thành phố Long Xuyên",
+      "89",
+      "Tỉnh An Giang"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "30285",
+      "Phường Đông Xuyên",
+      "883",
+      "Thành phố Long Xuyên",
+      "89",
+      "Tỉnh An Giang"
+    ]
+  },
+  {
+    "source": [
+      "31126",
+      "Phường An Nghiệp",
+      "916",
+      "Quận Ninh Kiều",
+      "92",
+      "Thành phố Cần Thơ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "31126",
+      "Phường An Nghiệp",
+      "916",
+      "Quận Ninh Kiều",
+      "92",
+      "Thành phố Cần Thơ"
+    ]
+  },
+  {
+    "source": [
+      "31129",
+      "Phường An Cư",
+      "916",
+      "Quận Ninh Kiều",
+      "92",
+      "Thành phố Cần Thơ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "31129",
+      "Phường An Cư",
+      "916",
+      "Quận Ninh Kiều",
+      "92",
+      "Thành phố Cần Thơ"
+    ]
+  },
+  {
+    "source": [
+      "31141",
+      "Phường An Phú",
+      "916",
+      "Quận Ninh Kiều",
+      "92",
+      "Thành phố Cần Thơ"
+    ],
+    "epoch": 0,
+    "missing_at": [
+      "31141",
+      "Phường An Phú",
+      "916",
+      "Quận Ninh Kiều",
+      "92",
+      "Thành phố Cần Thơ"
+    ]
+  },
+  {
+    "source": [
+      "03991",
+      "Xã Qui Hướng",
+      "123",
+      "Huyện Mộc Châu",
+      "14",
+      "Tỉnh Sơn La"
+    ],
+    "epoch": 1,
+    "missing_at": [
+      "03991",
+      "Xã Qui Hướng",
+      "123",
+      "Huyện Mộc Châu",
+      "14",
+      "Tỉnh Sơn La"
+    ]
+  }
+]

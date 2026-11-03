@@ -1,0 +1,56 @@
+﻿Option Explicit
+Private WithEvents actionButton As MSForms.CommandButton
+Private status As MSForms.Label
+Private running As Boolean
+
+Private Sub UserForm_Initialize()
+    Me.Caption = "Dich ngon ngu - Tien ich Excel"
+    Me.Width = 480: Me.Height = 190: Me.StartUpPosition = 1
+    Me.Font.Name = "Segoe UI": Me.Font.Size = 10
+    Set status = Me.Controls.Add("Forms.Label.1", "lblStatus", True)
+    status.Left = 16: status.Top = 16: status.Width = 436: status.Height = 88
+    status.WordWrap = True: status.Caption = u("\u0110ang d\u1ecbch theo c\u00e0i \u0111\u1eb7t m\u1eb7c \u0111\u1ecbnh...")
+    Set actionButton = Me.Controls.Add("Forms.CommandButton.1", "btnAction", True)
+    actionButton.Left = 332: actionButton.Top = 114: actionButton.Width = 120: actionButton.Height = 28
+    actionButton.Caption = u("D\u1eebng")
+    running = True
+End Sub
+
+Public Sub SetProgress(ByVal message As String)
+    status.Caption = message
+    Me.Repaint
+End Sub
+
+Public Sub BeginRun()
+    running = True
+    actionButton.Caption = u("D\u1eebng")
+    actionButton.Cancel = False
+    SetProgress u("\u0110ang d\u1ecbch theo c\u00e0i \u0111\u1eb7t m\u1eb7c \u0111\u1ecbnh...")
+End Sub
+
+Public Sub Finish(ByVal result As String)
+    running = False
+    actionButton.Caption = u("\u0110\u00f3ng")
+    actionButton.Cancel = True
+    If Left$(result, 3) = "OK:" Then
+        SetProgress u("\u0110\u00e3 d\u1ecbch ") & Mid$(result, 4) & u(" \u00f4 v\u00e0o c\u1ed9t b\u00ean ph\u1ea3i. Gi\u1eef nguy\u00ean ngu\u1ed3n. C\u00f3 th\u1ec3 b\u1ea5m Ho\u00e0n t\u00e1c trong tab Ti\u1ec7n \u00edch.")
+    Else
+        SetProgress result
+    End If
+End Sub
+
+Private Sub actionButton_Click()
+    If running Then
+        CancelDirectTranslation
+        SetProgress u("\u0110ang d\u1eebng; ch\u1edd y\u00eau c\u1ea7u m\u1ea1ng hi\u1ec7n t\u1ea1i k\u1ebft th\u00fac. Ch\u01b0a ghi k\u1ebft qu\u1ea3.")
+    Else
+        Unload Me
+    End If
+End Sub
+
+Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
+    If running Then
+        Cancel = True
+        actionButton_Click
+    End If
+End Sub

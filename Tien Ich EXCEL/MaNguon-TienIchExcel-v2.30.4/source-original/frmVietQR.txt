@@ -1,0 +1,152 @@
+﻿Option Explicit
+
+Private Sub UserForm_Initialize()
+    Dim savedBankIndex As String, savedAcc As String
+    
+    ' Tieu de Form chuan tieng Viet khong dau
+    Me.Caption = "Tao ma VietQR - Chuyen khoan ngan hang"
+    
+    ' Nhan huong dan
+    lblBank.Caption = "1. Ch" & ChrW(7885) & "n ng" & ChrW(226) & "n h" & ChrW(224) & "ng:"
+    lblAcc.Caption = "2. S" & ChrW(7889) & " t" & ChrW(224) & "i kho" & ChrW(7843) & "n:"
+    lblAmount.Caption = "3. S" & ChrW(7889) & " ti" & ChrW(7873) & "n (n" & ChrW(7871) & "u c" & ChrW(243) & "):"
+    lblMemo.Caption = "4. N" & ChrW(7897) & "i dung chuy" & ChrW(7875) & "n kho" & ChrW(7843) & "n:"
+    
+    ' Nut bam
+    btnCreate.Caption = "T" & ChrW(7841) & "o m" & ChrW(227) & " QR"
+    btnClose.Caption = ChrW(272) & ChrW(243) & "ng"
+
+    ' Nap danh sach ngan hang Viet Nam
+    With cboBank
+        .Clear
+        .AddItem "MB - Ngan hang Quan Doi (MBBank)"
+        .AddItem "VCB - Ngan hang Ngoai Thuong Viet Nam (Vietcombank)"
+        .AddItem "TCB - Ngan hang Ky Thuong (Techcombank)"
+        .AddItem "ACB - Ngan hang A Chau"
+        .AddItem "BIDV - Ngan hang Dau Tu va Phat Trien"
+        .AddItem "CTG - Ngan hang Cong Thuong (VietinBank)"
+        .AddItem "VPB - Ngan hang Viet Nam Thinh Vuong (VPBank)"
+        .AddItem "TPB - Ngan hang Tien Phong (TPBank)"
+        .AddItem "STB - Ngan hang Sai Gon Thuong Tin (Sacombank)"
+        .AddItem "HDB - Ngan hang Phat Trien TP.HCM (HDBank)"
+        .AddItem "VIB - Ngan hang Quoc Te (VIB)"
+        .AddItem "MSB - Ngan hang Hang Hai (MSB)"
+        .AddItem "OCB - Ngan hang Phuong Dong (OCB)"
+        .AddItem "SHB - Ngan hang Sai Gon - Ha Noi (SHB)"
+        .AddItem "LPB - Ngan hang Loc Phat (LPBank)"
+        .AddItem "NAB - Ngan hang Nam A (Nam A Bank)"
+        .AddItem "SEAB - Ngan hang Dong Nam A (SeABank)"
+        .AddItem "ABB - Ngan hang An Binh (ABBANK)"
+        .AddItem "BAB - Ngan hang Bac A (Bac A Bank)"
+        .AddItem "BVB - Ngan hang Ban Viet (BVBank)"
+        .AddItem "KLB - Ngan hang Kien Long (Kienlongbank)"
+        .AddItem "PVB - Ngan hang Dai Chung Viet Nam (PVcomBank)"
+        .AddItem "VAB - Ngan hang Viet A (VietABank)"
+        .AddItem "NCB - Ngan hang Quoc Dan (NCB)"
+        .AddItem "VRB - Ngan hang Lien doanh Viet - Nga"
+        .AddItem "WVN - Ngan hang Woori Viet Nam"
+        .AddItem "SHBVN - Ngan hang Shinhan Viet Nam"
+        .AddItem "PBVN - Public Bank Viet Nam"
+        .AddItem "CAKE - Ngan hang So CAKE by VPBank"
+        .AddItem "TIMO - Ngan hang So Timo"
+        .AddItem "VIETTELPAY - Vi Viettel Money"
+        .AddItem "VNPAY - Vi VNPAY"
+    End With
+    
+    ' --- DOC NGAN HANG VA SO TAI KHOAN DA DUOC LUU MAC DINH ---
+    savedBankIndex = GetSetting("ExcelAddinBarcode", "VietQRConfig", "DefaultBankIndex", "0")
+    savedAcc = GetSetting("ExcelAddinBarcode", "VietQRConfig", "DefaultAccNo", "")
+    
+    If val(savedBankIndex) >= 0 And val(savedBankIndex) < cboBank.ListCount Then
+        cboBank.ListIndex = val(savedBankIndex)
+    Else
+        cboBank.ListIndex = 0
+    End If
+    txtAcc.Text = savedAcc
+    
+    ' Neu o dang chon la con so thi tu dong lay so tien vao Form
+    If TypeName(Selection) = "Range" Then
+        If IsNumeric(Selection.Value) And Selection.Value > 0 Then
+            txtAmount.Text = CStr(Selection.Value)
+        End If
+    End If
+    
+    ' Tu dong dua con tro chuot vao o So Tien neu da co So TK
+    If Trim(txtAcc.Text) <> "" Then
+        txtAmount.SetFocus
+    End If
+End Sub
+
+Private Sub btnCreate_Click()
+    Dim bankSelect As String, bankId As String
+    Dim accNo As String, amount As String, memo As String
+    Dim imgURL As String, selRange As Range, targetRng As Range
+    Dim shp As Shape, ws As Worksheet
+    Dim picSize As Double
+    
+    If cboBank.ListIndex = -1 Then
+        MsgBox "Vui long chon mot ngan hang!", vbExclamation, "Thong bao"
+        cboBank.SetFocus
+        Exit Sub
+    End If
+    
+    bankSelect = Trim(cboBank.Value)
+    bankId = Trim(Split(bankSelect, "-")(0))
+    
+    accNo = Trim(txtAcc.Text)
+    If accNo = "" Then
+        MsgBox "Vui long nhap so tai khoan!", vbExclamation, "Thong bao"
+        txtAcc.SetFocus
+        Exit Sub
+    End If
+    
+    ' --- LUU LAI NGAN HANG & SO TAI KHOAN LAM MAC DINH CHO LAN SAU ---
+    SaveSetting "ExcelAddinBarcode", "VietQRConfig", "DefaultBankIndex", CStr(cboBank.ListIndex)
+    SaveSetting "ExcelAddinBarcode", "VietQRConfig", "DefaultAccNo", accNo
+    
+    amount = Trim(txtAmount.Text)
+    memo = Trim(txtMemo.Text)
+    picSize = 120
+    
+    If TypeName(Selection) <> "Range" Then
+        MsgBox "Vui long chon o tinh de dat ma QR!", vbExclamation, "Thong bao"
+        Exit Sub
+    End If
+    
+    Set selRange = Selection.Cells(1, 1)
+    Set ws = selRange.Worksheet
+    Set targetRng = selRange.Offset(0, 1)
+    
+    If selRange.EntireRow.RowHeight < 130 Then selRange.EntireRow.RowHeight = 130
+    If targetRng.EntireColumn.ColumnWidth < 25 Then targetRng.EntireColumn.ColumnWidth = 25
+    
+    For Each shp In ws.Shapes
+        If shp.Type = msoPicture Or shp.Type = msoLinkedPicture Then
+            If Not Intersect(shp.TopLeftCell, targetRng) Is Nothing Then shp.Delete
+        End If
+    Next shp
+    
+    imgURL = "https://img.vietqr.io/image/" & bankId & "-" & accNo & "-compact2.png"
+    If amount <> "" Or memo <> "" Then
+        imgURL = imgURL & "?amount=" & Application.EncodeURL(amount) & "&addInfo=" & Application.EncodeURL(memo)
+    End If
+    
+    On Error Resume Next
+    Set shp = ws.Shapes.AddPicture( _
+                Filename:=imgURL, _
+                LinkToFile:=msoFalse, _
+                SaveWithDocument:=msoTrue, _
+                Left:=targetRng.Left + (targetRng.Width - picSize) / 2, _
+                Top:=targetRng.Top + (targetRng.Height - picSize) / 2, _
+                Width:=picSize, _
+                Height:=picSize)
+    If Not shp Is Nothing Then shp.Placement = xlMoveAndSize
+    On Error GoTo 0
+    
+    Unload Me
+    MsgBox "Da tao ma VietQR thanh cong!", vbInformation, "Hoan tat"
+End Sub
+
+Private Sub btnClose_Click()
+    Unload Me
+End Sub

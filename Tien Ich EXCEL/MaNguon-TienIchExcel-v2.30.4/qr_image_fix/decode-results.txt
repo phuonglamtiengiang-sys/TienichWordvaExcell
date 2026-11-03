@@ -1,0 +1,1 @@
+PASS saved Excel/Word fallback PNGs decode; SVG sources embedded; blank amount omits tag 54; amount is 125000.

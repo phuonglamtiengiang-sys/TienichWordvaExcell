@@ -1,0 +1,5 @@
+from pathlib import Path
+for n in ['test_word_icons.ps1','test_word_editing.ps1','test_unikey_tables.py','test_unikey_tables.ps1']:
+ p=Path('tests')/n;s=p.read_text(encoding='utf-8-sig').replace('1.3.2','1.3.3');p.write_text(s,encoding='utf-8-sig')
+p=Path('word/package_word.py');s=p.read_text(encoding='utf-8-sig').replace("['test_word_text_positions.ps1'","['test_word_accent_speed.ps1','test_word_text_positions.ps1'");s=s.replace("    'Word Windows 64-bit tested;", "    'PASS accent removal: 19000 characters in about 2 seconds; selection boundaries, bold/italic, floating object and Undo.\\n'\n    'PASS decomposed Unicode accent removal.\\n'\n    'Word Windows 64-bit tested;");p.write_text(s,encoding='utf-8-sig')
+p=Path('word/HUONG-DAN.md');s=p.read_text(encoding='utf-8-sig');s+='\nBản 1.3.3 tối ưu Bỏ dấu bằng Find/Replace theo nhóm ký tự trong Word thay vì trao đổi từng ký tự. Mẫu 19.000 ký tự mất khoảng 2 giây trên máy thử; tốc độ tùy tài liệu. Giữ định dạng và neo hình, Ctrl+Z một lần. Unicode dấu tách rời dùng đường xử lý theo cụm ký tự để bảo toàn nội dung; trường hợp này có thể chậm hơn.\n';p.write_text(s,encoding='utf-8-sig')

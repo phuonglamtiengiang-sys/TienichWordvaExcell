@@ -1,0 +1,245 @@
+Option Explicit
+Private mRows As Variant
+Private mIndex As Object
+Private Const DATA_SHEET As String = "AddressData"
+
+Private Function AddressPart(ByVal value As String) As String
+    Dim s As String, prefix As Variant
+    s = LCase$(BoDau(value))
+    s = Replace(Replace(s, ChrW(160), " "), ".", " ")
+    s = Application.Trim(s)
+    For Each prefix In Array("thanh pho ", "thi xa ", "thi tran ", "dac khu ", "phuong ", "huyen ", "quan ", "tinh ", "xa ", "tp ", "tx ", "tt ", "p ", "q ", "h ", "t ", "x ")
+        If Left$(s, Len(prefix)) = prefix Then
+            s = Trim$(Mid$(s, Len(prefix) + 1))
+            Exit For
+        End If
+    Next
+    If s = "hcm" Or s = "tphcm" Or s = "ho chi minh city" Then s = "ho chi minh"
+    If s = "thua thien hue" Then s = "hue"
+    s = Replace(s, "nt moc chau", "nong truong moc chau")
+    AddressPart = s
+End Function
+
+Private Sub AddAddressIndex(ByVal key As String, ByVal row As Long)
+    Dim items As Collection
+    If mIndex.Exists(key) Then
+        Set items = mIndex(key)
+    Else
+        Set items = New Collection
+        mIndex.Add key, items
+    End If
+    items.Add row
+End Sub
+
+Private Sub LoadAddressData()
+    Dim i As Long, p As String, d As String, w As String
+    If Not mIndex Is Nothing Then Exit Sub
+    mRows = ThisWorkbook.Worksheets(DATA_SHEET).UsedRange.Value2
+    Set mIndex = CreateObject("Scripting.Dictionary")
+    For i = 2 To UBound(mRows, 1)
+        w = AddressPart(CStr(mRows(i, 2)))
+        d = AddressPart(CStr(mRows(i, 3)))
+        p = AddressPart(CStr(mRows(i, 4)))
+        AddAddressIndex "F|" & p & "|" & d & "|" & w, i
+        AddAddressIndex "S|" & p & "|" & w, i
+        AddAddressIndex "C|" & CStr(mRows(i, 1)), i
+    Next
+End Sub
+
+' Only complete comma-separated administrative segments are matched.
+' Street and house-number segments are copied verbatim; partial splits never auto-convert.
+Public Function AddressResolve(ByVal value As Variant, ByRef result As String, ByRef status As String, ByRef candidates As String, ByRef legal As String) As Boolean
+    Dim parts As Variant, n As Long, start As Long, i As Long, r As Variant
+    Dim key As String, matches As Collection, oldCodes As Object, newCodes As Object
+    Dim allFull As Boolean, hasUnknown As Boolean, historical As Boolean, prefix As String, p As String, d As String, w As String
+    result = "": status = "": candidates = "": legal = ""
+    On Error GoTo Failed
+    If IsError(value) Then
+        status = u("\u00d4 ngu\u1ed3n c\u00f3 l\u1ed7i Excel"): Exit Function
+    End If
+    If IsNull(value) Or IsEmpty(value) Then Exit Function
+    If Len(Trim$(CStr(value))) = 0 Then Exit Function
+    LoadAddressData
+    If Len(Trim$(CStr(value))) = 5 And DigitsOnly(Trim$(CStr(value))) Then
+        key = "C|" & Trim$(CStr(value))
+        If mIndex.Exists(key) Then Set matches = mIndex(key)
+        If matches Is Nothing Then GoTo Missing
+        start = 0
+        GoTo EvaluateMatches
+    End If
+    parts = Split(CStr(value), ",")
+    n = UBound(parts)
+    Do While n >= 0
+        If Len(Trim$(parts(n))) > 0 Then Exit Do
+        n = n - 1
+    Loop
+    If n < 1 Then GoTo Missing
+    If AddressPart(CStr(parts(n))) = "viet nam" Or AddressPart(CStr(parts(n))) = "vietnam" Then n = n - 1
+    If n < 1 Then GoTo Missing
+    p = AddressPart(CStr(parts(n)))
+    If n >= 2 Then
+        d = AddressPart(CStr(parts(n - 1)))
+        w = AddressPart(CStr(parts(n - 2)))
+        key = "F|" & p & "|" & d & "|" & w
+        If mIndex.Exists(key) Then
+            Set matches = mIndex(key)
+            start = n - 2
+        End If
+    End If
+    If matches Is Nothing Then
+        key = "S|" & p & "|" & AddressPart(CStr(parts(n - 1)))
+        If mIndex.Exists(key) Then
+            Set matches = mIndex(key)
+            start = n - 1
+        End If
+    End If
+    If matches Is Nothing Then GoTo Missing
+EvaluateMatches:
+    Set oldCodes = CreateObject("Scripting.Dictionary")
+    Set newCodes = CreateObject("Scripting.Dictionary")
+    allFull = True
+    For Each r In matches
+        oldCodes(CStr(mRows(r, 1))) = True
+        key = CStr(mRows(r, 8))
+        If Len(key) > 0 And Not newCodes.Exists(key) Then
+            newCodes.Add key, True
+            If Len(candidates) > 0 Then candidates = candidates & vbLf
+            candidates = candidates & CStr(mRows(r, 5)) & ", " & CStr(mRows(r, 6))
+        End If
+        If LCase$(CStr(mRows(r, 7))) <> "full" Then allFull = False
+        If LCase$(CStr(mRows(r, 7))) = "unknown" Then hasUnknown = True
+        If Left$(CStr(mRows(r, 10)), 3) = "NSO" Then historical = True
+        If Len(CStr(mRows(r, 9))) > 0 Then
+            If InStr(1, ";" & legal & ";", ";" & CStr(mRows(r, 9)) & ";", vbBinaryCompare) = 0 Then
+                If Len(legal) > 0 Then legal = legal & ";"
+                legal = legal & CStr(mRows(r, 9))
+            End If
+        End If
+    Next
+    If hasUnknown Then
+        status = u("C\u1ea7n ki\u1ec3m tra: ch\u01b0a \u0111\u1ee7 c\u0103n c\u1ee9 n\u1ed1i l\u1ecbch s\u1eed 2024\u20132025; g\u1ee3i \u00fd (n\u1ebfu c\u00f3) ch\u01b0a ph\u1ea3i k\u1ebft qu\u1ea3 x\u00e1c nh\u1eadn")
+    ElseIf oldCodes.Count > 1 Then
+        status = u("C\u1ea7n ki\u1ec3m tra: tr\u00f9ng t\u00ean ho\u1eb7c kh\u00e1c th\u1eddi k\u1ef3; b\u1ed5 sung qu\u1eadn/huy\u1ec7n, \u0111\u1ed1i chi\u1ebfu m\u00e3 x\u00e3 c\u0169 v\u00e0 ng\u00e0y hi\u1ec7u l\u1ef1c")
+    ElseIf newCodes.Count <> 1 Or Not allFull Then
+        status = u("C\u1ea7n ki\u1ec3m tra: x\u00e3/ph\u01b0\u1eddng c\u0169 b\u1ecb chia ho\u1eb7c s\u00e1p nh\u1eadp m\u1ed9t ph\u1ea7n")
+    Else
+        For i = 0 To start - 1
+            If Len(Trim$(parts(i))) > 0 Then prefix = prefix & parts(i) & ","
+        Next
+        If Len(prefix) > 0 Then prefix = prefix & " "
+        result = prefix & candidates
+        status = u("\u0110\u00e3 \u0111\u1ed1i chi\u1ebfu: s\u00e1p nh\u1eadp to\u00e0n b\u1ed9")
+        If historical Then status = u("\u0110\u00e3 \u0111\u1ed1i chi\u1ebfu qua l\u1ecbch s\u1eed s\u00e1p nh\u1eadp 2024\u20132025")
+        AddressResolve = True
+    End If
+    Exit Function
+Missing:
+    status = u("Ch\u01b0a kh\u1edbp: c\u1ea7n x\u00e3/ph\u01b0\u1eddng, qu\u1eadn/huy\u1ec7n c\u0169, t\u1ec9nh/th\u00e0nh c\u0169, c\u00e1ch nhau b\u1eb1ng d\u1ea5u ph\u1ea9y; ki\u1ec3m tra \u0111\u1ecba ch\u1ec9 \u0111\u00e3 m\u1edbi ho\u1eb7c ngo\u00e0i danh m\u1ee5c")
+    Exit Function
+Failed:
+    status = u("Kh\u00f4ng x\u1eed l\u00fd \u0111\u01b0\u1ee3c: ") & Err.Description
+End Function
+
+Public Function DiaChiMoi(ByVal value As Variant) As Variant
+    Dim result As String, status As String, candidates As String, legal As String
+    If IsError(value) Then DiaChiMoi = value: Exit Function
+    AddressResolve value, result, status, candidates, legal
+    DiaChiMoi = result
+End Function
+
+Public Function DiaChiMoiTrangThai(ByVal value As Variant) As String
+    Dim result As String, status As String, candidates As String, legal As String
+    AddressResolve value, result, status, candidates, legal
+    DiaChiMoiTrangThai = status
+End Function
+
+Public Function DiaChiMoiGoiY(ByVal value As Variant) As String
+    Dim result As String, status As String, candidates As String, legal As String
+    AddressResolve value, result, status, candidates, legal
+    DiaChiMoiGoiY = candidates
+End Function
+
+Public Sub Ribbon_ConvertAddress(control As IRibbonControl)
+    Dim source As Range, report As Workbook
+    If Not SelectedInput(source, 0) Then Exit Sub
+    On Error GoTo Failed
+    Set report = AddressReport(source)
+    report.Activate
+    Exit Sub
+Failed:
+    ShowMsg Err.Description, "Chuyen dia chi", 48
+End Sub
+
+Public Function AddressReport(ByVal source As Range) As Workbook
+    Dim book As Workbook, sheet As Worksheet, c As Range, data() As Variant
+    Dim i As Long, result As String, status As String, candidates As String, legal As String
+    Dim oldScreen As Boolean, errorNumber As Long, errorText As String
+    If source Is Nothing Then Err.Raise 5, , "Hay chon cot dia chi."
+    If source.CountLarge > 1000 Then Err.Raise 5, , "Toi da 1000 dia chi moi lan."
+    If source.Columns.Count <> 1 Or source.Areas.Count <> 1 Then Err.Raise 5, , "Hay chon mot cot lien tuc."
+    For Each c In source.Cells
+        If c.MergeCells Then Err.Raise 5, , "Khong xu ly o gop."
+    Next
+    LoadAddressData
+    oldScreen = Application.ScreenUpdating
+    On Error GoTo Failed
+    Application.ScreenUpdating = False
+    ReDim data(1 To source.Cells.Count, 1 To 6)
+    For Each c In source.Cells
+        i = i + 1
+        AddressResolve c.Value2, result, status, candidates, legal
+        If IsError(c.Value2) Then data(i, 1) = c.Text Else data(i, 1) = CStr(c.Value2)
+        data(i, 2) = result: data(i, 3) = status: data(i, 4) = candidates
+        data(i, 5) = legal: data(i, 6) = c.Address(External:=True)
+    Next
+    Set book = Workbooks.Add(xlWBATWorksheet)
+    Set sheet = book.Worksheets(1)
+    sheet.Name = u("\u0110\u1ecba ch\u1ec9 m\u1edbi")
+    sheet.Range("A1:F1").Merge
+    sheet.Range("A1").Value2 = u("CHUY\u1ec2N \u0110\u1ecaA CH\u1ec8 H\u00c0NH CH\u00cdNH C\u0168 \u2192 M\u1edaI")
+    sheet.Range("A2:F2").Merge
+    sheet.Range("A2").Value2 = u("Ngu\u1ed3n: C\u1ee5c Th\u1ed1ng k\u00ea (l\u1ecbch s\u1eed 2024\u20132025), NQ1191 v\u00e0 tinhthanhpho.com (CC BY 4.0, b\u1ea3n 2026.10.8) | Ch\u1ec9 t\u1ef1 \u0111\u1ed5i khi \u0111\u1ee7 c\u0103n c\u1ee9")
+    sheet.Hyperlinks.Add sheet.Range("A2"), "https://danhmuchanhchinh.nso.gov.vn/Doi_Chieu_Moi.aspx"
+    sheet.Range("A3:F3").Merge
+    sheet.Range("A3").Value2 = u("Ch\u1ec9 \u0111i\u1ec1n \u0111\u1ecba ch\u1ec9 m\u1edbi khi kh\u1edbp m\u1ed9t x\u00e3 c\u0169 v\u00e0 s\u00e1p nh\u1eadp to\u00e0n b\u1ed9. D\u00f2ng c\u1ea7n ki\u1ec3m tra \u0111\u1ec3 tr\u1ed1ng k\u1ebft qu\u1ea3; xem g\u1ee3i \u00fd v\u00e0 ngh\u1ecb quy\u1ebft.")
+    sheet.Range("A5").Value2 = u("\u0110\u1ecba ch\u1ec9 c\u0169")
+    sheet.Range("B5").Value2 = u("\u0110\u1ecba ch\u1ec9 m\u1edbi")
+    sheet.Range("C5").Value2 = u("Tr\u1ea1ng th\u00e1i")
+    sheet.Range("D5").Value2 = u("X\u00e3/ph\u01b0\u1eddng, t\u1ec9nh/th\u00e0nh m\u1edbi c\u00f3 th\u1ec3 t\u01b0\u01a1ng \u1ee9ng")
+    sheet.Range("E5").Value2 = u("Ngh\u1ecb quy\u1ebft theo ngu\u1ed3n d\u1eef li\u1ec7u")
+    sheet.Range("F5").Value2 = u("\u00d4 ngu\u1ed3n")
+    With sheet.Range("A6").Resize(i, 6)
+        .NumberFormat = "@"
+        .Value2 = data
+        .WrapText = True
+        .VerticalAlignment = xlTop
+    End With
+    sheet.Columns("A:B").ColumnWidth = 58
+    sheet.Columns("C:D").ColumnWidth = 45
+    sheet.Columns("E:F").ColumnWidth = 30
+    sheet.Range("A1:F3").WrapText = True
+    sheet.Rows("1:3").RowHeight = 30
+    sheet.Range("A1").Font.Size = 15
+    sheet.Range("A5:F5").Font.Bold = True
+    sheet.Range("A5:F5").Interior.Color = RGB(26, 66, 106)
+    sheet.Range("A5:F5").Font.Color = vbWhite
+    sheet.Range("A5:F5").WrapText = True
+    sheet.Rows(5).RowHeight = 32
+    sheet.Range("A5").Resize(i + 1, 6).AutoFilter
+    sheet.Range("A6").Resize(i, 6).Rows.AutoFit
+    If Application.Visible Then
+        sheet.Activate
+        sheet.Range("A6").Select
+        ActiveWindow.FreezePanes = True
+    End If
+    Application.ScreenUpdating = oldScreen
+    Set AddressReport = book
+    Exit Function
+Failed:
+    errorNumber = Err.Number: errorText = Err.Description
+    On Error Resume Next
+    If Not book Is Nothing Then book.Close False
+    Application.ScreenUpdating = oldScreen
+    On Error GoTo 0
+    Err.Raise errorNumber, , errorText
+End Function

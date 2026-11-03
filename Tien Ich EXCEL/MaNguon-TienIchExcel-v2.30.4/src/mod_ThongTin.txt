@@ -1,0 +1,67 @@
+﻿Option Explicit
+
+#If VBA7 Then
+    Private Declare PtrSafe Function MessageBoxW Lib "user32" ( _
+        ByVal hwnd As LongPtr, ByVal lpText As LongPtr, _
+        ByVal lpCaption As LongPtr, ByVal uType As Long) As Long
+#Else
+    Private Declare Function MessageBoxW Lib "user32" ( _
+        ByVal hwnd As Long, ByVal lpText As Long, _
+        ByVal lpCaption As Long, ByVal uType As Long) As Long
+#End If
+
+#If VBA7 Then
+    Private Declare PtrSafe Function FindWindowW Lib "user32" (ByVal lpClassName As LongPtr, ByVal lpWindowName As LongPtr) As LongPtr
+    Private Declare PtrSafe Function SetWindowTextW Lib "user32" (ByVal hwnd As LongPtr, ByVal lpString As LongPtr) As Long
+    Private Declare PtrSafe Function GetActiveWindow Lib "user32" () As LongPtr
+#Else
+    Private Declare Function FindWindowW Lib "user32" (ByVal lpClassName As Long, ByVal lpWindowName As Long) As Long
+    Private Declare Function SetWindowTextW Lib "user32" (ByVal hwnd As Long, ByVal lpString As Long) As Long
+    Private Declare Function GetActiveWindow Lib "user32" () As Long
+#End If
+
+' Ham giai ma Unicode dang \uXXXX dung chung cho toan bo Add-in
+Public Function u(ByVal str As String) As String
+    Dim i As Long, res As String, hexCode As String, codeUnit As Long
+    res = "": i = 1
+    Do While i <= Len(str)
+        If Mid$(str, i, 2) = "\u" And i + 5 <= Len(str) Then
+            hexCode = Mid$(str, i + 2, 4)
+            If hexCode Like "[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]" Then
+                codeUnit = CLng("&H" & hexCode)
+                If codeUnit > 32767 Then codeUnit = codeUnit - 65536
+                res = res & ChrW$(codeUnit)
+                i = i + 6
+            Else
+                res = res & Mid$(str, i, 1): i = i + 1
+            End If
+        Else
+            res = res & Mid$(str, i, 1): i = i + 1
+        End If
+    Loop
+    u = res
+End Function
+
+Public Sub ShowMsg(ByVal prompt As String, Optional ByVal title As String = "Th\u00f4ng b\u00e1o", Optional ByVal buttons As Long = 64)
+    MessageBoxW Application.hwnd, StrPtr(u(prompt)), StrPtr(u(title)), buttons
+End Sub
+
+Public Sub SetUserFormCaptionUnicode(ByVal temporaryCaption As String, ByVal unicodeCaption As String)
+    On Error Resume Next
+#If VBA7 Then
+    Dim formHwnd As LongPtr
+#Else
+    Dim formHwnd As Long
+#End If
+    Dim searchText As String, captionText As String
+    searchText = temporaryCaption
+    captionText = u(unicodeCaption)
+    If Len(searchText) > 0 Then formHwnd = FindWindowW(0, StrPtr(searchText))
+    If formHwnd = 0 Then formHwnd = GetActiveWindow()
+    If formHwnd <> 0 Then SetWindowTextW formHwnd, StrPtr(captionText)
+End Sub
+
+' Callback nut Gioi thieu
+Public Sub Ribbon_About(control As IRibbonControl)
+    frmAbout.Show vbModal
+End Sub

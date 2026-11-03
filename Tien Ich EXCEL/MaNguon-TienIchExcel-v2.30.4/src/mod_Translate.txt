@@ -1,0 +1,460 @@
+﻿Option Explicit
+Private results As Object
+Private blockedUntil As Date
+Private translateBusy As Boolean
+Private cancelRequested As Boolean
+Public Const MAX_TRANSLATE_CHARS As Long = 5000
+
+Public Function TranslationIsBusy() As Boolean
+    TranslationIsBusy = translateBusy
+End Function
+
+Public Function TranslationSourceLanguage() As String
+    TranslationSourceLanguage = GetSetting("TienIchExcel", "Translate", "Source", "vi")
+End Function
+
+Public Function TranslationTargetLanguage() As String
+    TranslationTargetLanguage = GetSetting("TienIchExcel", "Translate", "Target", "en")
+End Function
+
+Public Sub SaveTranslationSettings(ByVal source As String, ByVal target As String, ByVal email As String)
+    If translateBusy Then Err.Raise 5, , u("\u0110ang d\u1ecbch. H\u00e3y ch\u1edd ho\u1eb7c D\u1eebng tr\u01b0\u1edbc khi l\u01b0u c\u00e0i \u0111\u1eb7t.")
+    If LanguageCode(source) = "" Or LanguageCode(target) = "" Then Err.Raise 5, , u("H\u00e3y ch\u1ecdn ng\u00f4n ng\u1eef ngu\u1ed3n v\u00e0 \u0111\u00edch h\u1ee3p l\u1ec7.")
+    If Not ValidTranslationEmail(email) Then Err.Raise 5, , u("Email ch\u01b0a \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng; nh\u1eadp email \u0111ang d\u00f9ng ho\u1eb7c \u0111\u1ec3 tr\u1ed1ng.")
+    SaveTranslationEmail email
+    SaveSetting "TienIchExcel", "Translate", "Source", Trim$(source)
+    SaveSetting "TienIchExcel", "Translate", "Target", Trim$(target)
+End Sub
+
+Public Function TranslateWithDefaults(ByVal selected As Range, Optional ByVal progress As Object = Nothing) As String
+    TranslateWithDefaults = TranslateSelection(selected, TranslationSourceLanguage(), TranslationTargetLanguage(), progress)
+End Function
+
+Public Function TranslationEmail() As String
+    TranslationEmail = Trim$(GetSetting("TienIchExcel", "Translate", "Email", ""))
+End Function
+
+Public Function ValidTranslationEmail(ByVal email As String) As Boolean
+    Dim expression As Object
+    email = Trim$(email)
+    If email = "" Then ValidTranslationEmail = True: Exit Function
+    If Len(email) > 254 Or InStr(email, "..") > 0 Then Exit Function
+    Set expression = CreateObject("VBScript.RegExp")
+    expression.Pattern = "^[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+([.][A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?([.][A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?)+$"
+    ValidTranslationEmail = expression.Test(email)
+End Function
+
+Public Sub SaveTranslationEmail(ByVal email As String)
+    email = Trim$(email)
+    If Not ValidTranslationEmail(email) Then Err.Raise 5, , u("Email ch\u01b0a \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng. H\u00e3y nh\u1eadp email \u0111ang d\u00f9ng c\u1ee7a b\u1ea1n ho\u1eb7c \u0111\u1ec3 tr\u1ed1ng.")
+    If StrComp(email, TranslationEmail(), vbBinaryCompare) <> 0 Then
+        SaveSetting "TienIchExcel", "Translate", "Email", email
+        blockedUntil = 0
+    End If
+End Sub
+
+Public Function TranslationRequestURL(ByVal text As String, ByVal source As String, ByVal target As String, Optional ByVal contact As Variant) As String
+    Dim email As String
+    If IsMissing(contact) Then email = TranslationEmail() Else email = Trim$(CStr(contact))
+    If Not ValidTranslationEmail(email) Then Err.Raise 5, , u("Email MyMemory \u0111\u00e3 l\u01b0u kh\u00f4ng h\u1ee3p l\u1ec7; h\u00e3y s\u1eeda trong form D\u1ecbch ng\u00f4n ng\u1eef.")
+    TranslationRequestURL = "https://api.mymemory.translated.net/get?q=" & EncodeURL(text) & "&langpair=" & EncodeURL(source & "|" & target)
+    If Len(email) > 0 Then TranslationRequestURL = TranslationRequestURL & "&de=" & EncodeURL(email)
+End Function
+
+' Each item is Array(payload, gap). Gaps preserve paragraph/word separators.
+Public Function TranslationParts(ByVal text As String) As Collection
+    Dim parts As New Collection, p As Long, start As Long, q As Long, units As Long
+    Dim bytes As Long, width As Long, code As Long, low As Long, lastSpace As Long, finish As Long
+    Dim ch As String
+    p = 1
+    Do While p <= Len(text)
+        start = p
+        Do While p <= Len(text)
+            If InStr(1, " " & vbTab & vbCr & vbLf, Mid$(text, p, 1), vbBinaryCompare) = 0 Then Exit Do
+            p = p + 1
+        Loop
+        If p > start Then parts.Add Array("", Mid$(text, start, p - start))
+        If p > Len(text) Then Exit Do
+        start = p: q = p: bytes = 0: lastSpace = 0
+        Do While q <= Len(text)
+            ch = Mid$(text, q, 1)
+            If ch = vbCr Or ch = vbLf Then Exit Do
+            code = AscW(ch) And &HFFFF&: units = 1
+            Select Case code
+                Case 0 To 127: width = 1
+                Case 128 To 2047: width = 2
+                Case &HD800& To &HDBFF&
+                    If q < Len(text) Then
+                        low = AscW(Mid$(text, q + 1, 1)) And &HFFFF&
+                        If low >= &HDC00& And low <= &HDFFF& Then units = 2
+                    End If
+                    If units = 2 Then width = 4 Else width = 3
+                Case Else: width = 3
+            End Select
+            If bytes + width > 500 Then Exit Do
+            bytes = bytes + width
+            If ch = " " Or ch = vbTab Then lastSpace = q
+            q = q + units
+        Loop
+        finish = q - 1
+        If q <= Len(text) And bytes >= 497 And lastSpace > start Then finish = lastSpace - 1
+        Do While finish >= start
+            ch = Mid$(text, finish, 1)
+            If ch <> " " And ch <> vbTab Then Exit Do
+            finish = finish - 1
+        Loop
+        If finish < start Then Err.Raise 5, , "Cannot split translation text."
+        parts.Add Array(Mid$(text, start, finish - start + 1), "")
+        p = finish + 1
+    Loop
+    Set TranslationParts = parts
+End Function
+
+Private Function TranslationResult(ByVal value As Variant, ByVal source As String, ByVal target As String, Optional ByVal interactive As Boolean = False) As Variant
+    Dim raw As Variant, text As String, parts As Collection, part As Variant, entry As Variant, joined As String
+    On Error GoTo Failed
+    If IsObject(value) Then
+        If TypeName(value) <> "Range" Then
+            TranslationResult = ShortTranslationResult(value, source, target): Exit Function
+        End If
+        If value.CountLarge <> 1 Then
+            TranslationResult = ShortTranslationResult(value, source, target): Exit Function
+        End If
+        raw = value.Value2
+    Else
+        raw = value
+    End If
+    If IsError(raw) Or IsArray(raw) Or IsNull(raw) Then
+        TranslationResult = ShortTranslationResult(raw, source, target): Exit Function
+    End If
+    text = CStr(raw)
+    If Len(text) > MAX_TRANSLATE_CHARS Then
+        TranslationResult = Array(False, u("T\u1ed1i \u0111a 5.000 k\u00fd t\u1ef1 m\u1ed7i \u00f4. H\u00e3y chia th\u00e0nh nhi\u1ec1u \u00f4."), Now + 1): Exit Function
+    End If
+    If UTF8Length(text) <= 500 Or LCase$(Trim$(source)) = LCase$(Trim$(target)) Then
+        TranslationResult = ShortTranslationResult(text, source, target): Exit Function
+    End If
+    Set parts = TranslationParts(text)
+    For Each part In parts
+        If interactive Then
+            DoEvents
+            If cancelRequested Then
+                TranslationResult = Array(False, u("\u0110\u00e3 d\u1eebng. Ch\u01b0a ghi k\u1ebft qu\u1ea3 v\u00e0o trang t\u00ednh."), Now + 1): Exit Function
+            End If
+        End If
+        If Len(part(0)) > 0 Then
+            entry = ShortTranslationResult(part(0), source, target)
+            If Not entry(0) Then TranslationResult = entry: Exit Function
+            joined = joined & entry(1)
+        End If
+        joined = joined & part(1)
+        If Len(joined) > 32767 Then
+            TranslationResult = Array(False, u("B\u1ea3n d\u1ecbch v\u01b0\u1ee3t gi\u1edbi h\u1ea1n 32.767 k\u00fd t\u1ef1 c\u1ee7a \u00f4 Excel."), Now + 1): Exit Function
+        End If
+    Next part
+    TranslationResult = Array(True, joined, Now + 1)
+    Exit Function
+Failed:
+    TranslationResult = Array(False, u("Kh\u00f4ng x\u1eed l\u00fd \u0111\u01b0\u1ee3c v\u0103n b\u1ea3n: ") & Err.Description, Now + 1)
+End Function
+
+Public Sub CancelDirectTranslation()
+    cancelRequested = True
+End Sub
+
+Public Sub ValidateTranslationRange(ByVal selected As Range)
+    Dim cell As Range, dest As Range, total As Long
+    If selected Is Nothing Then Err.Raise 5, , u("H\u00e3y ch\u1ecdn c\u00e1c \u00f4 v\u0103n b\u1ea3n c\u1ea7n d\u1ecbch.")
+    If selected.CountLarge > 100 Then Err.Raise 5, , u("M\u1ed7i l\u1ea7n ch\u1ecdn t\u1ed1i \u0111a 100 \u00f4 trong m\u1ed9t c\u1ed9t.")
+    If selected.Parent.ProtectContents Then Err.Raise 5, , u("Trang t\u00ednh \u0111ang \u0111\u01b0\u1ee3c b\u1ea3o v\u1ec7.")
+    If selected.Parent.Parent.ReadOnly Then Err.Raise 5, , u("T\u1ec7p \u0111ang m\u1edf ch\u1ec9 \u0111\u1ecdc.")
+    For Each dest In selected.Areas
+        If dest.Columns.Count <> 1 Then Err.Raise 5, , u("Ch\u1ec9 ch\u1ecdn m\u1ed9t c\u1ed9t v\u0103n b\u1ea3n ngu\u1ed3n.")
+    Next dest
+    For Each cell In selected.Cells
+        If cell.Column <> selected.Cells(1, 1).Column Then Err.Raise 5, , u("C\u00e1c \u00f4 ngu\u1ed3n ph\u1ea3i n\u1eb1m trong c\u00f9ng m\u1ed9t c\u1ed9t.")
+        If cell.MergeCells Then Err.Raise 5, , u("Kh\u00f4ng h\u1ed7 tr\u1ee3 \u00f4 g\u1ed9p.")
+        If cell.Column = cell.Parent.Columns.Count Then Err.Raise 5, , u("Kh\u00f4ng c\u00f2n c\u1ed9t b\u00ean ph\u1ea3i \u0111\u1ec3 ghi b\u1ea3n d\u1ecbch.")
+        Set dest = cell.Offset(0, 1)
+        If Not Intersect(dest, selected) Is Nothing Then Err.Raise 5, , u("C\u1ed9t k\u1ebft qu\u1ea3 tr\u00f9ng v\u00f9ng ngu\u1ed3n.")
+        If dest.MergeCells Or dest.HasFormula Then Err.Raise 5, , u("C\u1ed9t k\u1ebft qu\u1ea3 b\u00ean ph\u1ea3i ph\u1ea3i tr\u1ed1ng, kh\u00f4ng g\u1ed9p v\u00e0 kh\u00f4ng c\u00f3 c\u00f4ng th\u1ee9c.")
+        If IsError(dest.Value2) Then Err.Raise 5, , u("C\u1ed9t k\u1ebft qu\u1ea3 \u0111ang c\u00f3 d\u1eef li\u1ec7u l\u1ed7i.")
+        If Len(CStr(dest.Value2)) > 0 Then Err.Raise 5, , u("C\u1ed9t k\u1ebft qu\u1ea3 b\u00ean ph\u1ea3i \u0111ang c\u00f3 d\u1eef li\u1ec7u. Kh\u00f4ng ghi \u0111\u00e8.")
+        If IsError(cell.Value2) Then Err.Raise 5, , u("\u00d4 ngu\u1ed3n \u0111ang ch\u1ee9a l\u1ed7i Excel: ") & cell.Address(False, False)
+        If VarType(cell.Value2) = vbString Then total = total + Len(CStr(cell.Value2))
+    Next cell
+    If total > MAX_TRANSLATE_CHARS Then Err.Raise 5, , u("T\u1ed5ng v\u0103n b\u1ea3n m\u1ed7i l\u1ea7n d\u1ecbch t\u1ed1i \u0111a 5.000 k\u00fd t\u1ef1.")
+End Sub
+
+Public Function TranslateSelection(ByVal selected As Range, ByVal source As String, ByVal target As String, Optional ByVal progress As Object = Nothing) As String
+    Dim staged As New Collection, record As Object, cell As Range, entry As Variant
+    Dim count As Long, events As Boolean, screen As Boolean, writing As Boolean, reason As String, ownsRun As Boolean, stateChanged As Boolean
+    On Error GoTo Failed
+    If translateBusy Then Err.Raise 5, , u("\u0110ang c\u00f3 m\u1ed9t l\u01b0\u1ee3t d\u1ecbch. H\u00e3y ch\u1edd ho\u1eb7c b\u1ea5m D\u1eebng.")
+    ValidateTranslationRange selected
+    If LanguageCode(source) = "" Or LanguageCode(target) = "" Then Err.Raise 5, , u("H\u00e3y ch\u1ecdn ng\u00f4n ng\u1eef ngu\u1ed3n v\u00e0 \u0111\u00edch.")
+    translateBusy = True: ownsRun = True: cancelRequested = False
+    ' Read source snapshots before allowing UI events during network requests.
+    For Each cell In selected.Cells
+        Set record = CreateObject("Scripting.Dictionary")
+        record.Add "cell", cell
+        record.Add "value", cell.Value2
+        record.Add "formula", cell.Formula
+        record.Add "output", ""
+        staged.Add record
+    Next cell
+    For Each record In staged
+        Set cell = record("cell")
+        If Not progress Is Nothing Then progress.SetProgress u("\u0110ang d\u1ecbch \u00f4 ") & cell.Address(False, False) & u(". C\u00f3 th\u1ec3 b\u1ea5m D\u1eebng; k\u1ebft qu\u1ea3 ch\u01b0a \u0111\u01b0\u1ee3c ghi.")
+        DoEvents
+        If cancelRequested Then Err.Raise 18, , u("\u0110\u00e3 d\u1eebng. Ch\u01b0a ghi k\u1ebft qu\u1ea3 v\u00e0o trang t\u00ednh.")
+        If VarType(record("value")) = vbString And Len(Trim$(CStr(record("value")))) > 0 Then
+            entry = TranslationResult(record("value"), source, target, True)
+            If Not entry(0) Then Err.Raise 5, , cell.Address(False, False) & ": " & entry(1)
+            record("output") = entry(1)
+            count = count + 1
+        End If
+    Next record
+    If count = 0 Then Err.Raise 5, , u("Kh\u00f4ng c\u00f3 \u00f4 v\u0103n b\u1ea3n \u0111\u1ec3 d\u1ecbch. \u00d4 tr\u1ed1ng v\u00e0 \u00f4 s\u1ed1 \u0111\u01b0\u1ee3c b\u1ecf qua.")
+    DoEvents
+    If cancelRequested Then Err.Raise 18, , u("\u0110\u00e3 d\u1eebng. Ch\u01b0a ghi k\u1ebft qu\u1ea3 v\u00e0o trang t\u00ednh.")
+    ' Recheck after DoEvents: never overwrite edits made while translation ran.
+    ValidateTranslationRange selected
+    For Each record In staged
+        Set cell = record("cell")
+        If VarType(cell.Value2) <> VarType(record("value")) Then Err.Raise 5, , u("D\u1eef li\u1ec7u ngu\u1ed3n \u0111\u00e3 thay \u0111\u1ed5i. Ch\u01b0a ghi k\u1ebft qu\u1ea3; h\u00e3y ch\u1ecdn l\u1ea1i v\u00f9ng d\u1ecbch.")
+        If CStr(cell.Value2) <> CStr(record("value")) Or CStr(cell.Formula) <> CStr(record("formula")) Then Err.Raise 5, , u("D\u1eef li\u1ec7u ngu\u1ed3n \u0111\u00e3 thay \u0111\u1ed5i. Ch\u01b0a ghi k\u1ebft qu\u1ea3; h\u00e3y ch\u1ecdn l\u1ea1i v\u00f9ng d\u1ecbch.")
+    Next record
+    events = Application.EnableEvents: screen = Application.ScreenUpdating
+    Application.EnableEvents = False: Application.ScreenUpdating = False
+    stateChanged = True
+    UndoBegin selected, 1, u("D\u1ecbch ng\u00f4n ng\u1eef")
+    writing = True
+    For Each record In staged
+        If Len(record("output")) > 0 Then WriteText record("cell").Offset(0, 1), record("output")
+    Next record
+    UndoCommit
+    writing = False
+    Application.EnableEvents = events: Application.ScreenUpdating = screen
+    TranslateSelection = "OK:" & count
+    translateBusy = False
+    Exit Function
+Failed:
+    reason = Err.Description
+    If writing Then
+        On Error Resume Next
+        UndoCommit
+        reason = reason & u(" N\u1ebfu c\u00f3 k\u1ebft qu\u1ea3 \u0111\u00e3 ghi, d\u00f9ng n\u00fat Ho\u00e0n t\u00e1c \u0111\u1ec3 kh\u00f4i ph\u1ee5c.")
+        On Error GoTo 0
+    End If
+    If stateChanged Then
+        Application.EnableEvents = events: Application.ScreenUpdating = screen
+    End If
+    If ownsRun Then translateBusy = False
+    TranslateSelection = reason
+End Function
+
+Public Sub Ribbon_TranslateSelection(control As IRibbonControl)
+    Dim selected As Range, result As String
+    On Error GoTo Failed
+    If translateBusy Then Exit Sub
+    If TypeName(Selection) <> "Range" Then Err.Raise 5, , u("H\u00e3y ch\u1ecdn c\u00e1c \u00f4 v\u0103n b\u1ea3n c\u1ea7n d\u1ecbch.")
+    Set selected = Selection
+    ValidateTranslationRange selected
+    Load frmTranslateProgress
+    frmTranslateProgress.BeginRun
+    If Not frmTranslateProgress.Visible Then frmTranslateProgress.Show vbModeless
+    result = TranslateWithDefaults(selected, frmTranslateProgress)
+    frmTranslateProgress.Finish result
+    Exit Sub
+Failed:
+    ShowMsg Err.Description, u("D\u1ecbch ng\u00f4n ng\u1eef"), 48
+End Sub
+
+Public Sub Ribbon_TranslationSettings(control As IRibbonControl)
+    On Error GoTo Failed
+    If Not frmTranslate.Visible Then frmTranslate.Show vbModeless
+    Exit Sub
+Failed:
+    ShowMsg Err.Description, u("C\u00e0i \u0111\u1eb7t d\u1ecbch"), 48
+End Sub
+
+Private Function LanguageCode(ByVal code As String) As String
+    Dim expression As Object
+    code = LCase$(Trim$(code))
+    Set expression = CreateObject("VBScript.RegExp")
+    expression.Pattern = "^[a-z]{2,3}(-[a-z]{2,4})?$"
+    If expression.Test(code) Then LanguageCode = code
+End Function
+
+Private Function UTF8Length(ByVal text As String) As Long
+    Dim stream As Object
+    Set stream = CreateObject("ADODB.Stream")
+    stream.Type = 2: stream.Charset = "utf-8": stream.Open
+    stream.WriteText text
+    UTF8Length = stream.Size - 3
+    stream.Close
+End Function
+
+Private Function BestTranslation(ByVal json As String, ByVal fallback As String, ByVal sourceText As String) As String
+    Dim i As Long, start As Long, depth As Long, quoted As Boolean, escaped As Boolean
+    Dim ch As String, item As String, candidate As String, bestScore As Double, score As Double
+    BestTranslation = fallback
+    If sourceText = "" Then Exit Function
+    bestScore = Val(ExtractJSONValue(json, "match"))
+    i = InStr(1, json, """matches""", vbBinaryCompare)
+    If i = 0 Then Exit Function
+    i = InStr(i, json, "[")
+    If i = 0 Then Exit Function
+    For i = i + 1 To Len(json)
+        ch = Mid$(json, i, 1)
+        If quoted Then
+            If escaped Then
+                escaped = False
+            ElseIf ch = "\" Then
+                escaped = True
+            ElseIf ch = """" Then
+                quoted = False
+            End If
+        Else
+            Select Case ch
+                Case """": quoted = True
+                Case "{"
+                    If depth = 0 Then start = i
+                    depth = depth + 1
+                Case "}"
+                    depth = depth - 1
+                    If depth = 0 And start > 0 Then
+                        item = Mid$(json, start, i - start + 1)
+                        score = Val(ExtractJSONValue(item, "match"))
+                        candidate = ExtractJSONValue(item, "translation")
+                        If score > bestScore And Len(candidate) > 0 Then
+                            If StrComp(ExtractJSONValue(item, "segment"), sourceText, vbBinaryCompare) = 0 Then
+                                bestScore = score: BestTranslation = candidate
+                            End If
+                        End If
+                    End If
+                Case "]"
+                    If depth = 0 Then Exit Function
+            End Select
+        End If
+    Next i
+End Function
+
+Public Function ParseTranslation(ByVal json As String, ByRef translated As String, ByRef reason As String, Optional ByVal sourceText As String = "") As Boolean
+    Dim status As String
+    translated = "": reason = ""
+    On Error GoTo Failed
+    status = ExtractJSONValue(json, "responseStatus")
+    If ExtractJSONValue(json, "quotaFinished") = "true" Or status = "429" Then
+        reason = u("D\u1ecbch v\u1ee5 \u0111\u00e3 h\u1ebft h\u1ea1n m\u1ee9c ho\u1eb7c \u0111ang gi\u1edbi h\u1ea1n l\u01b0\u1ee3t g\u1ecdi. Th\u1eed l\u1ea1i sau.")
+        Exit Function
+    End If
+    If status <> "200" Then
+        reason = u("D\u1ecbch v\u1ee5 t\u1eeb ch\u1ed1i y\u00eau c\u1ea7u: ") & Left$(ExtractJSONValue(json, "responseDetails"), 250)
+        Exit Function
+    End If
+    translated = ExtractJSONValue(json, "translatedText")
+    If Len(translated) = 0 Then
+        reason = u("D\u1ecbch v\u1ee5 kh\u00f4ng tr\u1ea3 v\u1ec1 b\u1ea3n d\u1ecbch.")
+        Exit Function
+    End If
+    translated = BestTranslation(json, translated, sourceText)
+    ParseTranslation = True
+    Exit Function
+Failed:
+    reason = u("Kh\u00f4ng \u0111\u1ecdc \u0111\u01b0\u1ee3c ph\u1ea3n h\u1ed3i c\u1ee7a d\u1ecbch v\u1ee5 d\u1ecbch.")
+End Function
+
+' A cache entry contains success, text/reason, expiry. Errors expire after 60s.
+Private Function ShortTranslationResult(ByVal value As Variant, ByVal source As String, ByVal target As String) As Variant
+    Dim text As String, key As String, entry As Variant, http As Object
+    Dim translated As String, reason As String, json As String, raw As Variant
+    On Error GoTo Failed
+    If IsObject(value) Then
+        If TypeName(value) <> "Range" Then
+            ShortTranslationResult = Array(False, u("Ch\u1ecdn m\u1ed9t \u00f4 ho\u1eb7c m\u1ed9t chu\u1ed7i v\u0103n b\u1ea3n."), Now + 1): Exit Function
+        End If
+        If value.CountLarge <> 1 Then
+            ShortTranslationResult = Array(False, u("M\u1ed7i c\u00f4ng th\u1ee9c ch\u1ec9 nh\u1eadn m\u1ed9t \u00f4 ngu\u1ed3n."), Now + 1): Exit Function
+        End If
+        raw = value.Value2
+    Else
+        raw = value
+    End If
+    If IsError(raw) Then
+        ShortTranslationResult = Array(False, u("\u00d4 ngu\u1ed3n \u0111ang ch\u1ee9a l\u1ed7i Excel."), Now + 1): Exit Function
+    End If
+    If IsArray(raw) Or IsNull(raw) Then
+        ShortTranslationResult = Array(False, u("Ch\u1ecdn m\u1ed9t \u00f4 ho\u1eb7c m\u1ed9t chu\u1ed7i v\u0103n b\u1ea3n."), Now + 1): Exit Function
+    End If
+    text = CStr(raw)
+    If Len(Trim$(text)) = 0 Then
+        ShortTranslationResult = Array(True, "", Now + 1): Exit Function
+    End If
+    source = LanguageCode(source): target = LanguageCode(target)
+    If source = "" Or target = "" Then
+        ShortTranslationResult = Array(False, u("M\u00e3 ng\u00f4n ng\u1eef kh\u00f4ng h\u1ee3p l\u1ec7. V\u00ed d\u1ee5: vi, en, ja, ko, zh-CN, fr, de. Kh\u00f4ng d\u00f9ng auto."), Now + 1): Exit Function
+    End If
+    If source = target Then
+        ShortTranslationResult = Array(True, text, Now + 1): Exit Function
+    End If
+    If UTF8Length(text) > 500 Then
+        ShortTranslationResult = Array(False, u("M\u1ed7i l\u1ea7n d\u1ecbch t\u1ed1i \u0111a 500 byte UTF-8. H\u00e3y chia v\u0103n b\u1ea3n d\u00e0i th\u00e0nh nhi\u1ec1u \u00f4."), Now + 1): Exit Function
+    End If
+    key = ProviderConfigurationKey() & vbLf & source & "|" & target & "|" & TranslationEmail() & "|" & text
+    If results Is Nothing Then Set results = CreateObject("Scripting.Dictionary")
+    If results.Exists(key) Then
+        entry = results(key)
+        If Now < entry(2) Then ShortTranslationResult = entry: Exit Function
+        results.Remove key
+    End If
+    entry = ProviderTranslate(text, source, target)
+    If results.Count >= 1000 Then results.RemoveAll
+    results.Add key, entry
+    ShortTranslationResult = entry
+    Exit Function
+Failed:
+    blockedUntil = DateAdd("s", 60, Now)
+    ShortTranslationResult = Array(False, u("Kh\u00f4ng k\u1ebft n\u1ed1i \u0111\u01b0\u1ee3c d\u1ecbch v\u1ee5 d\u1ecbch. Ki\u1ec3m tra Internet r\u1ed3i ch\u1edd 60 gi\u00e2y v\u00e0 t\u00ednh l\u1ea1i \u00f4. ") & Left$(Err.Description, 200), blockedUntil)
+End Function
+
+Public Function Dich(ByVal text As Variant, Optional ByVal nguon As String = "{setting}", Optional ByVal dichDen As String = "{setting}") As Variant
+    Dim entry As Variant
+    If nguon = "{setting}" Then nguon = TranslationSourceLanguage()
+    If dichDen = "{setting}" Then dichDen = TranslationTargetLanguage()
+    If TypeName(text) = "Range" Then
+        If text.CountLarge = 1 Then
+            If IsError(text.Value2) Then Dich = text.Value2: Exit Function
+        End If
+    End If
+    If IsError(text) Then Dich = text: Exit Function
+    entry = TranslationResult(text, nguon, dichDen)
+    If entry(0) Then Dich = entry(1) Else Dich = CVErr(xlErrValue)
+End Function
+
+Public Function DichTrangThai(ByVal text As Variant, Optional ByVal nguon As String = "{setting}", Optional ByVal dichDen As String = "{setting}") As String
+    Dim entry As Variant
+    If nguon = "{setting}" Then nguon = TranslationSourceLanguage()
+    If dichDen = "{setting}" Then dichDen = TranslationTargetLanguage()
+    entry = TranslationResult(text, nguon, dichDen)
+    If entry(0) Then
+        If entry(1) = "" Then DichTrangThai = u("\u00d4 ngu\u1ed3n tr\u1ed1ng") Else DichTrangThai = "OK"
+    Else
+        DichTrangThai = entry(1)
+    End If
+End Function
+
+Public Sub Ribbon_TranslateHelp(control As IRibbonControl)
+    ShowMsg u("1. Nh\u1eadp v\u0103n b\u1ea3n c\u1ea7n d\u1ecbch v\u00e0o \u00f4 A2.") & vbCrLf & _
+        u("2. Ch\u1ecdn \u00f4 kh\u00e1c, v\u00ed d\u1ee5 B2, r\u1ed3i nh\u1eadp m\u1ed9t c\u00f4ng th\u1ee9c b\u00ean d\u01b0\u1edbi v\u00e0 nh\u1ea5n Enter:") & vbCrLf & vbCrLf & _
+        u("=Dich(A2) \u2014 d\u00f9ng ng\u00f4n ng\u1eef \u0111\u00e3 l\u01b0u trong C\u00e0i \u0111\u1eb7t d\u1ecbch.") & vbCrLf & _
+        u("=Dich(A2,""vi"",""en"") \u2014 Vi\u1ec7t sang Anh.") & vbCrLf & _
+        u("=Dich(A2,""en"",""vi"") \u2014 Anh sang Vi\u1ec7t.") & vbCrLf & _
+        u("=Dich(A2,""vi"",""ja"") \u2014 Vi\u1ec7t sang Nh\u1eadt.") & vbCrLf & vbCrLf & _
+        u("3. K\u00e9o c\u00f4ng th\u1ee9c xu\u1ed1ng \u0111\u1ec3 d\u1ecbch c\u00e1c d\u00f2ng ti\u1ebfp theo.") & vbCrLf & _
+        u("N\u1ebfu c\u00f3 l\u1ed7i: =DichTrangThai(A2,""vi"",""en"") \u2014 d\u00f9ng c\u00f9ng m\u00e3 ng\u00f4n ng\u1eef v\u1edbi c\u00f4ng th\u1ee9c \u0111ang l\u1ed7i.") & vbCrLf & vbCrLf & _
+        u("M\u00e3: vi = Vi\u1ec7t; en = Anh; ja = Nh\u1eadt; ko = H\u00e0n; zh-CN = Trung gi\u1ea3n th\u1ec3; fr = Ph\u00e1p; de = \u0110\u1ee9c; th = Th\u00e1i.") & vbCrLf & _
+        u("N\u1ebfu Excel d\u00f9ng d\u1ea5u ; \u0111\u1ec3 ng\u0103n \u0111\u1ed1i s\u1ed1, thay d\u1ea5u ph\u1ea9y b\u1eb1ng ;. Kh\u00f4ng nh\u1eadp c\u00f4ng th\u1ee9c v\u00e0o ch\u00ednh \u00f4 A2.") & vbCrLf & _
+        u("C\u1ea7n Internet; t\u1ed1i \u0111a 5.000 k\u00fd t\u1ef1/\u00f4. D\u1ecbch v\u1ee5 v\u00e0 email d\u00f9ng theo C\u00e0i \u0111\u1eb7t d\u1ecbch. Google web c\u00f3 th\u1ec3 b\u1ecb gi\u1edbi h\u1ea1n; c\u1ea7n ki\u1ec3m tra l\u1ea1i b\u1ea3n d\u1ecbch."), u("C\u00e1ch d\u00f9ng c\u00f4ng th\u1ee9c d\u1ecbch")
+End Sub

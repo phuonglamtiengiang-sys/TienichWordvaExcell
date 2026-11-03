@@ -1,0 +1,298 @@
+Attribute VB_Name = "mod_XuLyVanBan"
+Option Explicit
+
+'===========================================================
+' 1. KHAI BAO API WINDOWS VA HANG SO DUNG CHUNG (DECLARATIONS)
+' (TAT CA KHAI BAO CONST PHAI NAM O DAU MODULE TRUOC CAC HAM)
+'===========================================================
+#If VBA7 Then
+    Private Declare PtrSafe Function MessageBoxW Lib "user32" ( _
+        ByVal hwnd As LongPtr, ByVal lpText As LongPtr, _
+        ByVal lpCaption As LongPtr, ByVal uType As Long) As Long
+#Else
+    Private Declare Function MessageBoxW Lib "user32" ( _
+        ByVal hwnd As Long, ByVal lpText As Long, _
+        ByVal lpCaption As Long, ByVal uType As Long) As Long
+#End If
+
+' Bang ky tu chu thuong va chu hoa Unicode day du
+Private Const UNI_LOWER As String = "a\u00e0\u00e1\u1ea3\u00e3\u1ea1\u0103\u1eb1\u1eaf\u1eb3\u1eb5\u1eb7\u00e2\u1ea7\u1ea5\u1ea9\u1eab\u1eade\u00e8\u00e9\u1ebb\u1ebd\u1eb9\u00ea\u1ec1\u1ebf\u1ec3\u1ec5\u1ec7i\u00ec\u00ed\u1ec9\u0129\u1ecbo\u00f2\u00f3\u1ecf\u00f5\u1ecdc\u00f4\u1ed3\u1ed1\u1ed5\u1ed7\u1ed9\u01a1\u1edd\u1edb\u1edf\u1ee1\u1ee3u\u00f9\u00fa\u1ee7\u0169\u1ee5\u01b0\u1eeb\u1ee9\u1eed\u1eef\u1ef1y\u1ef3\u00fd\u1ef7\u1ef9\u1ef5d\u0111"
+Private Const UNI_UPPER As String = "A\u00c0\u00c1\u1ea2\u00c3\u1ea0\u0102\u1eb0\u1eae\u1eb2\u1eb4\u1eb6\u00c2\u1ea6\u1ea4\u1ea8\u1eaa\u1eacE\u00c8\u00c9\u1eba\u1ebc\u1eb8\u00ca\u1ec0\u1ebe\u1ec2\u1ec4\u1ec6I\u00cc\u00cd\u1ec8\u0128\u1ecaO\u00d2\u00d3\u1ece\u00d5\u1ecc\u00d4\u1ed2\u1ed0\u1ed4\u1ed6\u1ed8\u01a0\u1edc\u1eda\u1ede\u1ee0\u1ee2U\u00d9\u00da\u1ee6\u0168\u1ee4\u01af\u1eea\u1ee8\u1eec\u1eee\u1ef0Y\u1ef2\u00dd\u1ef6\u1ef8\u1ef4D\u0110"
+
+' Ham giai ma Unicode dang \uXXXX
+Private Function UVanBan(ByVal str As String) As String
+    Dim i As Long, res As String, hexCode As String
+    res = ""
+    i = 1
+    Do While i <= Len(str)
+        If Mid(str, i, 2) = "\u" And i + 5 <= Len(str) Then
+            hexCode = Mid(str, i + 2, 4)
+            res = res & ChrW(val("&H" & hexCode))
+            i = i + 6
+        Else
+            res = res & Mid(str, i, 1)
+            i = i + 1
+        End If
+    Loop
+    UVanBan = res
+End Function
+
+Private Sub ShowMsg(ByVal prompt As String, Optional ByVal title As String = "Th\u00f4ng b\u00e1o", Optional ByVal buttons As Long = 64)
+    MessageBoxW Application.hwnd, StrPtr(UVanBan(prompt)), StrPtr(UVanBan(title)), buttons
+End Sub
+
+
+'===========================================================
+' 2. CAC HAM XU LY CHUOI UNICODE TIENG VIET
+'===========================================================
+
+' Ham xoa dau tieng Viet chuan Unicode 100%
+Public Function BoDau(ByVal txt As Variant) As String
+    Dim s As String
+    s = CStr(txt)
+    If Len(s) = 0 Then
+        BoDau = ""
+        Exit Function
+    End If
+    
+    Dim hexList As String, repList As String
+    Dim hexArr() As String, repArr() As String
+    Dim i As Long
+    
+    hexList = "E0,E1,1EA3,E3,1EA1,103,1EB1,1EAF,1EB3,1EB5,1EB7,E2,1EA7,1EA5,1EA9,1EAB,1EAD," & _
+              "C0,C1,1EA2,C3,1EA0,102,1EB0,1EAE,1EB2,1EB4,1EB6,C2,1EA6,1EA4,1EA8,1EAA,1EAC," & _
+              "E8,E9,1EBB,1EBD,1EB9,EA,1EC1,1EBF,1EC3,1EC5,1EC7," & _
+              "C8,C9,1EBA,1EB8,CA,1EC0,1EBE,1EC2,1EC4,1EC6," & _
+              "EC,ED,1EC9,129,1ECB," & _
+              "CC,CD,1EC8,128,1ECA," & _
+              "F2,F3,1ECF,F5,1ECD,F4,1ED3,1ED1,1ED5,1ED7,1ED9,1A1,1EDD,1EDB,1EDF,1EE1,1EE3," & _
+              "D2,D3,1ECE,D5,1ECC,D4,1ED2,1ED0,1ED4,1ED6,1ED8,1A0,1EDC,1EDA,1EDE,1EE0,1EE2," & _
+              "F9,FA,1EE7,169,1EE5,1B0,1EEB,1EE9,1EED,1EEF,1EF1," & _
+              "D9,DA,1EE6,168,1EE4,1AF,1EEA,1EE8,1EEC,1EEE,1EF0," & _
+              "1EF3,FD,1EF7,1EF9,1EF5,1EF2,DD,1EF6,1EF8,1EF4,111,110"
+              
+    repList = "a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a," & _
+              "A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A," & _
+              "e,e,e,e,e,e,e,e,e,e,e," & _
+              "E,E,E,E,E,E,E,E,E,E," & _
+              "i,i,i,i,i," & _
+              "I,I,I,I,I," & _
+              "o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o," & _
+              "O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O,O," & _
+              "u,u,u,u,u,u,u,u,u,u,u," & _
+              "U,U,U,U,U,U,U,U,U,U,U," & _
+              "y,y,y,y,y,Y,Y,Y,Y,Y,d,D"
+              
+    hexArr = Split(hexList, ",")
+    repArr = Split(repList, ",")
+    
+    For i = LBound(hexArr) To UBound(hexArr)
+        s = Replace(s, ChrW(val("&H" & hexArr(i))), repArr(i))
+    Next i
+    
+    BoDau = s
+End Function
+
+' Ham lam sach khoang trang dau, giua va cuoi chuoi
+Public Function LamSachText(ByVal txt As Variant) As String
+    Dim s As String
+    s = CStr(txt)
+    s = Replace(s, ChrW(160), " ")
+    s = Replace(s, vbTab, " ")
+    s = Replace(s, vbCr, " ")
+    s = Replace(s, vbLf, " ")
+    
+    Do While InStr(s, "  ") > 0
+        s = Replace(s, "  ", " ")
+    Loop
+    
+    LamSachText = Trim(s)
+End Function
+
+' In thuong Unicode
+Public Function ToLowerUnicode(ByVal txt As String) As String
+    Dim sLower As String, sUpper As String, res As String
+    Dim i As Long, p As Long, ch As String
+    sLower = UVanBan(UNI_LOWER)
+    sUpper = UVanBan(UNI_UPPER)
+    res = ""
+    For i = 1 To Len(txt)
+        ch = Mid(txt, i, 1)
+        p = InStr(1, sUpper, ch, vbBinaryCompare)
+        If p > 0 Then
+            res = res & Mid(sLower, p, 1)
+        Else
+            res = res & LCase(ch)
+        End If
+    Next i
+    ToLowerUnicode = res
+End Function
+
+' In hoa Unicode
+Public Function ToUpperUnicode(ByVal txt As String) As String
+    Dim sLower As String, sUpper As String, res As String
+    Dim i As Long, p As Long, ch As String
+    sLower = UVanBan(UNI_LOWER)
+    sUpper = UVanBan(UNI_UPPER)
+    res = ""
+    For i = 1 To Len(txt)
+        ch = Mid(txt, i, 1)
+        p = InStr(1, sLower, ch, vbBinaryCompare)
+        If p > 0 Then
+            res = res & Mid(sUpper, p, 1)
+        Else
+            res = res & UCase(ch)
+        End If
+    Next i
+    ToUpperUnicode = res
+End Function
+
+' Viet hoa dau cau (Sentence Case)
+Public Function ToSentenceCase(ByVal txt As String) As String
+    Dim s As String
+    s = LamSachText(txt)
+    If Len(s) = 0 Then ToSentenceCase = "": Exit Function
+    ToSentenceCase = ToUpperUnicode(Left(s, 1)) & ToLowerUnicode(Mid(s, 2))
+End Function
+
+' Viet hoa danh tu rieng (dau moi tu)
+Public Function ToTitleCase(ByVal txt As String) As String
+    Dim words() As String, i As Long, w As String, res As String
+    Dim cleanStr As String
+    cleanStr = LamSachText(txt)
+    If Len(cleanStr) = 0 Then ToTitleCase = "": Exit Function
+    
+    words = Split(cleanStr, " ")
+    res = ""
+    For i = LBound(words) To UBound(words)
+        w = Trim(words(i))
+        If Len(w) > 0 Then
+            w = ToUpperUnicode(Left(w, 1)) & ToLowerUnicode(Mid(w, 2))
+            If res = "" Then
+                res = w
+            Else
+                res = res & " " & w
+            End If
+        End If
+    Next i
+    ToTitleCase = res
+End Function
+
+' Tach ho & dem
+Public Function TachHoDem(ByVal fullName As Variant) As String
+    Dim s As String, pos As Long
+    s = LamSachText(fullName)
+    pos = InStrRev(s, " ")
+    If pos > 0 Then
+        TachHoDem = Trim(Left(s, pos - 1))
+    Else
+        TachHoDem = ""
+    End If
+End Function
+
+' Tach ten rieng
+Public Function TachTen(ByVal fullName As Variant) As String
+    Dim s As String, pos As Long
+    s = LamSachText(fullName)
+    pos = InStrRev(s, " ")
+    If pos > 0 Then
+        TachTen = Trim(Mid(s, pos + 1))
+    Else
+        TachTen = s
+    End If
+End Function
+
+
+'===========================================================
+' 3. TOAN BO CALLBACKS CHO THANH RIBBON
+'===========================================================
+
+Public Sub Ribbon_TachHoTen(control As IRibbonControl)
+    Dim cell As Range, s As String, count As Long
+    If TypeName(Selection) <> "Range" Then Exit Sub
+    count = 0
+    Application.ScreenUpdating = False
+    For Each cell In Selection
+        s = LamSachText(cell.Value)
+        If s <> "" Then
+            cell.Offset(0, 1).Value = TachHoDem(s)
+            cell.Offset(0, 2).Value = TachTen(s)
+            count = count + 1
+        End If
+    Next cell
+    Application.ScreenUpdating = True
+    ShowMsg "\u0110\u00e3 t\u00e1ch h\u1ecd v\u00e0 t\u00ean cho " & count & " d\u00f2ng!", "Ho\u00e0n t\u1ea5t"
+End Sub
+
+Public Sub Ribbon_XoaDauTV(control As IRibbonControl)
+    Dim cell As Range
+    If TypeName(Selection) <> "Range" Then Exit Sub
+    Application.ScreenUpdating = False
+    For Each cell In Selection
+        If Not IsEmpty(cell.Value) And Not cell.HasFormula Then
+            cell.Value = BoDau(cell.Value)
+        End If
+    Next cell
+    Application.ScreenUpdating = True
+End Sub
+
+Public Sub Ribbon_InHoa(control As IRibbonControl)
+    Dim cell As Range
+    If TypeName(Selection) <> "Range" Then Exit Sub
+    Application.ScreenUpdating = False
+    For Each cell In Selection
+        If Not IsEmpty(cell.Value) And Not cell.HasFormula Then
+            cell.Value = ToUpperUnicode(CStr(cell.Value))
+        End If
+    Next cell
+    Application.ScreenUpdating = True
+End Sub
+
+Public Sub Ribbon_InThuong(control As IRibbonControl)
+    Dim cell As Range
+    If TypeName(Selection) <> "Range" Then Exit Sub
+    Application.ScreenUpdating = False
+    For Each cell In Selection
+        If Not IsEmpty(cell.Value) And Not cell.HasFormula Then
+            cell.Value = ToLowerUnicode(CStr(cell.Value))
+        End If
+    Next cell
+    Application.ScreenUpdating = True
+End Sub
+
+Public Sub Ribbon_SentenceCase(control As IRibbonControl)
+    Dim cell As Range
+    If TypeName(Selection) <> "Range" Then Exit Sub
+    Application.ScreenUpdating = False
+    For Each cell In Selection
+        If Not IsEmpty(cell.Value) And Not cell.HasFormula Then
+            cell.Value = ToSentenceCase(CStr(cell.Value))
+        End If
+    Next cell
+    Application.ScreenUpdating = True
+End Sub
+
+Public Sub Ribbon_DauMoiTu(control As IRibbonControl)
+    Dim cell As Range
+    If TypeName(Selection) <> "Range" Then Exit Sub
+    Application.ScreenUpdating = False
+    For Each cell In Selection
+        If Not IsEmpty(cell.Value) And Not cell.HasFormula Then
+            cell.Value = ToTitleCase(CStr(cell.Value))
+        End If
+    Next cell
+    Application.ScreenUpdating = True
+End Sub
+
+Public Sub Ribbon_CleanText(control As IRibbonControl)
+    Dim cell As Range
+    If TypeName(Selection) <> "Range" Then Exit Sub
+    Application.ScreenUpdating = False
+    For Each cell In Selection
+        If Not IsEmpty(cell.Value) And Not cell.HasFormula Then
+            cell.Value = LamSachText(cell.Value)
+        End If
+    Next cell
+    Application.ScreenUpdating = True
+End Sub
+

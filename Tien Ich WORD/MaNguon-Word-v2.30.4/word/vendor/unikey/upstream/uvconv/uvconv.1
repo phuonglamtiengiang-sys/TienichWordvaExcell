@@ -1,0 +1,63 @@
+.\" UVConverter is a part of UniKey project. Visit UniKey website at: http://unikey.sourceforge.net 
+.\" This programme is released under the terms of the GNU General Public License (GPL). See the
+.\" enclosed file gpl.txt.
+.\" 
+.\" The programme uses the vnconv library (which is also a part of UniKey project). If you get
+.\"  this source directory (uvconvert) from CVS, you must get the vnconv directory from CVS as well.
+.TH "uvconv" "1" "1.1.2" "Pham Kim Long" "Text tool"
+.SH "NAME"
+.LP 
+uvconv \- Vietnamese converting tool with UTF\-8 support.
+.SH "SYNTAX"
+.LP 
+uvconv [\fIoption\fP] <\fIfile\fP>
+.SH "DESCRIPTION"
+.LP 
+Another vietnamese converting program with UTF\-8 support.
+.SH "OPTIONS"
+.LP 
+.TP 
+\fB\-f, \-\-from\fR <\fICHARSET\fP>
+Input charset [default: TCVN3].
+
+.TP 
+\fB\-t, \-\-to\fR <\fICHARSET\fP>
+Output charset [default: UTF\-8].
+
+.TP 
+\fB\-o, \-\-output\fR <\fIFILE\fP>
+Output file [default: STDOUT].
+
+
+.TP 
+\fB\-m, \-\-mviqr\fR
+Mixed VIQR characters present in input.
+
+
+.TP 
+\fB\-s, \-\-sviqr\fR
+Strict VIQR input, converting everything, not checking
+escape for URLs, etc (a bot faster, but not recommended).
+
+
+.TP 
+\fB\-h, \-\-help\fR
+Output help information and exit.
+
+.TP 
+\fB\-l, \-\-list\fR
+Output charset list and exit.
+.SH "EXAMPLES"
+.LP 
+To run this program the standard way type:
+.LP 
+uvconv in.txt \-f VNI \-t UTF\-8 \-o out.txt
+.SH "AUTHORS"
+.LP 
+Program: Pham Kim Long <longp@cslab.felk.cvut.cz>
+
+.LP 
+Manpage: Nguyen Dai Quy <Quy@NguyenDai.org>
+.SH "SEE ALSO"
+.LP 
+vnconv(2) vntovn(2) vi2vn(2)

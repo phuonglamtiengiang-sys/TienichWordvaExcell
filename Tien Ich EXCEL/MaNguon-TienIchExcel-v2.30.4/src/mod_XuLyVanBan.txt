@@ -1,0 +1,384 @@
+﻿Option Explicit
+
+'===========================================================
+' 1. KHAI BAO API WINDOWS VA HANG SO DUNG CHUNG (DECLARATIONS)
+' (TAT CA KHAI BAO CONST PHAI NAM O DAU MODULE TRUOC CAC HAM)
+'===========================================================
+#If VBA7 Then
+    Private Declare PtrSafe Function MessageBoxW Lib "user32" ( _
+        ByVal hwnd As LongPtr, ByVal lpText As LongPtr, _
+        ByVal lpCaption As LongPtr, ByVal uType As Long) As Long
+#Else
+    Private Declare Function MessageBoxW Lib "user32" ( _
+        ByVal hwnd As Long, ByVal lpText As Long, _
+        ByVal lpCaption As Long, ByVal uType As Long) As Long
+#End If
+
+' Bang ky tu chu thuong va chu hoa Unicode day du
+Private Const UNI_LOWER As String = "a\u00e0\u00e1\u1ea3\u00e3\u1ea1\u0103\u1eb1\u1eaf\u1eb3\u1eb5\u1eb7\u00e2\u1ea7\u1ea5\u1ea9\u1eab\u1eade\u00e8\u00e9\u1ebb\u1ebd\u1eb9\u00ea\u1ec1\u1ebf\u1ec3\u1ec5\u1ec7i\u00ec\u00ed\u1ec9\u0129\u1ecbo\u00f2\u00f3\u1ecf\u00f5\u1ecd\u00f4\u1ed3\u1ed1\u1ed5\u1ed7\u1ed9\u01a1\u1edd\u1edb\u1edf\u1ee1\u1ee3u\u00f9\u00fa\u1ee7\u0169\u1ee5\u01b0\u1eeb\u1ee9\u1eed\u1eef\u1ef1y\u1ef3\u00fd\u1ef7\u1ef9\u1ef5d\u0111"
+Private Const UNI_UPPER As String = "A\u00c0\u00c1\u1ea2\u00c3\u1ea0\u0102\u1eb0\u1eae\u1eb2\u1eb4\u1eb6\u00c2\u1ea6\u1ea4\u1ea8\u1eaa\u1eacE\u00c8\u00c9\u1eba\u1ebc\u1eb8\u00ca\u1ec0\u1ebe\u1ec2\u1ec4\u1ec6I\u00cc\u00cd\u1ec8\u0128\u1ecaO\u00d2\u00d3\u1ece\u00d5\u1ecc\u00d4\u1ed2\u1ed0\u1ed4\u1ed6\u1ed8\u01a0\u1edc\u1eda\u1ede\u1ee0\u1ee2U\u00d9\u00da\u1ee6\u0168\u1ee4\u01af\u1eea\u1ee8\u1eec\u1eee\u1ef0Y\u1ef2\u00dd\u1ef6\u1ef8\u1ef4D\u0110"
+
+' Ham giai ma Unicode dang \uXXXX
+Private Function UVanBan(ByVal str As String) As String
+    Dim i As Long, res As String, hexCode As String
+    res = ""
+    i = 1
+    Do While i <= Len(str)
+        If Mid(str, i, 2) = "\u" And i + 5 <= Len(str) Then
+            hexCode = Mid(str, i + 2, 4)
+            res = res & ChrW(val("&H" & hexCode))
+            i = i + 6
+        Else
+            res = res & Mid(str, i, 1)
+            i = i + 1
+        End If
+    Loop
+    UVanBan = res
+End Function
+
+Private Sub ShowMsg(ByVal prompt As String, Optional ByVal title As String = "Th\u00f4ng b\u00e1o", Optional ByVal buttons As Long = 64)
+    MessageBoxW Application.hwnd, StrPtr(UVanBan(prompt)), StrPtr(UVanBan(title)), buttons
+End Sub
+
+
+'===========================================================
+' 2. CAC HAM XU LY CHUOI UNICODE TIENG VIET
+'===========================================================
+
+' Ham xoa dau tieng Viet chuan Unicode 100%
+Public Function BoDau(ByVal txt As Variant) As String
+    Dim s As String, i As Long, ch As String, code As Long
+    If IsError(txt) Or IsNull(txt) Then Exit Function
+    If IsError(txt) Or IsNull(txt) Then Exit Function
+    s = CStr(txt)
+    s = Replace(s, ChrW(224), "a")
+    s = Replace(s, ChrW(225), "a")
+    s = Replace(s, ChrW(7843), "a")
+    s = Replace(s, ChrW(227), "a")
+    s = Replace(s, ChrW(7841), "a")
+    s = Replace(s, ChrW(259), "a")
+    s = Replace(s, ChrW(7857), "a")
+    s = Replace(s, ChrW(7855), "a")
+    s = Replace(s, ChrW(7859), "a")
+    s = Replace(s, ChrW(7861), "a")
+    s = Replace(s, ChrW(7863), "a")
+    s = Replace(s, ChrW(226), "a")
+    s = Replace(s, ChrW(7847), "a")
+    s = Replace(s, ChrW(7845), "a")
+    s = Replace(s, ChrW(7849), "a")
+    s = Replace(s, ChrW(7851), "a")
+    s = Replace(s, ChrW(7853), "a")
+    s = Replace(s, ChrW(232), "e")
+    s = Replace(s, ChrW(233), "e")
+    s = Replace(s, ChrW(7867), "e")
+    s = Replace(s, ChrW(7869), "e")
+    s = Replace(s, ChrW(7865), "e")
+    s = Replace(s, ChrW(234), "e")
+    s = Replace(s, ChrW(7873), "e")
+    s = Replace(s, ChrW(7871), "e")
+    s = Replace(s, ChrW(7875), "e")
+    s = Replace(s, ChrW(7877), "e")
+    s = Replace(s, ChrW(7879), "e")
+    s = Replace(s, ChrW(236), "i")
+    s = Replace(s, ChrW(237), "i")
+    s = Replace(s, ChrW(7881), "i")
+    s = Replace(s, ChrW(297), "i")
+    s = Replace(s, ChrW(7883), "i")
+    s = Replace(s, ChrW(242), "o")
+    s = Replace(s, ChrW(243), "o")
+    s = Replace(s, ChrW(7887), "o")
+    s = Replace(s, ChrW(245), "o")
+    s = Replace(s, ChrW(7885), "o")
+    s = Replace(s, ChrW(244), "o")
+    s = Replace(s, ChrW(7891), "o")
+    s = Replace(s, ChrW(7889), "o")
+    s = Replace(s, ChrW(7893), "o")
+    s = Replace(s, ChrW(7895), "o")
+    s = Replace(s, ChrW(7897), "o")
+    s = Replace(s, ChrW(417), "o")
+    s = Replace(s, ChrW(7901), "o")
+    s = Replace(s, ChrW(7899), "o")
+    s = Replace(s, ChrW(7903), "o")
+    s = Replace(s, ChrW(7905), "o")
+    s = Replace(s, ChrW(7907), "o")
+    s = Replace(s, ChrW(249), "u")
+    s = Replace(s, ChrW(250), "u")
+    s = Replace(s, ChrW(7911), "u")
+    s = Replace(s, ChrW(361), "u")
+    s = Replace(s, ChrW(7909), "u")
+    s = Replace(s, ChrW(432), "u")
+    s = Replace(s, ChrW(7915), "u")
+    s = Replace(s, ChrW(7913), "u")
+    s = Replace(s, ChrW(7917), "u")
+    s = Replace(s, ChrW(7919), "u")
+    s = Replace(s, ChrW(7921), "u")
+    s = Replace(s, ChrW(7923), "y")
+    s = Replace(s, ChrW(253), "y")
+    s = Replace(s, ChrW(7927), "y")
+    s = Replace(s, ChrW(7929), "y")
+    s = Replace(s, ChrW(7925), "y")
+    s = Replace(s, ChrW(273), "d")
+    s = Replace(s, ChrW(192), "A")
+    s = Replace(s, ChrW(193), "A")
+    s = Replace(s, ChrW(7842), "A")
+    s = Replace(s, ChrW(195), "A")
+    s = Replace(s, ChrW(7840), "A")
+    s = Replace(s, ChrW(258), "A")
+    s = Replace(s, ChrW(7856), "A")
+    s = Replace(s, ChrW(7854), "A")
+    s = Replace(s, ChrW(7858), "A")
+    s = Replace(s, ChrW(7860), "A")
+    s = Replace(s, ChrW(7862), "A")
+    s = Replace(s, ChrW(194), "A")
+    s = Replace(s, ChrW(7846), "A")
+    s = Replace(s, ChrW(7844), "A")
+    s = Replace(s, ChrW(7848), "A")
+    s = Replace(s, ChrW(7850), "A")
+    s = Replace(s, ChrW(7852), "A")
+    s = Replace(s, ChrW(200), "E")
+    s = Replace(s, ChrW(201), "E")
+    s = Replace(s, ChrW(7866), "E")
+    s = Replace(s, ChrW(7868), "E")
+    s = Replace(s, ChrW(7864), "E")
+    s = Replace(s, ChrW(202), "E")
+    s = Replace(s, ChrW(7872), "E")
+    s = Replace(s, ChrW(7870), "E")
+    s = Replace(s, ChrW(7874), "E")
+    s = Replace(s, ChrW(7876), "E")
+    s = Replace(s, ChrW(7878), "E")
+    s = Replace(s, ChrW(204), "I")
+    s = Replace(s, ChrW(205), "I")
+    s = Replace(s, ChrW(7880), "I")
+    s = Replace(s, ChrW(296), "I")
+    s = Replace(s, ChrW(7882), "I")
+    s = Replace(s, ChrW(210), "O")
+    s = Replace(s, ChrW(211), "O")
+    s = Replace(s, ChrW(7886), "O")
+    s = Replace(s, ChrW(213), "O")
+    s = Replace(s, ChrW(7884), "O")
+    s = Replace(s, ChrW(212), "O")
+    s = Replace(s, ChrW(7890), "O")
+    s = Replace(s, ChrW(7888), "O")
+    s = Replace(s, ChrW(7892), "O")
+    s = Replace(s, ChrW(7894), "O")
+    s = Replace(s, ChrW(7896), "O")
+    s = Replace(s, ChrW(416), "O")
+    s = Replace(s, ChrW(7900), "O")
+    s = Replace(s, ChrW(7898), "O")
+    s = Replace(s, ChrW(7902), "O")
+    s = Replace(s, ChrW(7904), "O")
+    s = Replace(s, ChrW(7906), "O")
+    s = Replace(s, ChrW(217), "U")
+    s = Replace(s, ChrW(218), "U")
+    s = Replace(s, ChrW(7910), "U")
+    s = Replace(s, ChrW(360), "U")
+    s = Replace(s, ChrW(7908), "U")
+    s = Replace(s, ChrW(431), "U")
+    s = Replace(s, ChrW(7914), "U")
+    s = Replace(s, ChrW(7912), "U")
+    s = Replace(s, ChrW(7916), "U")
+    s = Replace(s, ChrW(7918), "U")
+    s = Replace(s, ChrW(7920), "U")
+    s = Replace(s, ChrW(7922), "Y")
+    s = Replace(s, ChrW(221), "Y")
+    s = Replace(s, ChrW(7926), "Y")
+    s = Replace(s, ChrW(7928), "Y")
+    s = Replace(s, ChrW(7924), "Y")
+    s = Replace(s, ChrW(272), "D")
+    For i = 1 To Len(s)
+        ch = Mid$(s, i, 1): code = AscW(ch)
+        If code < 768 Or code > 879 Then BoDau = BoDau & ch
+    Next i
+End Function
+
+' Ham lam sach khoang trang dau, giua va cuoi chuoi
+Public Function LamSachText(ByVal txt As Variant) As String
+    Dim s As String
+    If IsError(txt) Or IsNull(txt) Then Exit Function
+    s = CStr(txt)
+    s = Replace(s, ChrW(160), " ")
+    s = Replace(s, ChrW(8203), "")
+    s = Replace(s, ChrW(-257), "")
+    s = Replace(s, vbTab, " ")
+    s = Replace(s, vbCr, " ")
+    s = Replace(s, vbLf, " ")
+    
+    Do While InStr(s, "  ") > 0
+        s = Replace(s, "  ", " ")
+    Loop
+    
+    LamSachText = Trim(s)
+End Function
+
+' In thuong Unicode
+Public Function ToLowerUnicode(ByVal txt As String) As String
+    Static sLower As String, sUpper As String
+    Dim res As String
+    Dim i As Long, p As Long, ch As String
+    If Len(sLower) = 0 Then
+        sLower = UVanBan(UNI_LOWER)
+        sUpper = UVanBan(UNI_UPPER)
+    End If
+    res = ""
+    For i = 1 To Len(txt)
+        ch = Mid(txt, i, 1)
+        p = InStr(1, sUpper, ch, vbBinaryCompare)
+        If p > 0 Then
+            res = res & Mid(sLower, p, 1)
+        Else
+            res = res & LCase(ch)
+        End If
+    Next i
+    ToLowerUnicode = res
+End Function
+
+' In hoa Unicode
+Public Function ToUpperUnicode(ByVal txt As String) As String
+    Static sLower As String, sUpper As String
+    Dim res As String
+    Dim i As Long, p As Long, ch As String
+    If Len(sLower) = 0 Then
+        sLower = UVanBan(UNI_LOWER)
+        sUpper = UVanBan(UNI_UPPER)
+    End If
+    res = ""
+    For i = 1 To Len(txt)
+        ch = Mid(txt, i, 1)
+        p = InStr(1, sLower, ch, vbBinaryCompare)
+        If p > 0 Then
+            res = res & Mid(sUpper, p, 1)
+        Else
+            res = res & UCase(ch)
+        End If
+    Next i
+    ToUpperUnicode = res
+End Function
+
+' Viet hoa dau cau (Sentence Case)
+Public Function ToSentenceCase(ByVal txt As String) As String
+    Dim s As String, i As Long, ch As String, newSentence As Boolean
+    s = ToLowerUnicode(LamSachText(txt)): newSentence = True
+    For i = 1 To Len(s)
+        ch = Mid$(s, i, 1)
+        If newSentence And ToUpperUnicode(ch) <> ToLowerUnicode(ch) Then
+            ch = ToUpperUnicode(ch): newSentence = False
+        End If
+        ToSentenceCase = ToSentenceCase & ch
+        If InStr(1, ".!?", ch, vbBinaryCompare) > 0 Then newSentence = True
+    Next i
+End Function
+
+' Viet hoa danh tu rieng (dau moi tu)
+Public Function ToTitleCase(ByVal txt As String) As String
+    Dim words() As String, i As Long, w As String, res As String
+    Dim cleanStr As String
+    cleanStr = LamSachText(txt)
+    If Len(cleanStr) = 0 Then ToTitleCase = "": Exit Function
+    
+    words = Split(cleanStr, " ")
+    res = ""
+    For i = LBound(words) To UBound(words)
+        w = Trim(words(i))
+        If Len(w) > 0 Then
+            w = ToUpperUnicode(Left(w, 1)) & ToLowerUnicode(Mid(w, 2))
+            If res = "" Then
+                res = w
+            Else
+                res = res & " " & w
+            End If
+        End If
+    Next i
+    ToTitleCase = res
+End Function
+
+' Tach ho & dem
+Public Function TachHoDem(ByVal fullName As Variant) As String
+    Dim s As String, pos As Long
+    s = LamSachText(fullName)
+    pos = InStrRev(s, " ")
+    If pos > 0 Then
+        TachHoDem = Trim(Left(s, pos - 1))
+    Else
+        TachHoDem = ""
+    End If
+End Function
+
+' Tach ten rieng
+Public Function TachTen(ByVal fullName As Variant) As String
+    Dim s As String, pos As Long
+    s = LamSachText(fullName)
+    pos = InStrRev(s, " ")
+    If pos > 0 Then
+        TachTen = Trim(Mid(s, pos + 1))
+    Else
+        TachTen = s
+    End If
+End Function
+
+
+'===========================================================
+' 3. TOAN BO CALLBACKS CHO THANH RIBBON
+'===========================================================
+
+Public Sub Ribbon_TachHoTen(control As IRibbonControl)
+    RunTextAction "split"
+End Sub
+
+Public Sub Ribbon_XoaDauTV(control As IRibbonControl)
+    RunTextAction "accent"
+End Sub
+
+Public Sub Ribbon_InHoa(control As IRibbonControl)
+    RunTextAction "upper"
+End Sub
+
+Public Sub Ribbon_InThuong(control As IRibbonControl)
+    RunTextAction "lower"
+End Sub
+
+Public Sub Ribbon_SentenceCase(control As IRibbonControl)
+    RunTextAction "sentence"
+End Sub
+
+Public Sub Ribbon_DauMoiTu(control As IRibbonControl)
+    RunTextAction "title"
+End Sub
+
+Public Sub Ribbon_CleanText(control As IRibbonControl)
+    RunTextAction "clean"
+End Sub
+
+Private Sub RunTextAction(ByVal mode As String)
+    Dim inputRange As Range, cell As Range, result As String, oldScreen As Boolean, oldEvents As Boolean
+    Dim columns As Long, reason As String
+    If mode = "split" Then columns = 2
+    If Not SelectedInput(inputRange, columns, mode = "split") Then Exit Sub
+    UndoBegin inputRange, columns, "Xu ly van ban"
+    oldScreen = Application.ScreenUpdating: oldEvents = Application.EnableEvents
+    On Error GoTo Failed
+    Application.ScreenUpdating = False: Application.EnableEvents = False
+    For Each cell In inputRange.Cells
+        If Not IsError(cell.Value2) Then
+            If VarType(cell.Value2) = vbString And Not cell.HasFormula Or mode = "split" Then
+                Select Case mode
+                    Case "split"
+                        WriteText cell.Offset(0, 1), TachHoDem(cell.Value2)
+                        WriteText cell.Offset(0, 2), TachTen(cell.Value2)
+                    Case "accent": WriteText cell, BoDau(cell.Value2)
+                    Case "upper": WriteText cell, ToUpperUnicode(cell.Value2)
+                    Case "lower": WriteText cell, ToLowerUnicode(cell.Value2)
+                    Case "sentence": WriteText cell, ToSentenceCase(cell.Value2)
+                    Case "title": WriteText cell, ToTitleCase(cell.Value2)
+                    Case "clean": WriteText cell, LamSachText(cell.Value2)
+                End Select
+            End If
+        End If
+    Next cell
+Done:
+    Application.ScreenUpdating = oldScreen: Application.EnableEvents = oldEvents
+    If reason <> "" Then ShowMsg reason, "Loi xu ly", 48
+    UndoCommit
+    Exit Sub
+Failed:
+    reason = Err.Description: Resume Done
+End Sub

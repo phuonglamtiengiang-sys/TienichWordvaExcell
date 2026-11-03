@@ -1,0 +1,106 @@
+﻿Option Explicit
+Public Sub Ribbon_Code128(control As IRibbonControl)
+    RunCodes "code128"
+End Sub
+Public Sub Ribbon_Code39(control As IRibbonControl)
+    RunCodes "code39"
+End Sub
+Public Sub Ribbon_EAN13(control As IRibbonControl)
+    RunCodes "ean13"
+End Sub
+Public Sub Ribbon_QRCode(control As IRibbonControl)
+    RunCodes "qr"
+End Sub
+
+Public Function ValidEAN13(ByVal value As String) As Boolean
+    Dim i As Long, total As Long
+    If Not DigitsOnly(value) Then Exit Function
+    If Len(value) <> 12 And Len(value) <> 13 Then Exit Function
+    For i = 1 To 12
+        total = total + CLng(Mid$(value, i, 1)) * IIf(i Mod 2 = 0, 3, 1)
+    Next i
+    If Len(value) = 13 Then
+        If CLng(Right$(value, 1)) <> (10 - total Mod 10) Mod 10 Then Exit Function
+    End If
+    ValidEAN13 = True
+End Function
+
+Public Function CodeURL(ByVal kind As String, ByVal value As String) As String
+    Dim i As Long, n As Long
+    If Len(value) = 0 Then Err.Raise 5, , "Du lieu rong."
+    Select Case kind
+        Case "ean13"
+            If Not ValidEAN13(value) Then Err.Raise 5, , "EAN-13 can 12 chu so hoac 13 chu so dung checksum."
+        Case "code39"
+            value = UCase$(value)
+            For i = 1 To Len(value)
+                If InStr(1, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%", Mid$(value, i, 1), vbBinaryCompare) = 0 Then Err.Raise 5, , "Code39 co ky tu khong ho tro."
+            Next i
+        Case "code128"
+            For i = 1 To Len(value)
+                n = AscW(Mid$(value, i, 1))
+                If n < 32 Or n > 126 Then Err.Raise 5, , "Code128 chi nhan ASCII 32-126. Hay dung QR cho tieng Viet."
+            Next i
+        Case "qr"
+            CodeURL = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=12&charset-source=UTF-8&data=" & EncodeURL(value)
+            Exit Function
+        Case Else: Err.Raise 5, , "Loai ma khong ho tro."
+    End Select
+    CodeURL = "https://bwipjs-api.metafloor.com/?bcid=" & kind & "&text=" & EncodeURL(value) & "&scale=6&height=18&includetext&textsize=12&monochrome&backgroundcolor=FFFFFF&paddingwidth=12&paddingheight=6"
+End Function
+
+Private Sub RunCodes(ByVal kind As String)
+    Dim inputRange As Range, cell As Range, value As String, good As Long, bad As Long
+    Dim reason As String, oldScreen As Boolean, oldEvents As Boolean
+    If Not SelectedInput(inputRange, 1) Then Exit Sub
+    oldScreen = Application.ScreenUpdating: oldEvents = Application.EnableEvents
+    On Error GoTo Failed
+    Application.ScreenUpdating = False: Application.EnableEvents = False
+    For Each cell In inputRange.Cells
+        If IsError(cell.Value2) Then
+            bad = bad + 1
+        Else
+            value = CStr(cell.Value2)
+            If Len(value) > 0 Then
+                On Error GoTo ItemFailed
+                InsertCodeImage cell.Offset(0, 1), CodeURL(kind, value), IIf(kind = "qr", 120, 55), kind
+                good = good + 1
+            End If
+        End If
+NextCell:
+    Next cell
+Done:
+    Application.ScreenUpdating = oldScreen: Application.EnableEvents = oldEvents
+    ShowMsg "Da tao: " & good & ". Loi: " & bad & IIf(reason = "", "", vbCrLf & reason), "Tao ma"
+    Exit Sub
+ItemFailed:
+    bad = bad + 1: reason = cell.Address(False, False) & ": " & Err.Description
+    Resume NextCell
+Failed:
+    reason = Err.Description: Resume Done
+End Sub
+
+Public Sub Ribbon_Clear_Barcodes(control As IRibbonControl)
+    Dim count As Long
+    On Error GoTo Failed
+    If TypeName(Selection) <> "Range" Then Exit Sub
+    count = ClearCodeImages(Selection)
+    ShowMsg "Da xoa " & count & " anh ma do phien ban nay tao.", "Xoa ma"
+    Exit Sub
+Failed:
+    ShowMsg Err.Description, "Loi xoa ma", 48
+End Sub
+
+Public Function ClearCodeImages(ByVal selected As Range) As Long
+    Dim item As Shape, i As Long, count As Long
+    If selected.Parent.ProtectDrawingObjects Then Err.Raise 5, , "Trang tinh dang bao ve hinh anh."
+    For i = selected.Parent.Shapes.Count To 1 Step -1
+        Set item = selected.Parent.Shapes(i)
+        If Left$(item.AlternativeText, Len(IMAGE_TAG)) = IMAGE_TAG Then
+            If Not Intersect(item.TopLeftCell, selected) Is Nothing Then
+                item.Delete: count = count + 1
+            End If
+        End If
+    Next i
+    ClearCodeImages = count
+End Function

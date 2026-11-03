@@ -1,0 +1,251 @@
+﻿Option Explicit
+Private WithEvents saveButton As MSForms.CommandButton
+Private targetCell As Range
+Private statusLabel As MSForms.Label
+Private firstActivation As Boolean
+
+Private Sub UserForm_Initialize()
+    Dim savedBankIndex As String, savedAcc As String
+    Set targetCell = ActiveCell
+    Me.Width = 500
+    Me.Height = 248
+    Me.StartUpPosition = 1
+    ' UserForm title bars use the Windows ANSI code page; brand text is portable.
+    Me.Caption = "VietQR"
+    Me.Font.Name = "Segoe UI"
+    Me.Font.Size = 10
+    Set saveButton = Me.Controls.Add("Forms.CommandButton.1", "btnSaveAccount", True)
+    With saveButton
+        .Caption = u("L\u01b0u t\u00e0i kho\u1ea3n")
+        .Left = 144: .Top = 162: .Width = 104: .Height = 28
+        .ControlTipText = u("Ghi nh\u1edb ng\u00e2n h\u00e0ng v\u00e0 s\u1ed1 t\u00e0i kho\u1ea3n tr\u00ean m\u00e1y n\u00e0y, kh\u00f4ng c\u1ea7n t\u1ea1o QR tr\u01b0\u1edbc.")
+        .TabIndex = 4
+    End With
+    Set statusLabel = Me.Controls.Add("Forms.Label.1", "lblSaveStatus", True)
+    With statusLabel
+        .Left = 18: .Top = 126: .Width = 450: .Height = 28
+        .WordWrap = True
+        .Caption = u("Ng\u00e2n h\u00e0ng v\u00e0 t\u00e0i kho\u1ea3n \u0111\u01b0\u1ee3c nh\u1edb cho l\u1ea7n sau. B\u1ea1n c\u0169ng c\u00f3 th\u1ec3 b\u1ea5m L\u01b0u t\u00e0i kho\u1ea3n tr\u01b0\u1edbc khi t\u1ea1o QR.")
+    End With
+    With btnCreate
+        .Left = 260: .Top = 162: .Width = 104: .Height = 28
+        .TabIndex = 5: .Default = True
+    End With
+    With btnClose
+        .Left = 376: .Top = 162: .Width = 80: .Height = 28
+        .TabIndex = 6: .Cancel = True
+    End With
+    cboBank.Style = fmStyleDropDownList
+    cboBank.MatchEntry = fmMatchEntryComplete
+    cboBank.ListRows = 14
+    cboBank.TabIndex = 0
+    txtAcc.TabIndex = 1
+    txtAmount.TabIndex = 2
+    txtMemo.TabIndex = 3
+    txtAcc.MaxLength = 19
+    txtMemo.MaxLength = 50
+    
+    ' Tieu de Form chuan tieng Viet khong dau
+
+    
+    ' Nhan huong dan
+    lblBank.Caption = "1. Ch" & ChrW(7885) & "n ng" & ChrW(226) & "n h" & ChrW(224) & "ng:"
+    lblAcc.Caption = "2. S" & ChrW(7889) & " t" & ChrW(224) & "i kho" & ChrW(7843) & "n:"
+    lblAmount.Caption = "3. S" & ChrW(7889) & " ti" & ChrW(7873) & "n (n" & ChrW(7871) & "u c" & ChrW(243) & "):"
+    lblMemo.Caption = "4. N" & ChrW(7897) & "i dung chuy" & ChrW(7875) & "n kho" & ChrW(7843) & "n:"
+    
+    ' Nut bam
+    btnCreate.Caption = "T" & ChrW(7841) & "o m" & ChrW(227) & " QR"
+    btnClose.Caption = ChrW(272) & ChrW(243) & "ng"
+
+    ' Nap danh sach ngan hang Viet Nam
+    With cboBank
+        .Clear
+        .ColumnCount = 2
+        .ColumnWidths = "280 pt;0 pt"
+        .AddItem "ICB - VietinBank"
+        .List(.ListCount - 1, 1) = "970415"
+        .AddItem "VCB - Vietcombank"
+        .List(.ListCount - 1, 1) = "970436"
+        .AddItem "BIDV - BIDV"
+        .List(.ListCount - 1, 1) = "970418"
+        .AddItem "VBA - Agribank"
+        .List(.ListCount - 1, 1) = "970405"
+        .AddItem "OCB - OCB"
+        .List(.ListCount - 1, 1) = "970448"
+        .AddItem "MB - MBBank"
+        .List(.ListCount - 1, 1) = "970422"
+        .AddItem "TCB - Techcombank"
+        .List(.ListCount - 1, 1) = "970407"
+        .AddItem "ACB - ACB"
+        .List(.ListCount - 1, 1) = "970416"
+        .AddItem "VPB - VPBank"
+        .List(.ListCount - 1, 1) = "970432"
+        .AddItem "TPB - TPBank"
+        .List(.ListCount - 1, 1) = "970423"
+        .AddItem "STB - Sacombank"
+        .List(.ListCount - 1, 1) = "970403"
+        .AddItem "HDB - HDBank"
+        .List(.ListCount - 1, 1) = "970437"
+        .AddItem "VCCB - VietCapitalBank"
+        .List(.ListCount - 1, 1) = "970454"
+        .AddItem "SCB - SCB"
+        .List(.ListCount - 1, 1) = "970429"
+        .AddItem "VIB - VIB"
+        .List(.ListCount - 1, 1) = "970441"
+        .AddItem "SHB - SHB"
+        .List(.ListCount - 1, 1) = "970443"
+        .AddItem "EIB - Eximbank"
+        .List(.ListCount - 1, 1) = "970431"
+        .AddItem "MSB - MSB"
+        .List(.ListCount - 1, 1) = "970426"
+        .AddItem "CAKE - CAKE"
+        .List(.ListCount - 1, 1) = "546034"
+        .AddItem "Ubank - Ubank"
+        .List(.ListCount - 1, 1) = "546035"
+        .AddItem "TIMO - Timo"
+        .List(.ListCount - 1, 1) = "963388"
+        .AddItem "SGICB - SaigonBank"
+        .List(.ListCount - 1, 1) = "970400"
+        .AddItem "BAB - BacABank"
+        .List(.ListCount - 1, 1) = "970409"
+        .AddItem "PVDB - PVcomBank Pay"
+        .List(.ListCount - 1, 1) = "971133"
+        .AddItem "momo - MoMo"
+        .List(.ListCount - 1, 1) = "971025"
+        .AddItem "PVCB - PVcomBank"
+        .List(.ListCount - 1, 1) = "970412"
+        .AddItem "MBV - MBV"
+        .List(.ListCount - 1, 1) = "970414"
+        .AddItem "NCB - NCB"
+        .List(.ListCount - 1, 1) = "970419"
+        .AddItem "SHBVN - ShinhanBank"
+        .List(.ListCount - 1, 1) = "970424"
+        .AddItem "ABB - ABBANK"
+        .List(.ListCount - 1, 1) = "970425"
+        .AddItem "VAB - VietABank"
+        .List(.ListCount - 1, 1) = "970427"
+        .AddItem "NAB - NamABank"
+        .List(.ListCount - 1, 1) = "970428"
+        .AddItem "PGB - PGBank"
+        .List(.ListCount - 1, 1) = "970430"
+        .AddItem "VIETBANK - VietBank"
+        .List(.ListCount - 1, 1) = "970433"
+        .AddItem "BVB - BaoVietBank"
+        .List(.ListCount - 1, 1) = "970438"
+        .AddItem "SEAB - SeABank"
+        .List(.ListCount - 1, 1) = "970440"
+        .AddItem "COOPBANK - COOPBANK"
+        .List(.ListCount - 1, 1) = "970446"
+        .AddItem "LPB - LPBank"
+        .List(.ListCount - 1, 1) = "970449"
+        .AddItem "KLB - KienLongBank"
+        .List(.ListCount - 1, 1) = "970452"
+        .AddItem "KBank - KBank"
+        .List(.ListCount - 1, 1) = "668888"
+        .AddItem "ZALOPAY - ZaloPay"
+        .List(.ListCount - 1, 1) = "971101"
+        .AddItem "MVAS - MVAS"
+        .List(.ListCount - 1, 1) = "971032"
+        .AddItem "IVB - IndovinaBank"
+        .List(.ListCount - 1, 1) = "970434"
+        .AddItem "CIMB - CIMB"
+        .List(.ListCount - 1, 1) = "422589"
+        .AddItem "CBB - CBBank"
+        .List(.ListCount - 1, 1) = "970444"
+        .AddItem "WVN - Woori"
+        .List(.ListCount - 1, 1) = "970457"
+        .AddItem "KBHN - KookminHN"
+        .List(.ListCount - 1, 1) = "970462"
+        .AddItem "KBHCM - KookminHCM"
+        .List(.ListCount - 1, 1) = "970463"
+    End With
+    savedBankIndex = GetSetting("ExcelAddinBarcode", "VietQRConfig", "DefaultBankBin", "")
+    If savedBankIndex = "" Then savedBankIndex = GetSetting("AddInTienIchExcel", "VietQR", "LastBank", "MB")
+    savedAcc = GetSetting("ExcelAddinBarcode", "VietQRConfig", "DefaultAccNo", "")
+    If savedAcc = "" Then savedAcc = GetSetting("AddInTienIchExcel", "VietQR", "LastAccount", "")
+    Dim bankIndex As Long
+    cboBank.ListIndex = 0
+    For bankIndex = 0 To cboBank.ListCount - 1
+        If cboBank.List(bankIndex, 1) = savedBankIndex Or Split(cboBank.List(bankIndex, 0), " - ")(0) = savedBankIndex Then cboBank.ListIndex = bankIndex
+    Next bankIndex
+    txtAcc.Text = savedAcc
+    
+    ' Neu o dang chon la con so thi tu dong lay so tien vao Form
+    If TypeName(Selection) = "Range" Then
+        If Not IsError(ActiveCell.Value2) Then
+        If IsNumeric(ActiveCell.Value2) Then
+        If ActiveCell.Value2 > 0 Then
+            txtAmount.Text = Format$(ActiveCell.Value2, "0")
+        End If
+    End If
+    
+        End If
+        End If
+    ' Tu dong dua con tro chuot vao o So Tien neu da co So TK
+    If Trim(txtAcc.Text) <> "" Then
+        txtAmount.TabIndex = 2
+    End If
+End Sub
+
+Private Sub btnCreate_Click()
+    Dim bank As String, account As String, amount As String, memo As String
+    Dim selected As Range, url As String
+    On Error GoTo Failed
+    If cboBank.ListIndex < 0 Then Err.Raise 5, , "Hay chon ngan hang."
+    If targetCell Is Nothing Then Err.Raise 5, , "Hay chon o dat ma QR."
+    targetCell.Parent.Activate
+    targetCell.Select
+    If Not SelectedInput(selected, 1) Then Exit Sub
+    bank = cboBank.List(cboBank.ListIndex, 1)
+    account = Trim$(txtAcc.Text): amount = Trim$(txtAmount.Text): memo = Trim$(txtMemo.Text)
+    url = VietQRURL(bank, account, amount, memo)
+    btnCreate.Enabled = False
+    InsertCodeImage selected.Offset(0, 1), url, 120, "vietqr"
+    If Not SaveDefaultAccount(False) Then Err.Raise 5, , "Da tao QR, nhung khong luu duoc tai khoan tren may."
+    Unload Me
+    Exit Sub
+Failed:
+    btnCreate.Enabled = True
+    ShowMsg Err.Description, "Khong tao duoc VietQR", 48
+End Sub
+
+Private Sub btnClose_Click()
+    Unload Me
+End Sub
+
+
+Private Sub UserForm_Activate()
+    If firstActivation Then Exit Sub
+    firstActivation = True
+    If Trim$(txtAcc.Text) = "" Then
+        cboBank.SetFocus
+        cboBank.DropDown
+    Else
+        txtAmount.SetFocus
+    End If
+End Sub
+
+Private Sub saveButton_Click()
+    Dim saved As Boolean
+    saved = SaveDefaultAccount(True)
+End Sub
+
+Public Function SaveDefaultAccount(Optional ByVal notify As Boolean = True) As Boolean
+    Dim bank As String, account As String, checkedURL As String
+    On Error GoTo Failed
+    If cboBank.ListIndex < 0 Then Err.Raise 5, , "Hay chon ngan hang."
+    bank = cboBank.List(cboBank.ListIndex, 1)
+    account = Trim$(txtAcc.Text)
+    checkedURL = VietQRURL(bank, account, "", "")
+    SaveSetting "ExcelAddinBarcode", "VietQRConfig", "DefaultBankBin", bank
+    SaveSetting "ExcelAddinBarcode", "VietQRConfig", "DefaultAccNo", account
+    txtAcc.Text = account
+    statusLabel.Caption = u("\u0110\u00e3 l\u01b0u ng\u00e2n h\u00e0ng v\u00e0 s\u1ed1 t\u00e0i kho\u1ea3n. L\u1ea7n m\u1edf sau s\u1ebd t\u1ef1 \u0111i\u1ec1n l\u1ea1i.")
+    statusLabel.ForeColor = RGB(0, 112, 70)
+    SaveDefaultAccount = True
+    Exit Function
+Failed:
+    statusLabel.Caption = Err.Description
+    statusLabel.ForeColor = RGB(176, 0, 32)
+End Function

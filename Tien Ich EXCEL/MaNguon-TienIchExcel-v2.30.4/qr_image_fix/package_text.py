@@ -1,0 +1,5 @@
+from pathlib import Path
+for name in ['test_word_editing.ps1','test_unikey_tables.py','test_unikey_tables.ps1','test_word_icons.ps1']:
+ p=Path('tests')/name;s=p.read_text(encoding='utf-8-sig').replace('Word-1.3.1','Word-1.3.2');p.write_text(s,encoding='utf-8-sig')
+p=Path('word/HUONG-DAN.md');s=p.read_text(encoding='utf-8-sig');s+='\nBản 1.3.2 sửa bỏ dấu, làm sạch, chuẩn hóa và đổi bảng mã khi vùng chọn có neo hình nổi. Vị trí sửa lấy theo ký tự thực của Word, giữ neo hình và định dạng. Chuyển TCVN3/VNI tiếp tục dùng bảng chuyển UniKey. Ctrl+Z hoàn tác toàn bộ lượt sửa.\n';p.write_text(s,encoding='utf-8-sig')
+p=Path('word/package_word.py');s=p.read_text(encoding='utf-8-sig').replace("'Word 1.3.2 icon update\\n'","'Word 1.3.2 text-position compatibility patch\\n'");s=s.replace("    'Word Windows 64-bit tested;", "    'PASS accent removal, cleaning and normalization on actual copy with floating object and Undo.\\n'\n    'PASS TCVN3/VNI conversion with floating object, bold formatting and Undo.\\n'\n    'Word Windows 64-bit tested;");p.write_text(s,encoding='utf-8-sig')
